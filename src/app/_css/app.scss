@@ -3,10 +3,15 @@
 @use './type.scss' as *;
 @import "./theme.scss";
 
+@font-face {
+  font-family: 'twentieth-century';
+  src: url('../_font/TWCEN.TTF') format("truetype");
+}
+
 :root {
   --base: 24px;
-  --font-body: system-ui;
-  --font-mono: 'Roboto Mono', monospace;
+  --font-body: 'Jost', sans-serif;
+  --font-jost: 'twentieth-century', sans-serif;
 
   --gutter-h: 180px;
   --block-padding: 120px;
@@ -29,6 +34,7 @@
 html {
   @extend %body;
   background: var(--theme-bg);
+  // background: white;
   -webkit-font-smoothing: antialiased;
   opacity: 0;
 
@@ -45,18 +51,25 @@ body,
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-jost);
   margin: 0;
-  color: var(--theme-text);
+  color: var(--color-dark-500);
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+}
+
+.main {
+  flex: 1 1 auto;
 }
 
 ::selection {
-  background: var(--theme-success-500);
+  background: var(--color-dark-500);
   color: var(--color-base-800);
 }
 
 ::-moz-selection {
-  background: var(--theme-success-500);
+  background: var(--color-dark-50);
   color: var(--color-base-800);
 }
 
@@ -91,21 +104,18 @@ h6 {
 }
 
 p {
-  margin: var(--base) 0;
-
-  @include mid-break {
-    margin: calc(var(--base) * .75) 0;
-  }
+  margin: 0;
 }
 
 ul,
 ol {
-  padding-left: var(--base);
-  margin: 0 0 var(--base);
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 a {
-  color: currentColor;
+  color: var(--color-dark-500);
 
   &:focus {
     opacity: .8;
