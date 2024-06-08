@@ -41,7 +41,7 @@ export default async function ProductFunc({ params: { slug } }) {
       <ProductHero product={product} />
       <Blocks blocks={layout} />
       {product?.enablePaywall && <PaywallBlocks productSlug={slug as string} disableTopPadding />}
-      <Blocks
+      {/* <Blocks
         disableTopPadding
         blocks={[
           {
@@ -81,7 +81,7 @@ export default async function ProductFunc({ params: { slug } }) {
             docs: relatedProducts,
           },
         ]}
-      />
+      /> */}
     </React.Fragment>
   )
 }

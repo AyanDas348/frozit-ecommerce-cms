@@ -45,12 +45,53 @@ export default async function NewPage({ params: { slug = 'home' } }) {
   }
 
   const { hero, layout } = page
+  console.log('1', hero, layout)
+
+  let richText = [
+    {
+      children: [
+        {
+          text: 'Time Ki Bachat,',
+        },
+      ],
+      type: 'h2',
+    },
+    {
+      children: [
+        {
+          text: 'Eat Fresh Fatafat',
+        },
+      ],
+      type: 'h2',
+    },
+    {
+      children: [
+        {
+          text: '\nProviding you Ready to Eat Frozen Foods, ',
+        },
+      ],
+    },
+    {
+      children: [
+        {
+          text: 'Fresh & Packed Delectable Bakery products,',
+        },
+      ],
+    },
+    {
+      children: [
+        {
+          text: 'Refreshing Drinks and much more',
+        },
+      ],
+    },
+  ]
 
   return (
     <React.Fragment>
       {slug === 'home' ? (
         <section>
-          <Hero {...hero} />
+          <Hero type="customHero" richText={richText} links={[]} media="" />
           <Gutter>
             <Categories categories={categories} />
           </Gutter>

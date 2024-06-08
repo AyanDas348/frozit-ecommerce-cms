@@ -16,8 +16,8 @@ const FooterComponent = ({ footer }: { footer: Footer }) => {
   const pathname = usePathname()
   return (
     <footer className={noHeaderFooterUrls.includes(pathname) ? classes.hide : ''}>
-      <Gutter>
-        <ul className={classes.inclusions}>
+      <Gutter className={classes.gutter}>
+        {/* <ul className={classes.inclusions}>
           {inclusions.map((inclusion, index) => (
             <li key={inclusion.title}>
               <Image
@@ -31,13 +31,18 @@ const FooterComponent = ({ footer }: { footer: Footer }) => {
               <p>{inclusion.description}</p>
             </li>
           ))}
-        </ul>
+        </ul> */}
+        <p>
+          Providing you Ready to Eat Frozen Foods, Fresh & Packed Delectable Bakery products,
+          Refreshing Drinks and much more. You can enjoy all the products served as ready to eat at
+          our outlet or get the packaged frozen ones for later use.
+        </p>
       </Gutter>
       <div className={classes.footer}>
         <Gutter>
           <div className={classes.wrap}>
             <Link href="/">
-              <Image src="" alt="logo" width={170} height={50} />
+              <Image src="/assets/logo/logo.png" alt="logo" width={170} height={50} color="white" />
             </Link>
             <p>{footer.copyright}</p>
             <div className={classes.socialLinks}>

@@ -5,7 +5,7 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-
+  width: 100%;
   @include small-break {
     margin: 0;
   }
@@ -14,15 +14,16 @@
 .heroWrapper {
   background-color: var(--color-dark-50);
   width: 100%;
-  max-width: 1560px;
+  // max-width: 1560px;
   max-height: 884px;
   display: flex;
   align-items: center;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
 
   /* Set default background position to right */
-  background-position: right;
+
+  // background-position: right;
 
   /* Mobile-first approach: Center background image on small devices */
   @media only screen and (max-width: 767px) {
@@ -62,6 +63,7 @@
   justify-content: center;
   padding: 15% var(--gutter-h);
   width: 100%;
+  color: transparent;
 
   @include mid-break {
     padding: 10% 30px;

@@ -13,7 +13,13 @@ type ResetPassword = (args: {
 
 type ForgotPassword = (args: { email: string }) => Promise<void> // eslint-disable-line no-unused-vars
 
-type Create = (args: { email: string; password: string; passwordConfirm: string }) => Promise<void> // eslint-disable-line no-unused-vars
+type Create = (args: {
+  name: string
+  phoneNumber: string
+  email: string
+  password: string
+  passwordConfirm: string
+}) => Promise<void> // eslint-disable-line no-unused-vars
 
 type Login = (args: { email: string; password: string }) => Promise<User> // eslint-disable-line no-unused-vars
 
@@ -40,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [status, setStatus] = useState<undefined | 'loggedOut' | 'loggedIn'>()
   const create = useCallback<Create>(async args => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/create`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -68,9 +74,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = useCallback<Login>(async args => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`, {
         method: 'POST',
-        credentials: 'include',
+        // credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -81,11 +87,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       })
 
       if (res.ok) {
-        const { user, errors } = await res.json()
+        const response = await res.json()
+        console.log(response)
+        const { data, success, errors } = response
         if (errors) throw new Error(errors[0].message)
-        setUser(user)
+        setUser(data)
         setStatus('loggedIn')
-        return user
+        return data
       }
 
       throw new Error('Invalid login')
@@ -139,7 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
 
-    fetchMe()
+    // fetchMe()
   }, [])
 
   const forgotPassword = useCallback<ForgotPassword>(async args => {

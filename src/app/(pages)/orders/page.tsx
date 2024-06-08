@@ -40,52 +40,54 @@ export default async function Orders() {
       })
       ?.then(json => json.docs)
   } catch (error) {
-    // when deploying this template on Payload Cloud, this page needs to build before the APIs are live
-    // so swallow the error here and simply render the page with fallback data where necessary
-    // in production you may want to redirect to a 404  page or at least log the error somewhere
-    // console.error(error)
+    console.error(error)
   }
 
   return (
-    <Gutter className={classes.orders}>
-      <h1>Orders</h1>
-      {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
-        <p className={classes.noOrders}>You have no orders.</p>
-      )}
-      <RenderParams />
-      {orders && orders.length > 0 && (
-        <ul className={classes.ordersList}>
-          {orders?.map((order, index) => (
-            <li key={order.id} className={classes.listItem}>
-              <Link className={classes.item} href={`/orders/${order.id}`}>
-                <div className={classes.itemContent}>
-                  <h4 className={classes.itemTitle}>{`Order ${order.id}`}</h4>
-                  <div className={classes.itemMeta}>
-                    <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
-                    <p>
-                      {'Total: '}
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'usd',
-                      }).format(order.total / 100)}
-                    </p>
+    <div style={{ display: 'flex' }}>
+      <div style={{ width: '33%' }}>
+        <p></p>
+      </div>
+      <div className={classes.orders} style={{ width: '66%' }}>
+        <h1>Orders</h1>
+        {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
+          <p className={classes.noOrders}>You have no orders.</p>
+        )}
+        <RenderParams />
+        {orders && orders.length > 0 && (
+          <ul className={classes.ordersList}>
+            {orders?.map((order, index) => (
+              <li key={order.id} className={classes.listItem}>
+                <Link className={classes.item} href={`/orders/${order.id}`}>
+                  <div className={classes.itemContent}>
+                    <h4 className={classes.itemTitle}>{`Order ${order.id}`}</h4>
+                    <div className={classes.itemMeta}>
+                      <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
+                      <p>
+                        {'Total: '}
+                        {new Intl.NumberFormat('en-US', {
+                          style: 'currency',
+                          currency: 'usd',
+                        }).format(order.total / 100)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <Button
-                  appearance="secondary"
-                  label="View Order"
-                  className={classes.button}
-                  el="button"
-                />
-              </Link>
-              {index !== orders.length - 1 && <HR />}
-            </li>
-          ))}
-        </ul>
-      )}
-      <HR />
-      <Button href="/account" appearance="primary" label="Go to account" />
-    </Gutter>
+                  <Button
+                    appearance="secondary"
+                    label="View Order"
+                    className={classes.button}
+                    el="button"
+                  />
+                </Link>
+                {/* {index !== orders.length - 1 && <HR />} */}
+                <HR />
+              </li>
+            ))}
+          </ul>
+        )}
+        {/* <HR /> */}
+      </div>
+    </div>
   )
 }
 

@@ -14,9 +14,15 @@ export const CustomHero: React.FC<Page['hero']> = ({ richText, media, links }) =
     typeof media !== 'string' &&
     `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${media.filename}`
 
+  const heroImageSlider = ['/public/assets/heroImages/1_2.jpg']
+
   return (
     <section className={classes.hero}>
-      <div className={classes.heroWrapper} style={{ backgroundImage: `url(${mediaUrl})` }}>
+      <div
+        className={classes.heroWrapper}
+        // style={{ backgroundImage: `url(${heroImageSlider[0]})` }}
+        style={{ backgroundImage: `url(/assets/heroImages/1_2.jpg)` }}
+      >
         <div className={classes.heroTextBox}>
           <RichText content={richText} />
 

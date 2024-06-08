@@ -8,12 +8,10 @@ import FooterComponent from './FooterComponent'
 import classes from './index.module.scss'
 
 export async function Footer1() {
-  let footer: Footer | null = null
-
-  try {
-    footer = await fetchFooter()
-  } catch (error) {
-    console.error(error)
+  let footer: Footer | null = {
+    id: '1',
+    copyright: '@2024 Frozit. All Rights Reserved.',
+    navItems: [],
   }
 
   const navItems = footer?.navItems || []

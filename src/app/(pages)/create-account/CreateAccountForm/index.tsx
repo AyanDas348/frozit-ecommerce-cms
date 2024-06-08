@@ -17,6 +17,7 @@ type FormData = {
   email: string
   password: string
   passwordConfirm: string
+  phoneNumber: string
 }
 
 const CreateAccountForm: React.FC = () => {
@@ -39,13 +40,15 @@ const CreateAccountForm: React.FC = () => {
 
   const onSubmit = useCallback(
     async (data: FormData) => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
+      delete data.passwordConfirm
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
         },
       })
+      console.log(response)
 
       if (!response.ok) {
         const message = response.statusText || 'There was an error creating the account.'
@@ -91,6 +94,14 @@ const CreateAccountForm: React.FC = () => {
         register={register}
         error={errors.name}
         type="text"
+      />
+      <Input
+        name="phoneNumber"
+        label="Phone Number"
+        required
+        register={register}
+        error={errors.phoneNumber}
+        type="number"
       />
       <Input
         name="password"

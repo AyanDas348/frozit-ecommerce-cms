@@ -12,15 +12,27 @@ type CategoryCardProps = {
   category: Category
 }
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({
+  category,
+  index,
+}: {
+  category: CategoryCardProps['category']
+  index: number
+}) => {
   const media = category.media as Media
   const { setCategoryFilters } = useFilter()
+
+  const categoryImages = [
+    '/assets/categoryImages/chapati_flour.png',
+    '/assets/categoryImages/Cookies_1.png',
+    '/assets/categoryImages/Rasiley_1.png',
+  ]
 
   return (
     <Link
       href="/products"
       className={classes.card}
-      // style={{ backgroundImage: `url(${media.url})` }}
+      style={{ backgroundImage: `url(${categoryImages[index]})` }}
       onClick={() => setCategoryFilters([category.id])}
     >
       <p className={classes.title}>{category.title}</p>

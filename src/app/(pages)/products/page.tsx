@@ -22,13 +22,13 @@ const Products = async () => {
     page = await fetchDoc<Page>({
       collection: 'pages',
       slug: 'products',
-      draft: isDraftMode,
+      draft: false,
     })
-
-    // categories = await fetchDocs<Category>('categories')
   } catch (error) {
     console.log(error)
   }
+
+  console.log(page?.layout)
 
   return (
     <div className={classes.container}>

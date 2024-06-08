@@ -13,7 +13,7 @@
 
 .inclusions {
   display: grid;
-  justify-content: center;
+  justify-content: space-between;
   gap: 30px;
   padding: 0;
   grid-template-columns: repeat(4, 1fr);
@@ -30,6 +30,11 @@
   @include extra-small-break {
     grid-template-columns: 1fr;
   }
+}
+
+.gutter{
+  margin: 30px 30px;
+
 }
 
 .icon {
