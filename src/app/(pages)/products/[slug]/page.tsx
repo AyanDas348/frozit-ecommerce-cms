@@ -15,6 +15,26 @@ import { generateMeta } from '../../../_utilities/generateMeta'
 // See the note in '../../../[slug]/page.tsx' about this
 export const dynamic = 'force-dynamic'
 
+interface ZohoProduct {
+  categories: []
+  id: string
+  meta: {
+    description: string
+    image: {
+      alt: string
+      caption: null
+      filename: string
+      height: number
+      width: number
+      mimeType: 'image/png'
+    }
+    title: 'item details'
+  }
+  priceJSON: number
+  slug: string
+  title: string
+}
+
 export default async function ProductFunc({ params: { slug } }) {
   const { isEnabled: isDraftMode } = draftMode()
 

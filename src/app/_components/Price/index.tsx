@@ -8,29 +8,19 @@ import { RemoveFromCartButton } from '../RemoveFromCartButton'
 
 import classes from './index.module.scss'
 
-export const priceFromJSON = (priceJSON: string, quantity: number = 1, raw?: boolean): string => {
+export const priceFromJSON = (priceJSON: number, quantity: number = 1, raw?: boolean): string => {
   let price = ''
 
   if (priceJSON) {
     try {
-      const parsed = JSON.parse(priceJSON)?.data[0]
-      const priceValue = parsed.unit_amount * quantity
-      const priceType = parsed.type
+      const priceValue = priceJSON * quantity
 
       if (raw) return priceValue.toString()
 
-      price = (priceValue / 100).toLocaleString('en-IN', {
+      price = priceValue.toLocaleString('en-IN', {
         style: 'currency',
-        currency: 'INR', // TODO: use `parsed.currency`
+        currency: 'INR',
       })
-
-      if (priceType === 'recurring') {
-        price += `/${
-          parsed.recurring.interval_count > 1
-            ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}`
-            : parsed.recurring.interval
-        }`
-      }
     } catch (e) {
       console.error(`Cannot parse priceJSON`) // eslint-disable-line no-console
     }

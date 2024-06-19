@@ -50,7 +50,7 @@ export const CollectionArchive: React.FC<Props> = props => {
 
   const [results, setResults] = useState<Result>({
     totalDocs: typeof populatedDocsTotal === 'number' ? populatedDocsTotal : 0,
-    docs: (populatedDocs?.map(doc => doc.value) || []) as [],
+    docs: (populatedDocs?.map(doc => doc.value) || []) as any,
     page: 1,
     totalPages: 1,
     hasPrevPage: false,
@@ -115,21 +115,42 @@ export const CollectionArchive: React.FC<Props> = props => {
     const makeRequest = async () => {
       try {
         const req = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${relationTo}?${searchQuery}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items`,
         )
         const json = await req.json()
         clearTimeout(timer)
         hasHydrated.current = true
 
         const { docs } = json as { docs: Product[] }
-
-        if (docs && Array.isArray(docs)) {
-          setResults(json)
-          setIsLoading(false)
-          if (typeof onResultChange === 'function') {
-            onResultChange(json)
-          }
-        }
+        setResults({
+          docs: json.data.data.items.map(item => ({
+            categories: [],
+            id: item.item_id,
+            meta: {
+              description: '',
+              image: {
+                alt: '',
+                caption: null,
+                filename: '',
+                height: 2865,
+                width: 2200,
+                mimeType: 'image/png',
+              },
+              title: 'item details',
+            },
+            priceJSON: item.rate,
+            slug: item.item_id,
+            title: item.item_name,
+          })),
+          page: page,
+          totalPages: Array.isArray(json.data.data.items) ? json.data.data.items.length / 10 : 1,
+          hasPrevPage: false,
+          hasNextPage: false,
+          prevPage: 1,
+          nextPage: 1,
+          totalDocs: Array.isArray(json.data.data.items) ? json.data.data.items.length : 0,
+        })
+        setIsLoading(false)
       } catch (err) {
         console.warn(err) // eslint-disable-line no-console
         setIsLoading(false)
@@ -143,6 +164,8 @@ export const CollectionArchive: React.FC<Props> = props => {
       if (timer) clearTimeout(timer)
     }
   }, [page, categoryFilters, relationTo, onResultChange, sort, limit])
+
+  console.log(page)
 
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>
@@ -161,7 +184,7 @@ export const CollectionArchive: React.FC<Props> = props => {
         )}
 
         <div className={classes.grid}>
-          {results.docs?.map((result, index) => {
+          {results.docs?.slice((page - 1) * 10, (page - 1) * 10 + 9)?.map((result, index) => {
             return <Card key={index} relationTo="products" doc={result} showCategories />
           })}
         </div>

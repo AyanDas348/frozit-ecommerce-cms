@@ -48,7 +48,6 @@ const CreateAccountForm: React.FC = () => {
           'Content-Type': 'application/json',
         },
       })
-      console.log(response)
 
       if (!response.ok) {
         const message = response.statusText || 'There was an error creating the account.'

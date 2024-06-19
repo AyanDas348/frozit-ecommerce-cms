@@ -9,29 +9,29 @@ import { Price } from '../Price'
 
 import classes from './index.module.scss'
 
-const priceFromJSON = (priceJSON): string => {
-  let price = ''
+// const priceFromJSON = (priceJSON): string => {
+//   let price = ''
 
-  if (priceJSON) {
-    try {
-      const parsed = JSON.parse(priceJSON)?.data[0]
-      const priceValue = parsed.unit_amount
-      const priceType = parsed.type
-      price = `${parsed.currency === 'usd' ? '$' : ''}${(priceValue / 100).toFixed(2)}`
-      if (priceType === 'recurring') {
-        price += `/${
-          parsed.recurring.interval_count > 1
-            ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}`
-            : parsed.recurring.interval
-        }`
-      }
-    } catch (e) {
-      console.error(`Cannot parse priceJSON`) // eslint-disable-line no-console
-    }
-  }
+//   if (priceJSON) {
+//     try {
+//       const parsed = JSON.parse(priceJSON)?.data[0]
+//       const priceValue = parsed.unit_amount
+//       const priceType = parsed.type
+//       price = `${parsed.currency === 'usd' ? '$' : ''}${(priceValue / 100).toFixed(2)}`
+//       if (priceType === 'recurring') {
+//         price += `/${
+//           parsed.recurring.interval_count > 1
+//             ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}`
+//             : parsed.recurring.interval
+//         }`
+//       }
+//     } catch (e) {
+//       console.error(`Cannot parse priceJSON`) // eslint-disable-line no-console
+//     }
+//   }
 
-  return price
-}
+//   return price
+// }
 
 export const Card: React.FC<{
   alignItems?: 'center'
@@ -60,11 +60,7 @@ export const Card: React.FC<{
   const [
     price, // eslint-disable-line no-unused-vars
     setPrice,
-  ] = useState(() => priceFromJSON(priceJSON))
-
-  useEffect(() => {
-    setPrice(priceFromJSON(priceJSON))
-  }, [priceJSON])
+  ] = useState(priceJSON)
 
   return (
     <Link href={href} className={[classes.card, className].filter(Boolean).join(' ')}>

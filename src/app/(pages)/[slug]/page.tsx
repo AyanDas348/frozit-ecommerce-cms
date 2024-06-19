@@ -31,7 +31,6 @@ export default async function NewPage({ params: { slug = 'home' } }) {
       draft: isDraftMode,
     })
     // categories = await fetchDocs<Category>('categories')
-    console.log(categories)
   } catch (error) {
     console.error(error)
   }
@@ -45,7 +44,6 @@ export default async function NewPage({ params: { slug = 'home' } }) {
   }
 
   const { hero, layout } = page
-  console.log('1', hero, layout)
 
   let richText = [
     {

@@ -14,9 +14,9 @@ import classes from './index.module.scss'
 export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
   const navItems = header?.navItems || []
   const { user } = useAuth()
-
+  // user === undefined && classes.hide
   return (
-    <nav className={[classes.nav, user === undefined && classes.hide].filter(Boolean).join(' ')}>
+    <nav className={[classes.nav].filter(Boolean).join(' ')}>
       {navItems.map(({ link }, i) => {
         return <CMSLink key={i} {...link} appearance="none" />
       })}

@@ -286,7 +286,7 @@ export interface Product {
     }
   )[];
   stripeProductID?: string | null;
-  priceJSON?: string | null;
+  priceJSON?: number | 0;
   enablePaywall?: boolean | null;
   paywall?:
   | (
