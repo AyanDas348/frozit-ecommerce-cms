@@ -145,7 +145,7 @@ export const CollectionArchive: React.FC<Props> = props => {
           page: page,
           totalPages: Array.isArray(json.data.data.items) ? json.data.data.items.length / 10 : 1,
           hasPrevPage: false,
-          hasNextPage: false,
+          hasNextPage: json.data.data.page_context.has_more_page,
           prevPage: 1,
           nextPage: 1,
           totalDocs: Array.isArray(json.data.data.items) ? json.data.data.items.length : 0,
@@ -165,8 +165,6 @@ export const CollectionArchive: React.FC<Props> = props => {
     }
   }, [page, categoryFilters, relationTo, onResultChange, sort, limit])
 
-  console.log(page)
-
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>
       <div ref={scrollRef} className={classes.scrollRef} />
@@ -184,7 +182,7 @@ export const CollectionArchive: React.FC<Props> = props => {
         )}
 
         <div className={classes.grid}>
-          {results.docs?.slice((page - 1) * 10, (page - 1) * 10 + 9)?.map((result, index) => {
+          {results.docs?.map((result, index) => {
             return <Card key={index} relationTo="products" doc={result} showCategories />
           })}
         </div>

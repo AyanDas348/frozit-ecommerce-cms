@@ -41,11 +41,31 @@ export default async function ProductFunc({ params: { slug } }) {
   let product: Product | null = null
 
   try {
-    product = await fetchDoc<Product>({
-      collection: 'products',
-      slug,
-      draft: isDraftMode,
-    })
+    // product = await fetchDoc<Product>({
+    //   collection: 'products',
+    //   slug,
+    //   draft: isDraftMode,
+    // })
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-item-details?item_id=${slug}`,
+    )
+    const json = await req.json()
+    console.log(json.data.data)
+    product = {
+      createdAt: Date.now().toString(),
+      id: slug,
+      layout: [
+        {
+          columns: [],
+          id: slug,
+          blockType: 'content',
+        },
+      ],
+      slug: slug,
+      _status: 'published',
+      title: json.data.data.item.name,
+      updatedAt: Date.now().toString(),
+    }
   } catch (error) {
     console.error(error) // eslint-disable-line no-console
   }
@@ -106,27 +126,27 @@ export default async function ProductFunc({ params: { slug } }) {
   )
 }
 
-export async function generateStaticParams() {
-  try {
-    const products = await fetchDocs<ProductType>('products')
-    return products?.map(({ slug }) => slug)
-  } catch (error) {
-    return []
-  }
-}
+// export async function generateStaticParams() {
+//   try {
+//     const products = await fetchDocs<ProductType>('products')
+//     return products?.map(({ slug }) => slug)
+//   } catch (error) {
+//     return []
+//   }
+// }
 
-export async function generateMetadata({ params: { slug } }): Promise<Metadata> {
-  const { isEnabled: isDraftMode } = draftMode()
+// export async function generateMetadata({ params: { slug } }): Promise<Metadata> {
+//   const { isEnabled: isDraftMode } = draftMode()
 
-  let product: Product | null = null
+//   let product: Product | null = null
 
-  try {
-    product = await fetchDoc<Product>({
-      collection: 'products',
-      slug,
-      draft: isDraftMode,
-    })
-  } catch (error) {}
+//   try {
+//     product = await fetchDoc<Product>({
+//       collection: 'products',
+//       slug,
+//       draft: isDraftMode,
+//     })
+//   } catch (error) {}
 
-  return generateMeta({ doc: product })
-}
+//   return generateMeta({ doc: product })
+// }

@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -8,40 +9,60 @@ import { Button } from '../../_components/Button'
 import { Gutter } from '../../_components/Gutter'
 import { HR } from '../../_components/HR'
 import { RenderParams } from '../../_components/RenderParams'
+import { useAuth } from '../../_providers/Auth'
 import { formatDateTime } from '../../_utilities/formatDateTime'
 import { getMeUser } from '../../_utilities/getMeUser'
 import { mergeOpenGraph } from '../../_utilities/mergeOpenGraph'
 
 import classes from './index.module.scss'
 
-export default async function Orders() {
-  const { token } = await getMeUser({
-    nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to view your orders.',
-    )}&redirect=${encodeURIComponent('/orders')}`,
-  })
+export default function Orders() {
+  // const { token } = await getMeUser({
+  //   nullUserRedirect: `/login?error=${encodeURIComponent(
+  //     'You must be logged in to view your orders.',
+  //   )}&redirect=${encodeURIComponent('/orders')}`,
+  // })
 
-  let orders: Order[] | null = null
+  const { user } = useAuth()
+  console.log(user)
 
-  try {
-    orders = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `JWT ${token}`,
-      },
-      cache: 'no-store',
-    })
-      ?.then(async res => {
-        if (!res.ok) notFound()
-        const json = await res.json()
-        if ('error' in json && json.error) notFound()
-        if ('errors' in json && json.errors) notFound()
-        return json
-      })
-      ?.then(json => json.docs)
-  } catch (error) {
-    console.error(error)
-  }
+  const [orders, setOrders] = useState<Order[] | null>(null)
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `JWT ${''}`, // Replace with actual token logic
+          },
+          cache: 'no-store',
+        })
+
+        if (!response.ok) {
+          notFound()
+          return
+        }
+
+        const json = await response.json()
+        if ('error' in json && json.error) {
+          notFound()
+          return
+        }
+        if ('errors' in json && json.errors) {
+          notFound()
+          return
+        }
+
+        setOrders(json.docs)
+      } catch (error) {
+        console.error(error)
+        notFound()
+      }
+    }
+
+    fetchOrders()
+  }, [])
 
   return (
     <div style={{ display: 'flex' }}>
@@ -91,11 +112,11 @@ export default async function Orders() {
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Orders',
-  description: 'Your orders.',
-  openGraph: mergeOpenGraph({
-    title: 'Orders',
-    url: '/orders',
-  }),
-}
+// export const metadata: Metadata = {
+//   title: 'Orders',
+//   description: 'Your orders.',
+//   openGraph: mergeOpenGraph({
+//     title: 'Orders',
+//     url: '/orders',
+//   }),
+// }
