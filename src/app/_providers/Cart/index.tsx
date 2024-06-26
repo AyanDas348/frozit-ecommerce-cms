@@ -131,7 +131,7 @@ export const CartProvider = props => {
   // upon logging in, merge and sync the existing local cart to Payload
   useEffect(() => {
     // wait until we have attempted authentication (the user is either an object or `null`)
-    if (!hasInitialized.current || user === undefined) return
+    if (!hasInitialized.current) return
 
     // ensure that cart items are fully populated, filter out any items that are not
     // this will prevent discontinued products from appearing in the cart
@@ -156,15 +156,14 @@ export const CartProvider = props => {
     if (user) {
       try {
         const syncCartToPayload = async () => {
-          const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.id}`, {
-            // Make sure to include cookies with fetch
-            credentials: 'include',
-            method: 'PATCH',
+          const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/update-cart`, {
+            method: 'PUT',
             body: JSON.stringify({
               cart: flattenedCart,
             }),
             headers: {
               'Content-Type': 'application/json',
+              Authorization: user.jwt,
             },
           })
 

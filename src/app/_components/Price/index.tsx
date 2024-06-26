@@ -58,6 +58,7 @@ export const Price: React.FC<{
           <p>{price?.withQuantity}</p>
         </div>
       )}
+      {product.stock <= 0 && <p className={classes.outOfStock}>Out of Stock</p>}
     </div>
   )
 }

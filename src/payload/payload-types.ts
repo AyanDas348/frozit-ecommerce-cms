@@ -391,6 +391,7 @@ export interface Product {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+  stock: number | 0;
 }
 export interface Order {
   id: string;

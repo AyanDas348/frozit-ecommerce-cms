@@ -141,6 +141,7 @@ export const CollectionArchive: React.FC<Props> = props => {
             priceJSON: item.rate,
             slug: item.item_id,
             title: item.item_name,
+            stock: item.actual_available_stock,
           })),
           page: page,
           totalPages: Array.isArray(json.data.data.items) ? json.data.data.items.length / 10 : 1,

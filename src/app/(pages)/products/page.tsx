@@ -73,16 +73,6 @@ const Products = async () => {
   }
   let categories: Category[] | null = defaultCategories
 
-  // try {
-  //   page = await fetchDoc<Page>({
-  //     collection: 'pages',
-  //     slug: 'products',
-  //     draft: false,
-  //   })
-  // } catch (error) {
-  //   console.log(error)
-  // }
-
   return (
     <div className={classes.container}>
       <Gutter className={classes.products}>

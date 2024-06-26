@@ -1,6 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
-import { Jost } from 'next/font/google'
+import { Inter, Jost, Ubuntu } from 'next/font/google'
 
 import { AdminBar } from './_components/AdminBar'
 import { Footer1 } from './_components/Footer'
@@ -11,7 +11,7 @@ import { mergeOpenGraph } from './_utilities/mergeOpenGraph'
 
 import './_css/app.scss'
 
-const jost = Jost({
+const jost = Ubuntu({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-jost',
@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
-      <body className={jost.variable}>
+      <body className={jost.className}>
         <Providers>
           <AdminBar />
           {/* @ts-expect-error */}

@@ -24,8 +24,6 @@ export default function Orders() {
   // })
 
   const { user } = useAuth()
-  console.log(user)
-
   const [orders, setOrders] = useState<Order[] | null>(null)
 
   useEffect(() => {
