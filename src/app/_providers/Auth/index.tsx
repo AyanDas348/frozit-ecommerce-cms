@@ -44,6 +44,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // used to track the single event of logging in or logging out
   // useful for `useEffect` hooks that should only run once
   const [status, setStatus] = useState<undefined | 'loggedOut' | 'loggedIn'>()
+
+  const saveUserToLocalStorage = (user: User | null) => {
+    if (user) {
+      localStorage.setItem('frozit-user', JSON.stringify(user))
+    } else {
+      localStorage.removeItem('frozit-user')
+    }
+  }
+
+  const loadUserFromLocalStorage = () => {
+    const userData = localStorage.getItem('frozit-user')
+    if (userData) {
+      setUser(JSON.parse(userData))
+      setStatus('loggedIn')
+    }
+  }
+
+  useEffect(() => {
+    loadUserFromLocalStorage()
+  }, [])
+
   const create = useCallback<Create>(async args => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`, {
@@ -64,6 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (errors) throw new Error(errors[0].message)
         setUser(data?.loginUser?.user)
         setStatus('loggedIn')
+        saveUserToLocalStorage(data?.loginUser?.user)
       } else {
         throw new Error('Invalid login')
       }
@@ -92,6 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (errors) throw new Error(errors[0].message)
         setUser(data)
         setStatus('loggedIn')
+        saveUserToLocalStorage(data)
         return data
       }
 
@@ -114,6 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (res.ok) {
         setUser(null)
         setStatus('loggedOut')
+        saveUserToLocalStorage(null)
       } else {
         throw new Error('An error occurred while attempting to logout.')
       }
@@ -194,6 +218,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (errors) throw new Error(errors[0].message)
         setUser(data?.loginUser?.user)
         setStatus(data?.loginUser?.user ? 'loggedIn' : undefined)
+        saveUserToLocalStorage(data?.loginUser?.user)
       } else {
         throw new Error('Invalid login')
       }

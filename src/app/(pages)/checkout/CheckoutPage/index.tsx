@@ -20,8 +20,8 @@ import { CheckoutForm } from '../CheckoutForm'
 
 import classes from './index.module.scss'
 
-const apiKey = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
-const stripe = loadStripe(apiKey)
+// const apiKey = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
+// const stripe = loadStripe(apiKey)
 
 export const CheckoutPage: React.FC<{
   settings: Settings
@@ -76,7 +76,7 @@ export const CheckoutPage: React.FC<{
     }
   }, [cart, user])
 
-  if (!user || !stripe) return null
+  if (!user) return null
 
   return (
     <Fragment>
@@ -100,7 +100,7 @@ export const CheckoutPage: React.FC<{
               const {
                 quantity,
                 product,
-                product: { id, stripeProductID, title, meta },
+                product: { id, title, meta },
               } = item
 
               if (!quantity) return null
@@ -124,17 +124,6 @@ export const CheckoutPage: React.FC<{
                       )}
                     </div>
                     <div className={classes.rowContent}>
-                      {!stripeProductID && (
-                        <p className={classes.warning}>
-                          {'This product is not yet connected to Stripe. To link this product, '}
-                          <Link
-                            href={`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/collections/products/${id}`}
-                          >
-                            edit this product in the admin panel
-                          </Link>
-                          {'.'}
-                        </p>
-                      )}
                       <h6 className={classes.title}>{title}</h6>
                       <Price product={product} button={false} quantity={quantity} />
                     </div>
@@ -159,38 +148,7 @@ export const CheckoutPage: React.FC<{
           <Button label="Back to cart" href="/cart" appearance="secondary" />
         </div>
       )}
-      {clientSecret && (
-        <Fragment>
-          {error && <p>{`Error: ${error}`}</p>}
-          <Elements
-            stripe={stripe}
-            options={{
-              clientSecret,
-              appearance: {
-                theme: 'stripe',
-                variables: {
-                  colorText:
-                    theme === 'dark' ? cssVariables.colors.base0 : cssVariables.colors.base1000,
-                  fontSizeBase: '16px',
-                  fontWeightNormal: '500',
-                  fontWeightBold: '600',
-                  colorBackground:
-                    theme === 'dark' ? cssVariables.colors.base850 : cssVariables.colors.base0,
-                  fontFamily: 'Inter, sans-serif',
-                  colorTextPlaceholder: cssVariables.colors.base500,
-                  colorIcon:
-                    theme === 'dark' ? cssVariables.colors.base0 : cssVariables.colors.base1000,
-                  borderRadius: '0px',
-                  colorDanger: cssVariables.colors.error500,
-                  colorDangerText: cssVariables.colors.error500,
-                },
-              },
-            }}
-          >
-            <CheckoutForm />
-          </Elements>
-        </Fragment>
-      )}
+      {clientSecret && <Fragment>{error && <p>{`Error: ${error}`}</p>}</Fragment>}
     </Fragment>
   )
 }

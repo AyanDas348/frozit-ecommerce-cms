@@ -17,4 +17,6 @@ export interface Props {
   onClick?: () => void
   onLoad?: () => void
   ref?: Ref<null | HTMLImageElement | HTMLVideoElement>
+  slug?: string
+  hasImage?: boolean
 }

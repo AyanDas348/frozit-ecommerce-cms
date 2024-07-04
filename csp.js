@@ -8,6 +8,7 @@ const policies = {
     'https://js.stripe.com',
     'https://maps.googleapis.com',
     'https://frozit-api.onrender.com',
+    'https://inventory.zoho.in',
   ],
   'child-src': ["'self'"],
   'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],

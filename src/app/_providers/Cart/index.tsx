@@ -49,6 +49,7 @@ export const CartProvider = props => {
   const [cart, dispatchCart] = useReducer(cartReducer, {
     items: [],
   })
+  console.log(authStatus, user, cart)
 
   const [total, setTotal] = useState<{
     formatted: string
@@ -60,6 +61,27 @@ export const CartProvider = props => {
 
   const hasInitialized = useRef(false)
   const [hasInitializedCart, setHasInitialized] = useState(false)
+
+  // this method can be used to add new items AND update existing ones
+  const addItemToCart = useCallback(incomingItem => {
+    dispatchCart({
+      type: 'ADD_ITEM',
+      payload: incomingItem,
+    })
+  }, [])
+
+  const deleteItemFromCart = useCallback((incomingProduct: Product) => {
+    dispatchCart({
+      type: 'DELETE_ITEM',
+      payload: incomingProduct,
+    })
+  }, [])
+
+  const clearCart = useCallback(() => {
+    dispatchCart({
+      type: 'CLEAR_CART',
+    })
+  }, [])
 
   // Check local storage for a cart
   // If there is a cart, fetch the products and hydrate the cart
@@ -111,11 +133,26 @@ export const CartProvider = props => {
   useEffect(() => {
     if (!hasInitialized.current) return
 
+    const getCart = async () => {
+      const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: user.jwt,
+        },
+      })
+      const data = await req.json()
+      return data.data
+    }
+
     if (authStatus === 'loggedIn') {
       // merge the user's cart with the local state upon logging in
-      dispatchCart({
-        type: 'MERGE_CART',
-        payload: user?.cart,
+      getCart().then(cart => {
+        console.log(cart)
+        dispatchCart({
+          type: 'MERGE_CART',
+          payload: { items: cart.data._doc.cartItems },
+        })
       })
     }
 
@@ -172,7 +209,44 @@ export const CartProvider = props => {
           }
         }
 
-        syncCartToPayload()
+        const addToCart = async (items: CartItem[]) => {
+          const body = items.map(item => ({
+            item_id: typeof item.product !== 'string' ? parseInt(item.product.id) : item.product,
+            quantity: item.quantity,
+            imageUrl: item.imageUrl,
+            price: item.price,
+          }))
+          const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-cart`, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: user.jwt,
+            },
+          })
+          const data = await req.json()
+          return data
+        }
+
+        const getCart = async () => {
+          const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: user.jwt,
+            },
+          })
+          const data = await req.json()
+          return data.data
+        }
+
+        getCart().then(response => {
+          if (response.msg === 'cart not present' && cart.items.length > 0) {
+            const added = addToCart(cart.items).then(res => console.log(res))
+          }
+        })
+
+        // syncCartToPayload()
       } catch (e) {
         console.error('Error while syncing cart to Payload.') // eslint-disable-line no-console
       }
@@ -181,7 +255,7 @@ export const CartProvider = props => {
     }
 
     setHasInitialized(true)
-  }, [user, cart])
+  }, [user, cart]) //eslint-disable-line
 
   const isProductInCart = useCallback(
     (incomingProduct: Product): boolean => {
@@ -200,27 +274,6 @@ export const CartProvider = props => {
     },
     [cart],
   )
-
-  // this method can be used to add new items AND update existing ones
-  const addItemToCart = useCallback(incomingItem => {
-    dispatchCart({
-      type: 'ADD_ITEM',
-      payload: incomingItem,
-    })
-  }, [])
-
-  const deleteItemFromCart = useCallback((incomingProduct: Product) => {
-    dispatchCart({
-      type: 'DELETE_ITEM',
-      payload: incomingProduct,
-    })
-  }, [])
-
-  const clearCart = useCallback(() => {
-    dispatchCart({
-      type: 'CLEAR_CART',
-    })
-  }, [])
 
   // calculate the new cart total whenever the cart changes
   useEffect(() => {

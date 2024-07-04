@@ -33,10 +33,11 @@ export const cartReducer = (cart: CartType, action: CartAction): CartType => {
 
     case 'MERGE_CART': {
       const { payload: incomingCart } = action
+      console.log(incomingCart)
 
       const syncedItems: CartItem[] = [
         ...(cart?.items || []),
-        ...(incomingCart?.items || []),
+        ...(incomingCart.items || []),
       ].reduce((acc: CartItem[], item) => {
         // remove duplicates
         const productId = typeof item.product === 'string' ? item.product : item?.product?.id

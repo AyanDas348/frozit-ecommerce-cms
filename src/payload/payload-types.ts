@@ -11,6 +11,8 @@ export type CartItems =
     product?: (string | null) | Product;
     quantity?: number | null;
     id?: string | null;
+    imageUrl? : string | '';
+    price: number | 0;
   }[]
   | null;
 
@@ -175,6 +177,7 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  // has_attachment: boolean | false;
 }
 export interface Category {
   id: string;

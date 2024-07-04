@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Fragment, useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { Product } from '../../../payload/payload-types'
@@ -67,7 +68,12 @@ export const Card: React.FC<{
       <div className={classes.mediaWrapper}>
         {!metaImage && <div className={classes.placeholder}>No image</div>}
         {metaImage && typeof metaImage !== 'string' && (
-          <Media imgClassName={classes.image} resource={metaImage} fill />
+          <Image
+            src={`https://inventory.zoho.in/DocTemplates_ItemImage_${metaImage.url}.zbfs?organization_id=60029131613`}
+            alt={title}
+            width={100}
+            height={100}
+          />
         )}
       </div>
       <div className={classes.content}>

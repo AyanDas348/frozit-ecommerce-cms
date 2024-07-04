@@ -13,7 +13,6 @@ export const ProductHero: React.FC<{
 }> = ({ product }) => {
   const { title, categories, meta: { image: metaImage, description } = {}, stock } = product
   const outOfStock = stock <= 0
-  console.log(product)
 
   return (
     <Gutter className={classes.productHero}>
@@ -43,9 +42,6 @@ export const ProductHero: React.FC<{
               )
             })}
           </div>
-          <p className={classes.stock}>
-            {outOfStock ? <p style={{ color: 'red' }}>Out of stock</p> : 'In stock'}
-          </p>
         </div>
 
         <Price product={product} button={'addToCart'} />
@@ -54,7 +50,7 @@ export const ProductHero: React.FC<{
           <h6>Description</h6>
           <p>{description}</p>
         </div>
-        {!outOfStock && <AddToCartButton product={product} className={classes.addToCartButton} />}
+        {outOfStock && <AddToCartButton product={product} className={classes.addToCartButton} />}
       </div>
     </Gutter>
   )

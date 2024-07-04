@@ -115,7 +115,7 @@ export const CollectionArchive: React.FC<Props> = props => {
     const makeRequest = async () => {
       try {
         const req = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items?page=${page}`,
         )
         const json = await req.json()
         clearTimeout(timer)
@@ -131,10 +131,11 @@ export const CollectionArchive: React.FC<Props> = props => {
               image: {
                 alt: '',
                 caption: null,
-                filename: '',
+                filename: item.image_name,
                 height: 2865,
                 width: 2200,
-                mimeType: 'image/png',
+                mimeType: item.image_type,
+                url: item.image_document_id,
               },
               title: 'item details',
             },
@@ -144,7 +145,9 @@ export const CollectionArchive: React.FC<Props> = props => {
             stock: item.actual_available_stock,
           })),
           page: page,
-          totalPages: Array.isArray(json.data.data.items) ? json.data.data.items.length / 10 : 1,
+          totalPages: Array.isArray(json.data.data.items)
+            ? Math.ceil(json.data.data.totalItems / 9)
+            : 1,
           hasPrevPage: false,
           hasNextPage: json.data.data.page_context.has_more_page,
           prevPage: 1,

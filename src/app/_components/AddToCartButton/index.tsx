@@ -47,9 +47,12 @@ export const AddToCartButton: React.FC<{
               addItemToCart({
                 product,
                 quantity,
+                imageUrl: 'abcda',
+                price: product.priceJSON,
+                id: product.id,
               })
 
-              router.push('/cart')
+              // router.push('/cart')
             }
           : undefined
       }
