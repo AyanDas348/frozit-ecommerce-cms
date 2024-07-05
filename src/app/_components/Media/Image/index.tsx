@@ -55,8 +55,6 @@ export const Image: React.FC<MediaProps> = props => {
     .map(([, value]) => `(max-width: ${value}px) ${value}px`)
     .join(', ')
 
-  console.log(src)
-
   return (
     <NextImage
       className={[isLoading && classes.placeholder, classes.image, imgClassName]

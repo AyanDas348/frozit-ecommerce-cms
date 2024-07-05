@@ -52,7 +52,6 @@ export const Card: React.FC<{
   } = props
 
   const { description, image: metaImage } = meta || {}
-
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
@@ -62,6 +61,19 @@ export const Card: React.FC<{
     price, // eslint-disable-line no-unused-vars
     setPrice,
   ] = useState(priceJSON)
+
+  // useEffect(() => {
+  //   ;(async () => {
+  //     if (typeof metaImage !== 'string' && metaImage.url !== '') {
+  //       const response = await fetch(
+  //         // `https://inventory.zoho.in/DocTemplates_ItemImage_${metaImage.url}.zbfs?organization_id=60029131613`,
+  //       )
+
+  //       const data = await response.json()
+  //       console.log(data)
+  //     }
+  //   })()
+  // }, [metaImage])
 
   return (
     <Link href={href} className={[classes.card, className].filter(Boolean).join(' ')}>

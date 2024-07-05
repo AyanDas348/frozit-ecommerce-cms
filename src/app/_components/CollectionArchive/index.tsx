@@ -129,7 +129,7 @@ export const CollectionArchive: React.FC<Props> = props => {
             meta: {
               description: '',
               image: {
-                alt: '',
+                alt: item.image_name,
                 caption: null,
                 filename: item.image_name,
                 height: 2865,

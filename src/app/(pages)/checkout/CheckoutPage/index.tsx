@@ -6,7 +6,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { Settings } from '../../../../payload/payload-types'
+import { CartItems, Settings } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
 import { HR } from '../../../_components/HR'
 import { LoadingShimmer } from '../../../_components/LoadingShimmer'
@@ -45,36 +45,34 @@ export const CheckoutPage: React.FC<{
     }
   }, [router, user, cartIsEmpty])
 
-  useEffect(() => {
-    if (user && cart && hasMadePaymentIntent.current === false) {
-      hasMadePaymentIntent.current = true
+  // useEffect(() => {
+  //   if (user && cart && hasMadePaymentIntent.current === false) {
+  //     hasMadePaymentIntent.current = true
 
-      const makeIntent = async () => {
-        try {
-          const paymentReq = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-payment-intent`,
-            {
-              method: 'POST',
-              credentials: 'include',
-            },
-          )
+  //     const makeIntent = async () => {
+  //       try {
+  //         const paymentReq = await fetch(`http://localhost:3000/api/create-payment-intent`, {
+  //           method: 'POST',
+  //           credentials: 'include',
+  //         })
 
-          const res = await paymentReq.json()
+  //         const res = await paymentReq.json()
+  //         console.log(res)
 
-          if (res.error) {
-            setError(res.error)
-          } else if (res.client_secret) {
-            setError(null)
-            setClientSecret(res.client_secret)
-          }
-        } catch (e) {
-          setError('Something went wrong.')
-        }
-      }
+  //         if (res.error) {
+  //           setError(res.error)
+  //         } else if (res.client_secret) {
+  //           setError(null)
+  //           setClientSecret(res.client_secret)
+  //         }
+  //       } catch (e) {
+  //         setError('Something went wrong.')
+  //       }
+  //     }
 
-      makeIntent()
-    }
-  }, [cart, user])
+  //     makeIntent()
+  //   }
+  // }, [cart, user])
 
   if (!user) return null
 
@@ -125,7 +123,7 @@ export const CheckoutPage: React.FC<{
                     </div>
                     <div className={classes.rowContent}>
                       <h6 className={classes.title}>{title}</h6>
-                      <Price product={product} button={false} quantity={quantity} />
+                      <Price product={product} button={false} quantity={quantity} stock={false} />
                     </div>
                   </div>
                   {!isLast && <HR />}
@@ -134,10 +132,11 @@ export const CheckoutPage: React.FC<{
             }
             return null
           })}
-          <div className={classes.orderTotal}>{`Order total: ${cartTotal.formatted}`}</div>
+          <div className={classes.orderTotal}>{`Order total: ${cartTotal.raw}`}</div>
+          <div className={classes.orderTotal}>{`Order total: ${cartTotal.raw}`}</div>
         </div>
       )}
-      {!clientSecret && !error && (
+      {/* {!clientSecret && !error && (
         <div className={classes.loading}>
           <LoadingShimmer number={2} />
         </div>
@@ -147,8 +146,8 @@ export const CheckoutPage: React.FC<{
           <p>{`Error: ${error}`}</p>
           <Button label="Back to cart" href="/cart" appearance="secondary" />
         </div>
-      )}
-      {clientSecret && <Fragment>{error && <p>{`Error: ${error}`}</p>}</Fragment>}
+      )} */}
+      {/* {clientSecret && <Fragment>{error && <p>{`Error: ${error}`}</p>}</Fragment>} */}
     </Fragment>
   )
 }

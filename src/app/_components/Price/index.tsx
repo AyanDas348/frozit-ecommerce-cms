@@ -33,6 +33,7 @@ export const Price: React.FC<{
   product: Product
   quantity?: number
   button?: 'addToCart' | 'removeFromCart' | false
+  stock?: boolean | true
 }> = props => {
   const { product, product: { priceJSON } = {}, button = 'addToCart', quantity } = props
 
@@ -58,7 +59,7 @@ export const Price: React.FC<{
           <p>{price?.withQuantity}</p>
         </div>
       )}
-      {product.stock <= 0 && <p className={classes.outOfStock}>Out of Stock</p>}
+      {product.stock <= 0 && props.stock && <p className={classes.outOfStock}>Out of Stock</p>}
     </div>
   )
 }

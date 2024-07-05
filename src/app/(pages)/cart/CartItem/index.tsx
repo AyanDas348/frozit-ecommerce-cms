@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Button } from '../../../_components/Button'
 import { Media } from '../../../_components/Media'
 import { Price } from '../../../_components/Price'
 import { RemoveFromCartButton } from '../../../_components/RemoveFromCartButton'
@@ -59,6 +60,11 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
       </div>
       <div className={classes.subtotalWrapper}>
         <Price product={product} quantity={quantity} button={false} />
+        <div>
+          <Button type="button" appearance="secondary">
+            Buy Now
+          </Button>
+        </div>
         <RemoveFromCartButton product={product} />
       </div>
     </li>

@@ -17,6 +17,7 @@ const policies = {
     'https://*.stripe.com',
     'https://raw.githubusercontent.com',
     'https://frozit-api.onrender.com',
+    'https://inventory.zoho.in',
   ],
   'font-src': ["'self'"],
   'frame-src': [
@@ -24,6 +25,7 @@ const policies = {
     'https://checkout.stripe.com',
     'https://js.stripe.com',
     'https://hooks.stripe.com',
+    'https://inventory.zoho.in',
   ],
   'connect-src': [
     "'self'",
@@ -31,6 +33,7 @@ const policies = {
     'https://api.stripe.com',
     'https://maps.googleapis.com',
     'https://frozit-api.onrender.com',
+    'https://inventory.zoho.in',
   ],
 }
 

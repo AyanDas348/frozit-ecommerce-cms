@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react'
 
-import { Product, User } from '../../../payload/payload-types'
+import { CartItems, Product, User } from '../../../payload/payload-types'
 import { useAuth } from '../Auth'
 import { CartItem, cartReducer } from './reducer'
 
@@ -49,7 +49,7 @@ export const CartProvider = props => {
   const [cart, dispatchCart] = useReducer(cartReducer, {
     items: [],
   })
-  console.log(authStatus, user, cart)
+  console.log(cart, authStatus)
 
   const [total, setTotal] = useState<{
     formatted: string
@@ -133,6 +133,41 @@ export const CartProvider = props => {
   useEffect(() => {
     if (!hasInitialized.current) return
 
+    const transformIncomingCartResponse = (itemDetails: any[]): CartItems => {
+      return itemDetails.map(item => {
+        return {
+          product: {
+            createdAt: item.created_time,
+            id: item.item_id,
+            layout: [],
+            stock: item.stock_on_hand,
+            title: item.name,
+            updatedAt: item.last_modified_time,
+            priceJSON: item.price,
+            meta: {
+              description: item.description,
+              image: {
+                alt: item.name,
+                id: item.item_id,
+                url: item.image_document_id,
+                createdAt: item.created_time,
+                updatedAt: item.last_modified_time,
+                filename: item.image_name,
+              },
+              title: item.image_name,
+            },
+            slug: item.item_id,
+            publishedOn: item.created_time,
+            _status: 'published',
+          },
+          price: item.rate * item.quantity,
+          id: item.item_id,
+          imageUrl: item.image_document_id,
+          quantity: item.quantity,
+        }
+      })
+    }
+
     const getCart = async () => {
       const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
         method: 'GET',
@@ -149,9 +184,10 @@ export const CartProvider = props => {
       // merge the user's cart with the local state upon logging in
       getCart().then(cart => {
         console.log(cart)
+        const transformedData = transformIncomingCartResponse(cart.data.itemDetails)
         dispatchCart({
           type: 'MERGE_CART',
-          payload: { items: cart.data._doc.cartItems },
+          payload: { items: transformedData },
         })
       })
     }
@@ -190,7 +226,7 @@ export const CartProvider = props => {
         .filter(Boolean) as CartItem[],
     }
 
-    if (user) {
+    if (authStatus === 'loggedIn') {
       try {
         const syncCartToPayload = async () => {
           const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/update-cart`, {
@@ -290,9 +326,9 @@ export const CartProvider = props => {
       }, 0) || 0
 
     setTotal({
-      formatted: (newTotal / 100).toLocaleString('en-US', {
+      formatted: newTotal.toLocaleString('en-IN', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'INR',
       }),
       raw: newTotal,
     })
