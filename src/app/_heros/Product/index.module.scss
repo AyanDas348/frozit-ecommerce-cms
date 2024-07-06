@@ -16,7 +16,9 @@
 .mediaWrapper {
   position: relative;
   min-height: 400px;
-  background-color: var(--color-dark-50);
+  max-height: 200px;
+  background-color: transparent;
+  border: 1px solid rgba(187, 127, 127, 0.5);
 
   @include small-break {
     min-height: 250px;

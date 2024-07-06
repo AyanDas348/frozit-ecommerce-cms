@@ -18,7 +18,7 @@ export const Media: React.FC<Props> = props => {
           }
         : {})}
     >
-      {isVideo ? <Video {...props} /> : <Image {...props} />}
+      {isVideo ? <Video {...props} /> : <Image {...props} fill imgClassName={className} />}
     </Tag>
   )
 }

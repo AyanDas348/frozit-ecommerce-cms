@@ -14,16 +14,28 @@ import './_css/app.scss'
 const jost = Ubuntu({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-jost',
+  // variable: '--font-jost',
 })
+
+import Script from 'next/script'
+
+function Payment() {
+  return (
+    <>
+      <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
+    </>
+  )
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
-        <link rel="icon" href="/favicon.ico" sizes="32x32" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/assets/logo/logo.png" sizes="40x32" />
+        <link rel="icon" href="/assets/logo/logo.png" />
+        <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
+        <title>Frozit Ecommerce</title>
       </head>
       <body className={jost.className}>
         <Providers>

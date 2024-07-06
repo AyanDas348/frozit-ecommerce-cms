@@ -38,5 +38,5 @@
   "ts-node": {
     "transpileOnly": true,
     "swc": true
-  }
+  },
 }

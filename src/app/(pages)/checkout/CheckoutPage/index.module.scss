@@ -1,8 +1,37 @@
 @import "../../../_css/common";
 
 .items {
+  // margin-bottom: var(--base);
+  margin-top: var(--base);
+  width: 33%;
+  border-right: 1px solid black;
+  padding: 20px 20px;
+  max-height: 400px;
+  overflow-y: scroll;
+
+}
+
+.col2 {
+  display: flex;
+  column-gap: 30px;
+
+  @include small-break {
+    flex-direction: column;
+  }
+}
+
+.cartItems {}
+
+.addressColumn {
   margin-bottom: var(--base);
   margin-top: var(--base);
+  width: 66%;
+  padding: 20px 20px;
+}
+
+.items::-webkit-scrollbar {
+  // display: none;
+  padding: 10px;
 }
 
 .row {

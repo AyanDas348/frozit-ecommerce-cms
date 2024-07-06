@@ -3,16 +3,34 @@
 .item {
   display: grid;
   grid-template-columns: 100px 2fr 1fr;
-  padding: 24px 0;
+  padding: 24px 0px;
   gap: 24px;
   border-bottom: 1px solid var(--color-dark-50);
+
+  @include small-break {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .mediaWrapper {
+      width: 50%;
+    }
+
+    .itemDetails,
+    .subtotalWrapper {
+      width: 90%;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
 }
 
 .mediaWrapper {
   position: relative;
   min-height: 100px;
   padding: 16px;
-  background-color: var(--color-dark-50);
+  background-color: transparent;
+  border: 1px solid rgba(187, 127, 127, 0.5);
 }
 
 .media {
@@ -41,7 +59,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
+
   h6 {
     line-height: 20px;
     margin-bottom: 8px;
@@ -82,7 +100,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 60px;
+  gap: 30px;
 
   @include small-break {
     flex-direction: column;

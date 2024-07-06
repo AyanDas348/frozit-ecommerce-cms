@@ -1,27 +1,36 @@
 'use client'
 
-import React, { Fragment, useEffect } from 'react'
-import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
+import React, { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Script from 'next/script'
 
-import { CartItems, Settings } from '../../../../payload/payload-types'
+import { Settings, User } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
 import { HR } from '../../../_components/HR'
-import { LoadingShimmer } from '../../../_components/LoadingShimmer'
-import { Media } from '../../../_components/Media'
 import { Price } from '../../../_components/Price'
 import { useAuth } from '../../../_providers/Auth'
 import { useCart } from '../../../_providers/Cart'
 import { useTheme } from '../../../_providers/Theme'
-import cssVariables from '../../../cssVariables'
-import { CheckoutForm } from '../CheckoutForm'
+import AddressCard from '../AddressCard'
+import RazorpayPanel from '../RazorpayPanel'
 
 import classes from './index.module.scss'
+interface OrderIntent {
+  addressId: number
+  cartId?: string
+  quantity?: number
+  item_id?: string
+  type?: string | 'buy-all'
+}
 
-// const apiKey = `${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`
-// const stripe = loadStripe(apiKey)
+interface Address {
+  street: string
+  city: string
+  state: string
+  pinCode: number
+  country: string
+}
 
 export const CheckoutPage: React.FC<{
   settings: Settings
@@ -30,20 +39,84 @@ export const CheckoutPage: React.FC<{
     settings: { productsPage },
   } = props
 
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
   const router = useRouter()
   const [error, setError] = React.useState<string | null>(null)
   const [clientSecret, setClientSecret] = React.useState()
   const hasMadePaymentIntent = React.useRef(false)
   const { theme } = useTheme()
+  const [orderBody, setOrderBody] = useState()
 
   const { cart, cartIsEmpty, cartTotal } = useCart()
+  const [orderDetails, setOrderDetails] = useState<OrderIntent>()
+  const [addresses, setAddresses] = useState<Address[]>([])
+
+  const buyVal = useSearchParams().get('buy')
+
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState<number | null>(-1)
 
   useEffect(() => {
     if (user !== null && cartIsEmpty) {
-      router.push('/cart')
+      // router.push('/cart')
     }
   }, [router, user, cartIsEmpty])
+
+  useEffect(() => {
+    const getCart = async () => {
+      const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: user.jwt,
+        },
+      })
+      const data = await req.json()
+      return data
+    }
+
+    const getAddresses = async (): Promise<{ success: boolean; data: User }> => {
+      const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
+        method: 'GET',
+        headers: {
+          Authorization: user.jwt,
+        },
+      })
+      const data = await req.json()
+      return data
+    }
+
+    if (user) {
+      getCart().then(response => {
+        if (response.success) {
+          setOrderDetails(prev => {
+            return {
+              ...prev,
+              cartId: response.data.data.cartId,
+            }
+          })
+        }
+      })
+      getAddresses().then(response => {
+        if (response.success && typeof response.data !== 'undefined') {
+          setAddresses(response.data.userData.address)
+        }
+      })
+    }
+  }, [user])
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    script.onload = () => {
+      // Razorpay script loaded
+      console.log('Razorpay loaded')
+    }
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   // useEffect(() => {
   //   if (user && cart && hasMadePaymentIntent.current === false) {
@@ -74,10 +147,105 @@ export const CheckoutPage: React.FC<{
   //   }
   // }, [cart, user])
 
-  if (!user) return null
+  // if (!user) return null
+
+  const handleSelectAddress = (index: number) => {
+    setSelectedAddressIndex(index)
+  }
+
+  const createOrderId = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/buy-now`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: user.jwt,
+        },
+        body: JSON.stringify({
+          addressId: selectedAddressIndex,
+          cartId: orderDetails.cartId,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      const data = await response.json()
+      console.log(data)
+      return {
+        orderId: data.data.data.razorPayOrderId,
+        amount: data.data.data.totalPrice,
+      }
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error)
+    }
+  }
+
+  const processPayment = async () => {
+    try {
+      const { orderId, amount } = await createOrderId()
+      const options = {
+        key: process.env.RAZORPAY_KEY_ID,
+        amount: parseFloat(amount),
+        currency: 'INR',
+        name: 'Buy Cart',
+        description: 'description',
+        order_id: orderId,
+        handler: async function (response: any) {
+          console.log(response)
+          const data = {
+            order_id: orderId,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          }
+
+          const checkPaymentStatus = async () => {
+            const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/check-status`, {
+              method: 'POST',
+              body: JSON.stringify(data),
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: user.jwt,
+              },
+            })
+            const res = await result.json()
+            console.log(response)
+
+            if (res.isOk) {
+              clearInterval(intervalId)
+              alert('Payment succeeded')
+            } else {
+              console.log('Payment not confirmed yet:', res.message)
+            }
+          }
+          const intervalId = setInterval(checkPaymentStatus, 1000)
+        },
+        prefill: {
+          name: user.name,
+          email: user.email,
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      }
+      if (typeof window !== 'undefined' && window.Razorpay) {
+        const paymentObject = new window.Razorpay(options)
+        paymentObject.on('payment.failed', function (response: any) {
+          alert(response.error.description)
+        })
+        paymentObject.open()
+      } else {
+        console.error('Razorpay script is not loaded')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <Fragment>
+      <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
       {cartIsEmpty && (
         <div>
           {'Your '}
@@ -92,62 +260,63 @@ export const CheckoutPage: React.FC<{
         </div>
       )}
       {!cartIsEmpty && (
-        <div className={classes.items}>
-          {cart?.items?.map((item, index) => {
-            if (typeof item.product === 'object') {
-              const {
-                quantity,
-                product,
-                product: { id, title, meta },
-              } = item
+        <div className={classes.col2}>
+          <div className={classes.items}>
+            <div className={classes.cartItems}>
+              {cart?.items?.map((item, index) => {
+                if (typeof item.product === 'object') {
+                  const {
+                    quantity,
+                    product,
+                    product: { id, title, meta },
+                  } = item
 
-              if (!quantity) return null
+                  if (!quantity) return null
 
-              const isLast = index === (cart?.items?.length || 0) - 1
+                  const isLast = index === (cart?.items?.length || 0) - 1
 
-              const metaImage = meta?.image
+                  const metaImage = meta?.image
 
-              return (
-                <Fragment key={index}>
-                  <div className={classes.row}>
-                    <div className={classes.mediaWrapper}>
-                      {!metaImage && <span className={classes.placeholder}>No image</span>}
-                      {metaImage && typeof metaImage !== 'string' && (
-                        <Media
-                          className={classes.media}
-                          imgClassName={classes.image}
-                          resource={metaImage}
-                          fill
-                        />
-                      )}
-                    </div>
-                    <div className={classes.rowContent}>
-                      <h6 className={classes.title}>{title}</h6>
-                      <Price product={product} button={false} quantity={quantity} stock={false} />
-                    </div>
-                  </div>
-                  {!isLast && <HR />}
-                </Fragment>
-              )
-            }
-            return null
-          })}
-          <div className={classes.orderTotal}>{`Order total: ${cartTotal.raw}`}</div>
-          <div className={classes.orderTotal}>{`Order total: ${cartTotal.raw}`}</div>
+                  return (
+                    <Fragment key={index}>
+                      <div className={classes.row}>
+                        <div className={classes.rowContent}>
+                          <h6 className={classes.title}>{title}</h6>
+                          <Price
+                            product={product}
+                            button={false}
+                            quantity={quantity}
+                            stock={false}
+                          />
+                        </div>
+                      </div>
+                      {!isLast && <HR />}
+                    </Fragment>
+                  )
+                }
+                return null
+              })}
+            </div>
+            <div className={classes.orderTotal}>{`Order total: ${cartTotal.raw}`}</div>
+          </div>
+          <div className={classes.addressColumn}>
+            {addresses.length > 0 && <p>Choose Address</p>}
+            {addresses.length > 0 &&
+              addresses.map((address, index) => (
+                <AddressCard
+                  key={index}
+                  address={address}
+                  index={index}
+                  isSelected={index === selectedAddressIndex}
+                  onSelect={handleSelectAddress}
+                />
+              ))}
+          </div>
         </div>
       )}
-      {/* {!clientSecret && !error && (
-        <div className={classes.loading}>
-          <LoadingShimmer number={2} />
-        </div>
-      )}
-      {!clientSecret && error && (
-        <div className={classes.error}>
-          <p>{`Error: ${error}`}</p>
-          <Button label="Back to cart" href="/cart" appearance="secondary" />
-        </div>
-      )} */}
-      {/* {clientSecret && <Fragment>{error && <p>{`Error: ${error}`}</p>}</Fragment>} */}
+      <Button type="button" onClick={() => processPayment()} appearance="secondary">
+        Pay Now
+      </Button>
     </Fragment>
   )
 }

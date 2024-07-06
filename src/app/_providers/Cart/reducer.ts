@@ -33,7 +33,6 @@ export const cartReducer = (cart: CartType, action: CartAction): CartType => {
 
     case 'MERGE_CART': {
       const { payload: incomingCart } = action
-      console.log(incomingCart)
 
       const syncedItems: CartItem[] = [
         ...(cart?.items || []),

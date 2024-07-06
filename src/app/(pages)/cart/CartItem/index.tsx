@@ -7,17 +7,22 @@ import { Button } from '../../../_components/Button'
 import { Media } from '../../../_components/Media'
 import { Price } from '../../../_components/Price'
 import { RemoveFromCartButton } from '../../../_components/RemoveFromCartButton'
+import { useAuth } from '../../../_providers/Auth'
 
 import classes from './index.module.scss'
 
 const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
   const [quantity, setQuantity] = useState(qty)
+  const { user } = useAuth()
 
   const decrement = qty => {}
 
   const increment = qty => {}
 
   const enterQty = qty => {}
+
+  console.log(product)
+
   return (
     <li className={classes.item} key={title}>
       <Link href={`/products/${product.slug}`} className={classes.mediaWrapper}>
@@ -59,13 +64,16 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
         </div>
       </div>
       <div className={classes.subtotalWrapper}>
-        <Price product={product} quantity={quantity} button={false} />
         <div>
-          <Button type="button" appearance="secondary">
-            Buy Now
-          </Button>
+          <Button
+            className={classes.checkoutButton}
+            href={user ? '/checkout?buy=buy-now' : '/login?redirect=%2Fcheckout'}
+            label={user ? 'Checkout' : 'Login to checkout'}
+            appearance="primary"
+          />
         </div>
         <RemoveFromCartButton product={product} />
+        <Price product={product} quantity={quantity} button={false} />
       </div>
     </li>
   )

@@ -8,11 +8,13 @@ import { staticHome } from '../../../payload/seed/home-static'
 import { fetchDoc } from '../../_api/fetchDoc'
 import { fetchDocs } from '../../_api/fetchDocs'
 import { Blocks } from '../../_components/Blocks'
+import { Card } from '../../_components/Card'
 import Categories from '../../_components/Categories'
 import { Gutter } from '../../_components/Gutter'
 import { Hero } from '../../_components/Hero'
 import { generateMeta } from '../../_utilities/generateMeta'
 import { defaultCategories } from '../../constants'
+import { onlineItems } from '../../constants/items'
 
 import classes from './index.module.scss'
 
@@ -91,7 +93,16 @@ export default async function NewPage({ params: { slug = 'home' } }) {
         <section>
           <Hero type="customHero" richText={richText} links={[]} media="" />
           <Gutter>
-            <Categories categories={categories} />
+            {/* <Categories categories={categories} /> */}
+            <div className={classes.onlineItems}>
+              {onlineItems
+                ?.map(item => {
+                  return { ...item, priceJSON: parseInt(item.priceJSON) }
+                })
+                ?.map((result, index) => {
+                  return <Card key={index} relationTo="products" doc={result} showCategories />
+                })}
+            </div>
           </Gutter>
         </section>
       ) : (

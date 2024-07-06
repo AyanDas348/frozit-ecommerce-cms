@@ -10,6 +10,7 @@ import { Blocks } from '../../../_components/Blocks'
 import { PaywallBlocks } from '../../../_components/PaywallBlocks'
 import { ProductHero } from '../../../_heros/Product'
 import { generateMeta } from '../../../_utilities/generateMeta'
+import { onlineItems } from '../../../constants/items'
 
 // Force this page to be dynamic so that Next.js does not cache it
 // See the note in '../../../[slug]/page.tsx' about this
@@ -37,15 +38,11 @@ interface ZohoProduct {
 
 export default async function ProductFunc({ params: { slug } }) {
   const { isEnabled: isDraftMode } = draftMode()
+  const hardcodedItem = onlineItems?.find(item => item.id === slug.toString())
 
   let product: Product | null = null
 
   try {
-    // product = await fetchDoc<Product>({
-    //   collection: 'products',
-    //   slug,
-    //   draft: isDraftMode,
-    // })
     const req = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-item-details?item_id=${slug}`,
     )
@@ -71,6 +68,7 @@ export default async function ProductFunc({ params: { slug } }) {
       meta: {
         description: json.data.data.item.description,
         title: json.data.data.item.name,
+        image: hardcodedItem?.meta?.image || '',
       },
     }
   } catch (error) {

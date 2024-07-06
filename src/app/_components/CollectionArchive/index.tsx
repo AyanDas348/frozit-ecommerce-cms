@@ -6,6 +6,7 @@ import qs from 'qs'
 import { Category, Product } from '../../../payload/payload-types'
 import type { ArchiveBlockProps } from '../../_blocks/ArchiveBlock/types'
 import { useFilter } from '../../_providers/Filter'
+import { onlineItems } from '../../constants/items'
 import { Card } from '../Card'
 import { PageRange } from '../PageRange'
 import { Pagination } from '../Pagination'
@@ -121,7 +122,7 @@ export const CollectionArchive: React.FC<Props> = props => {
         clearTimeout(timer)
         hasHydrated.current = true
 
-        const { docs } = json as { docs: Product[] }
+        // const { docs } = json as { docs: Product[] }
         setResults({
           docs: json.data.data.items.map(item => ({
             categories: [],

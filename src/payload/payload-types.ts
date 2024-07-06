@@ -11,7 +11,7 @@ export type CartItems =
     product?: (string | null) | Product;
     quantity?: number | null;
     id?: string | null;
-    imageUrl? : string | '';
+    imageUrl?: string | '';
     price: number | 0;
   }[]
   | null;
@@ -435,7 +435,13 @@ export interface User {
   jwt: string,
   msg: string,
   userData: {
-    address: string[],
+    address: {
+      street: string,
+      city: string,
+      state: string,
+      pinCode: number,
+      country: string,
+    }[],
     createdAt: string,
     email: string,
     phoneNumber: string,
@@ -536,6 +542,37 @@ export interface Footer {
   | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: any) => void;
+  prefill?: {
+    name: string;
+    email: string;
+    contact?: string;
+  };
+  theme?: {
+    color?: string;
+  };
+}
+
+interface Razorpay {
+  new(options: RazorpayOptions): {
+    open: () => void;
+    on: (event: string, callback: (response: any) => void) => void;
+  };
+}
+
+declare global {
+  interface Window {
+    Razorpay: Razorpay;
+  }
 }
 
 

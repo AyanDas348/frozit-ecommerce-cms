@@ -83,7 +83,7 @@
 
   --theme-bg: var(--theme-elevation-0);
   --theme-input-bg: var(--theme-elevation-50);
-  --theme-text: var(--theme-elevation-750);
+  --theme-text: white;
   --theme-border-color: var(--theme-elevation-150);
 
   color-scheme: light;
@@ -200,13 +200,13 @@
   --theme-error-900: var(--color-error-100);
   --theme-error-950: var(--color-error-50);
 
-  --theme-bg: var(--theme-elevation-100);
+  --theme-bg: var(--color-magenta-dark);
   --theme-text: var(--theme-elevation-900);
   --theme-input-bg: var(--theme-elevation-150);
   --theme-border-color: var(--theme-elevation-250);
 
   color-scheme: dark;
-  color: var(--theme-text);
+  color: white;
 
   --highlight-default-bg-color: var(--theme-success-100);
   --highlight-default-text-color: var(--theme-success-600);

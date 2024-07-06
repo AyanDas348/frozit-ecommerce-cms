@@ -17,11 +17,9 @@ export const Image: React.FC<MediaProps> = props => {
     onLoad: onLoadFromProps,
     resource,
     priority,
-    fill,
+    fill = true,
     src: srcFromProps,
     alt: altFromProps,
-    slug,
-    hasImage: has_attachment,
   } = props
 
   const [isLoading, setIsLoading] = React.useState(true)
@@ -29,11 +27,9 @@ export const Image: React.FC<MediaProps> = props => {
   let width: number | undefined
   let height: number | undefined
   let alt = altFromProps
-  let src: StaticImageData | string = has_attachment
-    ? `$https://inventory.zoho.in/DocTemplates_ItemImage_${1697951000000311061}.zbfs?organization_id=60029131613`
-    : ''
+  let src: StaticImageData | string = srcFromProps || ''
 
-  if (!src && resource && typeof resource !== 'string' && has_attachment) {
+  if (!src && resource && typeof resource !== 'string') {
     const {
       width: fullWidth,
       height: fullHeight,
@@ -47,7 +43,7 @@ export const Image: React.FC<MediaProps> = props => {
 
     const filename = fullFilename
 
-    src = `$https://inventory.zoho.in/DocTemplates_ItemImage_${1697951000000311061}.zbfs?organization_id=60029131613`
+    src = `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${filename}`
   }
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
@@ -60,7 +56,7 @@ export const Image: React.FC<MediaProps> = props => {
       className={[isLoading && classes.placeholder, classes.image, imgClassName]
         .filter(Boolean)
         .join(' ')}
-      src={src}
+      src={typeof resource !== 'string' && resource.url}
       alt={alt || ''}
       onClick={onClick}
       onLoad={() => {

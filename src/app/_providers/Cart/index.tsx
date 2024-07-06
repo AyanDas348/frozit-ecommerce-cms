@@ -49,7 +49,6 @@ export const CartProvider = props => {
   const [cart, dispatchCart] = useReducer(cartReducer, {
     items: [],
   })
-  console.log(cart, authStatus)
 
   const [total, setTotal] = useState<{
     formatted: string
@@ -95,23 +94,51 @@ export const CartProvider = props => {
         const parsedCart = JSON.parse(localCart || '{}')
 
         if (parsedCart?.items && parsedCart?.items?.length > 0) {
-          const initialCart = await Promise.all(
-            parsedCart.items.map(async ({ product, quantity }) => {
-              const res = await fetch(
-                `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${product}`,
-              )
-              const data = await res.json()
+          //getItem details
+          const fetchProductDetails = async (id: string): Promise<Product> => {
+            const req = await fetch(
+              `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-item-details?item_id=${id}`,
+            )
+            const data = await req.json()
+            const itemDetails = data?.data?.data?.item
+            return {
+              createdAt: itemDetails.created_time,
+              id: id,
+              stock: itemDetails.warehouses.find(
+                warehouse => warehouse.warehouse_id === '1697951000000042277',
+              ).warehouse_stock_on_hand,
+              title: itemDetails.item_name,
+              updatedAt: itemDetails.last_modified_time,
+              meta: {
+                description: itemDetails.description,
+                image: {
+                  alt: itemDetails.image_name || '',
+                  id: id || '',
+                  url: itemDetails.image_document_id || '',
+                  createdAt: Date.now().toString(),
+                  updatedAt: Date.now().toString(),
+                },
+                title: itemDetails.name,
+              },
+              layout: [],
+            }
+          }
+          const items: CartItem[] = await Promise.all(
+            parsedCart?.items?.map(async item => {
+              const product = await fetchProductDetails(item.id)
               return {
-                product: data,
-                quantity,
+                product,
+                quantity: item.quantity,
+                id: item.id,
+                imageUrl: typeof product.meta.image !== 'string' ? product.meta.image.url : '',
+                price: item.price,
               }
             }),
           )
-
           dispatchCart({
             type: 'SET_CART',
             payload: {
-              items: initialCart,
+              items,
             },
           })
         } else {
@@ -131,7 +158,7 @@ export const CartProvider = props => {
   // authenticate the user and if logged in, merge the user's cart with local state
   // only do this after we have initialized the cart to ensure we don't lose any items
   useEffect(() => {
-    if (!hasInitialized.current) return
+    if (!hasInitialized.current && !user) return
 
     const transformIncomingCartResponse = (itemDetails: any[]): CartItems => {
       return itemDetails.map(item => {
@@ -183,7 +210,6 @@ export const CartProvider = props => {
     if (authStatus === 'loggedIn') {
       // merge the user's cart with the local state upon logging in
       getCart().then(cart => {
-        console.log(cart)
         const transformedData = transformIncomingCartResponse(cart.data.itemDetails)
         dispatchCart({
           type: 'MERGE_CART',
@@ -273,11 +299,11 @@ export const CartProvider = props => {
             },
           })
           const data = await req.json()
-          return data.data
+          return data
         }
 
         getCart().then(response => {
-          if (response.msg === 'cart not present' && cart.items.length > 0) {
+          if (!response.success && cart.items.length > 0) {
             const added = addToCart(cart.items).then(res => console.log(res))
           }
         })

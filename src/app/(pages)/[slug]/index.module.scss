@@ -10,3 +10,19 @@
     gap: 60px;
   }
 }
+
+.onlineItems {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(20%, 1fr));
+  gap: 30px;
+  padding: 100px 0px;
+  width: 100%;
+
+  @include mid-break {
+    gap: 20px;
+  }
+
+  @include small-break {
+    grid-template-columns: 100%;
+  }
+}
