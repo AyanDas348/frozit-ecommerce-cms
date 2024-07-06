@@ -220,11 +220,14 @@ export const CartProvider = props => {
       const { items: itemsInCart } = cart || {}
       return (
         Array.isArray(itemsInCart) &&
-        itemsInCart.some(({ product }) =>
-          typeof product === 'string'
-            ? product === incomingProduct.id
-            : product?.id === incomingProduct.id
-        ))
+        itemsInCart.some(
+          ({ product }) =>
+            typeof product === 'string'
+              ? product === incomingProduct.id
+              : product?.id === incomingProduct.id,
+          // eslint-disable-next-line function-paren-newline
+        )
+      )
     },
     [cart],
   )
