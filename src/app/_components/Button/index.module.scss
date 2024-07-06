@@ -36,12 +36,18 @@
 
 .appearance--primary {
   background-color: var(--theme-elevation-1000);
-  color: var(--theme-elevation-0);
+  color: white;
 }
 
 .appearance--secondary {
   background-color: transparent;
   box-shadow: inset 0 0 0 1px var(--theme-elevation-1000);
+}
+
+.appearance--tertiary {
+  background-color: transparent;
+  color: white;
+  text-transform: lowercase;
 }
 
 .primary--invert {

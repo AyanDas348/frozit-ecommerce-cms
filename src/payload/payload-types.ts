@@ -197,6 +197,7 @@ export interface Category {
 }
 export interface Product {
   id: string;
+  item_id?: string;
   title: string;
   publishedOn?: string | null;
   layout: (

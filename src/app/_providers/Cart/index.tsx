@@ -28,6 +28,19 @@ export type CartContext = {
   hasInitializedCart: boolean
 }
 
+interface CartResponse {
+  success: boolean
+  data: {
+    msg: string
+    data: {
+      itemDetails: {
+        item_id: string
+        quantity: number
+      }[]
+    }
+  }
+}
+
 const Context = createContext({} as CartContext)
 
 export const useCart = () => useContext(Context)
@@ -226,8 +239,7 @@ export const CartProvider = props => {
     }
   }, [user, authStatus])
 
-  // every time the cart changes, determine whether to save to local storage or Payload based on authentication status
-  // upon logging in, merge and sync the existing local cart to Payload
+  // every time we reload we fetch the cart and check the local cart and if item and quantity doesnt match then we update or add to cart
   useEffect(() => {
     // wait until we have attempted authentication (the user is either an object or `null`)
     if (!hasInitialized.current) return
@@ -254,28 +266,11 @@ export const CartProvider = props => {
 
     if (authStatus === 'loggedIn') {
       try {
-        const syncCartToPayload = async () => {
-          const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/update-cart`, {
-            method: 'PUT',
-            body: JSON.stringify({
-              cart: flattenedCart,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: user.jwt,
-            },
-          })
-
-          if (req.ok) {
-            localStorage.setItem('cart', '[]')
-          }
-        }
-
         const addToCart = async (items: CartItem[]) => {
           const body = items.map(item => ({
             item_id: typeof item.product !== 'string' ? parseInt(item.product.id) : item.product,
             quantity: item.quantity,
-            imageUrl: item.imageUrl,
+            imageUrl: item.imageUrl || 'abcd',
             price: item.price,
           }))
           const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-cart`, {
@@ -290,7 +285,7 @@ export const CartProvider = props => {
           return data
         }
 
-        const getCart = async () => {
+        const getCart = async (): Promise<CartResponse> => {
           const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
             method: 'GET',
             headers: {
@@ -302,9 +297,39 @@ export const CartProvider = props => {
           return data
         }
 
+        const updateCart = async (item_id: string, quantity: number) => {
+          const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/update-cart`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: user.jwt,
+            },
+            body: JSON.stringify({
+              item_id,
+              quantity,
+            }),
+          })
+        }
+
         getCart().then(response => {
-          if (!response.success && cart.items.length > 0) {
-            const added = addToCart(cart.items).then(res => console.log(res))
+          if (response.success && cart.items.length > 0) {
+            console.log(response, cart.items)
+            response.data.data.itemDetails.map(item => {
+              const isInCart = isProductInCart({
+                id: item.item_id,
+                title: '',
+                layout: [],
+                updatedAt: '',
+                createdAt: '',
+                stock: 0,
+              })
+              if (isInCart) {
+                const cartItem = cart.items.find(c => c.id === item.item_id)
+                if (cartItem.quantity > item.quantity) {
+                  updateCart(cartItem.id, item.quantity)
+                }
+              }
+            })
           }
         })
 
@@ -317,7 +342,7 @@ export const CartProvider = props => {
     }
 
     setHasInitialized(true)
-  }, [user, cart]) //eslint-disable-line
+  }, [user, authStatus]) // eslint-disable-line
 
   const isProductInCart = useCallback(
     (incomingProduct: Product): boolean => {
@@ -336,6 +361,13 @@ export const CartProvider = props => {
     },
     [cart],
   )
+
+  // local cart getting updated then update the same in database
+  useEffect(() => {
+    if (!hasInitialized || !user) return
+    if (hasInitialized && user) {
+    }
+  }, [cart]) // eslint-disable-line
 
   // calculate the new cart total whenever the cart changes
   useEffect(() => {

@@ -31,6 +31,14 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
           onClick={() => (window.location.href = '/login')}
         />
       )}
+      {user && (
+        <Button
+          el="button"
+          label="Logout"
+          appearance="tertiary"
+          onClick={() => localStorage.removeItem('frozit-user')}
+        />
+      )}
     </nav>
   )
 }

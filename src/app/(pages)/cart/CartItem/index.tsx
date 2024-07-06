@@ -15,11 +15,26 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
   const [quantity, setQuantity] = useState(qty)
   const { user } = useAuth()
 
-  const decrement = qty => {}
+  const decrementQty = () => {
+    const updatedQty = quantity > 1 ? quantity - 1 : 1
 
-  const increment = qty => {}
+    setQuantity(updatedQty)
+    addItemToCart({ product, quantity: Number(updatedQty) })
+  }
 
-  const enterQty = qty => {}
+  const incrementQty = () => {
+    const updatedQty = quantity + 1
+
+    setQuantity(updatedQty)
+    addItemToCart({ product, quantity: Number(updatedQty) })
+  }
+
+  const enterQty = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedQty = Number(e.target.value)
+
+    setQuantity(updatedQty)
+    addItemToCart({ product, quantity: Number(updatedQty) })
+  }
 
   console.log(product)
 
@@ -37,7 +52,7 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
           <Price product={product} button={false} />
         </div>
         <div className={classes.quantity}>
-          <div className={classes.quantityBtn} onClick={decrement}>
+          <div className={classes.quantityBtn} onClick={decrementQty}>
             <Image
               src="/assets/icons/minus.svg"
               alt="minus"
@@ -52,7 +67,7 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
             value={quantity}
             onChange={enterQty}
           />
-          <div className={classes.quantityBtn} onClick={increment}>
+          <div className={classes.quantityBtn} onClick={incrementQty}>
             <Image
               src="/assets/icons/plus.svg"
               alt="plus"
