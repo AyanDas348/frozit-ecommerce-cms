@@ -29,6 +29,38 @@
   padding: 20px 20px;
 }
 
+.address {
+  display: flex;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.addressCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.selectAddress,
+.addNewAddress {
+  flex-grow: 1;
+  padding: 10px;
+  text-align: center;
+}
+
+.selected {
+  background-color: #f0f0f0;
+}
+
+.selectAddress {
+  border-right: 1px solid rgba($color: #b6b6b6, $alpha: 1.0);
+}
+
+.selectAddress:hover,
+.addNewAddress:hover {
+  background-color: #f0f0f0;
+}
+
 .items::-webkit-scrollbar {
   // display: none;
   padding: 10px;
@@ -108,4 +140,27 @@
 .loading,
 .error {
   margin-top: calc(var(--block-padding) - var(--base));
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
 }

@@ -79,14 +79,14 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
         </div>
       </div>
       <div className={classes.subtotalWrapper}>
-        <div>
+        {/* <div>
           <Button
             className={classes.checkoutButton}
             href={user ? '/checkout?buy=buy-now' : '/login?redirect=%2Fcheckout'}
             label={user ? 'Checkout' : 'Login to checkout'}
             appearance="primary"
           />
-        </div>
+        </div> */}
         <RemoveFromCartButton product={product} />
         <Price product={product} quantity={quantity} button={false} />
       </div>

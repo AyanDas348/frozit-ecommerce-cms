@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Fragment, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Script from 'next/script'
@@ -14,6 +15,8 @@ import { useCart } from '../../../_providers/Cart'
 import { useTheme } from '../../../_providers/Theme'
 import AddressCard from '../AddressCard'
 import RazorpayPanel from '../RazorpayPanel'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 import classes from './index.module.scss'
 interface OrderIntent {
@@ -39,13 +42,10 @@ export const CheckoutPage: React.FC<{
     settings: { productsPage },
   } = props
 
-  const { user, setUser } = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
   const [error, setError] = React.useState<string | null>(null)
-  const [clientSecret, setClientSecret] = React.useState()
-  const hasMadePaymentIntent = React.useRef(false)
   const { theme } = useTheme()
-  const [orderBody, setOrderBody] = useState()
 
   const { cart, cartIsEmpty, cartTotal } = useCart()
   const [orderDetails, setOrderDetails] = useState<OrderIntent>()
@@ -54,6 +54,58 @@ export const CheckoutPage: React.FC<{
   const buyVal = useSearchParams().get('buy')
 
   const [selectedAddressIndex, setSelectedAddressIndex] = useState<number | null>(-1)
+
+  const [selectedTab, setSelectedTab] = useState(1)
+
+  const [address, setAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    pinCode: '',
+    country: '',
+    plotNo: '',
+  })
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    setAddress({ ...address, [name]: value })
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    const dataToSend = {
+      ...address,
+      pinCode: parseInt(address.pinCode),
+    }
+    console.log(dataToSend)
+    const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/add-address`, {
+      body: JSON.stringify(dataToSend),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: user.jwt,
+      },
+      method: 'POST',
+    })
+    const response = await request.json()
+    console.log(response)
+    if (response.success) {
+      setAddresses(response.data.data.address)
+      setSelectedAddressIndex(response.data.data.address.length - 1)
+      setSelectedTab(1)
+      setAddress({
+        city: '',
+        country: '',
+        pinCode: '',
+        plotNo: '',
+        state: '',
+        street: '',
+      })
+    } else {
+      toast.error('Something went wrong', {
+        position: 'top-center',
+      })
+    }
+  }
 
   useEffect(() => {
     if (user !== null && cartIsEmpty) {
@@ -243,6 +295,14 @@ export const CheckoutPage: React.FC<{
     }
   }
 
+  useEffect(() => {
+    if (addresses.length > 0) {
+      setSelectedAddressIndex(0)
+    } else {
+      setSelectedTab(2)
+    }
+  }, [addresses])
+
   return (
     <Fragment>
       <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
@@ -300,17 +360,100 @@ export const CheckoutPage: React.FC<{
             <div className={classes.orderTotal}>{`Order total: ${cartTotal.raw}`}</div>
           </div>
           <div className={classes.addressColumn}>
-            {addresses.length > 0 && <p>Choose Address</p>}
-            {addresses.length > 0 &&
-              addresses.map((address, index) => (
-                <AddressCard
-                  key={index}
-                  address={address}
-                  index={index}
-                  isSelected={index === selectedAddressIndex}
-                  onSelect={handleSelectAddress}
-                />
-              ))}
+            <div className={classes.address}>
+              <p
+                className={`${classes.selectAddress} ${selectedTab === 1 ? classes.selected : ''}`}
+                onClick={() => setSelectedTab(1)}
+              >
+                Select Address
+              </p>
+              <p
+                className={`${classes.addNewAddress} ${selectedTab === 2 ? classes.selected : ''}`}
+                onClick={() => setSelectedTab(2)}
+              >
+                Add New Address
+              </p>
+            </div>
+            <div className={classes.addressCard}>
+              {selectedTab === 1 &&
+                addresses.length > 0 &&
+                addresses.map((address, index) => (
+                  <AddressCard
+                    key={index}
+                    address={address}
+                    index={index}
+                    isSelected={index === selectedAddressIndex}
+                    onSelect={handleSelectAddress}
+                  />
+                ))}
+            </div>
+            {selectedTab === 2 && (
+              <form className={classes.form} onSubmit={handleSubmit}>
+                <div className={classes.formGroup}>
+                  <label htmlFor="plotNo">Plot No:</label>
+                  <input
+                    type="text"
+                    id="plotNo"
+                    name="plotNo"
+                    value={address.plotNo}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={classes.formGroup}>
+                  <label htmlFor="street">Street:</label>
+                  <input
+                    type="text"
+                    id="street"
+                    name="street"
+                    value={address.street}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={classes.formGroup}>
+                  <label htmlFor="city">City:</label>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    value={address.city}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={classes.formGroup}>
+                  <label htmlFor="state">State:</label>
+                  <input
+                    type="text"
+                    id="state"
+                    name="state"
+                    value={address.state}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={classes.formGroup}>
+                  <label htmlFor="pinCode">Pin Code:</label>
+                  <input
+                    type="number"
+                    id="pinCode"
+                    name="pinCode"
+                    value={address.pinCode}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={classes.formGroup}>
+                  <label htmlFor="country">Country:</label>
+                  <input
+                    type="text"
+                    id="country"
+                    name="country"
+                    value={address.country}
+                    onChange={handleChange}
+                  />
+                </div>
+                <Button type="submit" appearance="primary">
+                  Submit
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       )}

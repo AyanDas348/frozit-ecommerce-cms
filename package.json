@@ -46,6 +46,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "7.45.4",
     "react-router-dom": "5.3.4",
+    "react-toastify": "^10.0.5",
     "stripe": "^10.2.0"
   },
   "devDependencies": {

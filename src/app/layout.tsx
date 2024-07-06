@@ -35,6 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="icon" href="/assets/logo/logo.png" sizes="40x32" />
         <link rel="icon" href="/assets/logo/logo.png" />
         <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></meta>
         <title>Frozit Ecommerce</title>
       </head>
       <body className={jost.className}>

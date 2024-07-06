@@ -74,18 +74,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          name: args.name,
           email: args.email,
+          phoneNumber: args.phoneNumber,
           password: args.password,
-          passwordConfirm: args.passwordConfirm,
         }),
       })
 
-      if (res.ok) {
-        const { data, errors } = await res.json()
-        if (errors) throw new Error(errors[0].message)
-        setUser(data?.loginUser?.user)
+      const response = await res.json()
+
+      if (response.success) {
+        const { success, data } = response
+        setUser(data)
         setStatus('loggedIn')
-        saveUserToLocalStorage(data?.loginUser?.user)
+        saveUserToLocalStorage(data)
       } else {
         throw new Error('Invalid login')
       }
