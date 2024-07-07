@@ -12,10 +12,6 @@ import LoginForm from './LoginForm'
 import classes from './index.module.scss'
 
 export default async function Login() {
-  await getMeUser({
-    validUserRedirect: `/account?warning=${encodeURIComponent('You are already logged in.')}`,
-  })
-
   return (
     <section className={classes.login}>
       <div className={classes.heroImg}>
@@ -28,7 +24,6 @@ export default async function Login() {
           <RenderParams className={classes.params} />
           <div className={classes.formTitle}>
             <h3>Welcome</h3>
-            <Image src="" alt="hand" width={30} height={30} />
           </div>
           <p>Please login here</p>
           <LoginForm />
