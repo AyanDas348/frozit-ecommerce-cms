@@ -299,7 +299,7 @@ export const CheckoutPage: React.FC<{
     if (addresses.length > 0) {
       setSelectedAddressIndex(0)
     } else {
-      setSelectedTab(2)
+      setSelectedTab(1)
     }
   }, [addresses])
 

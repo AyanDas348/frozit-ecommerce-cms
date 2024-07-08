@@ -33,12 +33,15 @@ interface CartResponse {
   data: {
     msg: string
     data: {
-      itemDetails: {
-        item_id: string
-        quantity: number
-      }[]
+      itemDetails: ItemDetail[]
     }
   }
+}
+interface ItemDetail {
+  item_id: string
+  quantity: number
+  price: number
+  imageUrl: string | 'abcd'
 }
 
 const Context = createContext({} as CartContext)
@@ -63,9 +66,24 @@ export const CartProvider = props => {
     dispatchCart({ type: 'ADD_ITEM', payload: incomingItem })
   }, [])
 
-  const deleteItemFromCart = useCallback((incomingProduct: Product) => {
-    dispatchCart({ type: 'DELETE_ITEM', payload: incomingProduct })
-  }, [])
+  const deleteItemFromCart = useCallback(
+    (incomingProduct: Product) => {
+      dispatchCart({ type: 'DELETE_ITEM', payload: incomingProduct })
+      const deleteItemFromCart = async () => {
+        const request = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/remove-from-cart?item_id=${incomingProduct.id}`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: user.jwt,
+            },
+          },
+        )
+      }
+      deleteItemFromCart()
+    },
+    [user],
+  )
 
   const clearCart = useCallback(() => {
     dispatchCart({ type: 'CLEAR_CART' })
@@ -232,6 +250,8 @@ export const CartProvider = props => {
     [cart],
   )
 
+  console.log(cart)
+
   useEffect(() => {
     if (!hasInitialized.current) return
 
@@ -247,13 +267,8 @@ export const CartProvider = props => {
         const data = await req.json()
         return data
       }
-      const addToCart = async (items: CartItem[]) => {
-        const body = items.map(item => ({
-          item_id: typeof item.product !== 'string' ? parseInt(item.product.id) : item.product,
-          quantity: item.quantity,
-          imageUrl: item.imageUrl || 'abcd',
-          price: item.price,
-        }))
+      const addToCart = async (item: ItemDetail) => {
+        const body = [item]
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-cart`, {
           method: 'POST',
           body: JSON.stringify(body),
@@ -277,21 +292,22 @@ export const CartProvider = props => {
       }
 
       getCart().then(response => {
+        const dbCart = response.data.data.itemDetails
         if (response.success && cart.items.length > 0) {
-          response.data.data.itemDetails.forEach(item => {
-            const isInCart = isProductInCart({
-              id: item.item_id,
-              title: '',
-              layout: [],
-              updatedAt: '',
-              createdAt: '',
-              stock: 0,
-            })
-            if (isInCart) {
-              const cartItem = cart.items.find(c => c.id === item.item_id)
-              if (cartItem.quantity > item.quantity) {
-                updateCart(cartItem.id, item.quantity)
+          cart.items.forEach(item => {
+            const dbItem = dbCart.find(dbItem => dbItem.item_id === item.id)
+            if (dbItem) {
+              if (item.quantity !== dbItem.quantity) {
+                console.log(item.quantity)
+                updateCart(dbItem.item_id, item.quantity - dbItem.quantity)
               }
+            } else {
+              addToCart({
+                item_id: item.id,
+                quantity: item.quantity,
+                price: item.price,
+                imageUrl: item.imageUrl,
+              })
             }
           })
         }
@@ -301,11 +317,11 @@ export const CartProvider = props => {
     }
 
     setHasInitializedCart(true)
-  }, [user, authStatus]) // eslint-disable-line
+  }, [user, authStatus, cart]) // eslint-disable-line
 
+  // whenever cart changes in local fetch user cart and update or add
   useEffect(() => {
     if (!hasInitialized.current || !user) return
-    // Handle additional logic for updating the cart in the database if needed
   }, [cart]) // eslint-disable-line
 
   useEffect(() => {
