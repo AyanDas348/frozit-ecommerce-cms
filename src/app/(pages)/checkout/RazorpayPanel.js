@@ -26,7 +26,6 @@ class RazorPanel extends Component {
         },
       )
       .then(response => {
-        console.log(response)
         this.setState({
           orderID: response.data.data.razorPayOrderId,
         })

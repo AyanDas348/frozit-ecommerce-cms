@@ -36,8 +36,6 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
     addItemToCart({ product, quantity: Number(updatedQty) })
   }
 
-  console.log(product)
-
   return (
     <li className={classes.item} key={title}>
       <Link href={`/products/${product.slug}`} className={classes.mediaWrapper}>

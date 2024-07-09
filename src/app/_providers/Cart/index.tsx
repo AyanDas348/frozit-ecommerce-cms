@@ -192,6 +192,7 @@ export const CartProvider = props => {
 
   useEffect(() => {
     if (!hasInitialized.current || !user) return
+    hasInitialized.current = true
     const getCart = async (): Promise<CartResponse> => {
       const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
         method: 'GET',
@@ -206,8 +207,10 @@ export const CartProvider = props => {
 
     if (authStatus === 'loggedIn') {
       getCart().then(cart => {
-        const transformedData = transformIncomingCartResponse(cart.data.data.itemDetails)
-        dispatchCart({ type: 'MERGE_CART', payload: { items: transformedData } })
+        if (cart.success) {
+          const transformedData = transformIncomingCartResponse(cart.data.data.itemDetails)
+          dispatchCart({ type: 'MERGE_CART', payload: { items: transformedData } })
+        }
       })
     }
 
@@ -250,10 +253,9 @@ export const CartProvider = props => {
     [cart],
   )
 
-  console.log(cart)
-
   useEffect(() => {
     if (!hasInitialized.current) return
+    console.log(authStatus)
 
     if (authStatus === 'loggedIn') {
       const getCart = async (): Promise<CartResponse> => {
@@ -292,13 +294,13 @@ export const CartProvider = props => {
       }
 
       getCart().then(response => {
+        console.log(response)
         const dbCart = response.data.data.itemDetails
         if (response.success && cart.items.length > 0) {
           cart.items.forEach(item => {
             const dbItem = dbCart.find(dbItem => dbItem.item_id === item.id)
             if (dbItem) {
               if (item.quantity !== dbItem.quantity) {
-                console.log(item.quantity)
                 updateCart(dbItem.item_id, item.quantity - dbItem.quantity)
               }
             } else {
@@ -310,6 +312,15 @@ export const CartProvider = props => {
               })
             }
           })
+        } else if (!response.success && cart.items.length > 0) {
+          cart.items.forEach(item => {
+            addToCart({
+              item_id: item.id,
+              quantity: item.quantity,
+              price: item.price,
+              imageUrl: item.imageUrl,
+            })
+          })
         }
       })
     } else {
@@ -318,11 +329,6 @@ export const CartProvider = props => {
 
     setHasInitializedCart(true)
   }, [user, authStatus, cart]) // eslint-disable-line
-
-  // whenever cart changes in local fetch user cart and update or add
-  useEffect(() => {
-    if (!hasInitialized.current || !user) return
-  }, [cart]) // eslint-disable-line
 
   useEffect(() => {
     if (!hasInitialized.current) return

@@ -21,7 +21,7 @@ export const CartPage: React.FC<{
   page: Page
 }> = props => {
   const { settings } = props
-  const { productsPage } = settings || {}
+  // const { productsPage } = settings || {}
 
   const { user } = useAuth()
 
@@ -39,13 +39,11 @@ export const CartPage: React.FC<{
           {cartIsEmpty ? (
             <div className={classes.empty}>
               Your cart is empty.
-              {typeof productsPage === 'object' && productsPage?.slug && (
-                <Fragment>
-                  {' '}
-                  <Link href={`/${productsPage.slug}`}>Click here</Link>
-                  {` to shop.`}
-                </Fragment>
-              )}
+              <Fragment>
+                {' '}
+                <Link href={`/products`}>Click here</Link>
+                {` to shop.`}
+              </Fragment>
               {!user && (
                 <Fragment>
                   {' '}

@@ -77,7 +77,6 @@ export const CheckoutPage: React.FC<{
       ...address,
       pinCode: parseInt(address.pinCode),
     }
-    console.log(dataToSend)
     const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/add-address`, {
       body: JSON.stringify(dataToSend),
       headers: {
@@ -87,7 +86,6 @@ export const CheckoutPage: React.FC<{
       method: 'POST',
     })
     const response = await request.json()
-    console.log(response)
     if (response.success) {
       setAddresses(response.data.data.address)
       setSelectedAddressIndex(response.data.data.address.length - 1)
@@ -224,7 +222,6 @@ export const CheckoutPage: React.FC<{
       }
 
       const data = await response.json()
-      console.log(data)
       return {
         orderId: data.data.data.razorPayOrderId,
         amount: data.data.data.totalPrice,
@@ -245,7 +242,6 @@ export const CheckoutPage: React.FC<{
         description: 'description',
         order_id: orderId,
         handler: async function (response: any) {
-          console.log(response)
           const data = {
             order_id: orderId,
             razorpay_payment_id: response.razorpay_payment_id,
