@@ -35,13 +35,7 @@ interface Address {
   country: string
 }
 
-export const CheckoutPage: React.FC<{
-  settings: Settings
-}> = props => {
-  const {
-    settings: { productsPage },
-  } = props
-
+export const CheckoutPage = () => {
   const { user } = useAuth()
   const router = useRouter()
   const [error, setError] = React.useState<string | null>(null)
@@ -307,12 +301,10 @@ export const CheckoutPage: React.FC<{
           {'Your '}
           <Link href="/cart">cart</Link>
           {' is empty.'}
-          {typeof productsPage === 'object' && productsPage?.slug && (
-            <Fragment>
-              {' '}
-              <Link href={`/${productsPage.slug}`}>Continue shopping?</Link>
-            </Fragment>
-          )}
+          <Fragment>
+            {' '}
+            <Link href={`/products`}>Continue shopping?</Link>
+          </Fragment>
         </div>
       )}
       {!cartIsEmpty && (
