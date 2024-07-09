@@ -3,6 +3,7 @@ import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Button } from '../../_components/Button'
 import { Gutter } from '../../_components/Gutter'
 import { RenderParams } from '../../_components/RenderParams'
 import { getMeUser } from '../../_utilities/getMeUser'
@@ -16,11 +17,14 @@ export default async function Login() {
     <section className={classes.login}>
       <div className={classes.heroImg}>
         <Link href="/">
-          <Image src="" alt="logo" width={250} height={23} className={classes.logo} />
+          {/* <Image src="" alt="logo" width={250} height={23} className={classes.logo} /> */}
         </Link>
       </div>
       <div className={classes.formWrapper}>
         <div className={classes.formContainer}>
+          <Button appearance="secondary" href="/" type="button" className={classes.logo}>
+            Back
+          </Button>
           <RenderParams className={classes.params} />
           <div className={classes.formTitle}>
             <h3>Welcome</h3>
