@@ -1,27 +1,5 @@
 export const onlineItems = [
   {
-    id: '1697951000000299472',
-    title: 'CLT CHO MUFFINS',
-    layout: [],
-    categories: [],
-    meta: {
-      description: 'All items are saleable for the customer',
-      image: {
-        alt: 'CLT CHO MUFFINS',
-        url: '/assets/onlineItemImages/1697951000000299472',
-        id: '1',
-        updatedAt: Date.now().toString(),
-        createdAt: Date.now().toString(),
-      },
-      title: 'CLT CHO MUFFINS',
-    },
-    updatedAt: Date.now().toString(),
-    createdAt: Date.now().toString(),
-    priceJSON: '5.00',
-    slug: '1697951000000299472',
-    stock: 0,
-  },
-  {
     id: '1697951000000302286',
     title: 'ALMOND PISTA COOKIES 250GM',
     layout: [],
@@ -66,28 +44,6 @@ export const onlineItems = [
     stock: 3,
   },
   {
-    id: '1697951000000302364',
-    title: 'ASSORTED COOKIES 500GM',
-    layout: [],
-    categories: [],
-    meta: {
-      description: 'All items are saleable for the customer',
-      image: {
-        alt: 'ASSORTED COOKIES 500GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
-        id: '1',
-        updatedAt: Date.now().toString(),
-        createdAt: Date.now().toString(),
-      },
-      title: 'ASSORTED COOKIES 500GM',
-    },
-    updatedAt: Date.now().toString(),
-    createdAt: Date.now().toString(),
-    priceJSON: '300.00',
-    slug: '1697951000000302364',
-    stock: 0,
-  },
-  {
     id: '1697951000000302403',
     title: 'BUTTER COOKIES 250GM',
     layout: [],
@@ -96,7 +52,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'BUTTER COOKIES 250GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/ButterCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -118,7 +74,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'BUTTER COOKIES 400GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/ButterCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -140,7 +96,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CHOCOCHIP COOKIES 400GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/ChocoChipCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -162,7 +118,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CHOCOCHIPS COOKIES 250GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/ChocoChipCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -184,7 +140,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'COCONUT COOKIES 250GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/Coconut.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -206,7 +162,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SWEET AND SALT COOKIES 250 GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/SweetAndSalt.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -228,7 +184,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'TEA COOKIES 250GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/TeaCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -250,7 +206,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'TEA COOKIES 400GM',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/TeaCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -272,7 +228,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'Corn Flakes(250 GM)',
-        url: '/assets/onlineItemImages/1697951000000302715',
+        url: '/assets/onlineItemImages/CornFlakes.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -294,7 +250,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CRISPY CHOCO BITES(250GM)',
-        url: '/assets/onlineItemImages/1697951000000302754',
+        url: '/assets/onlineItemImages/ChocoBites.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -316,7 +272,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CRISPY CHOCO BITES 27GM',
-        url: '/assets/onlineItemImages/1697951000000302793',
+        url: '/assets/onlineItemImages/ChocoBites.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -338,7 +294,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'Crunchy Muesli(500GM)',
-        url: '/assets/onlineItemImages/1697951000000302832',
+        url: '/assets/onlineItemImages/Muesli.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -360,7 +316,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'ORIGINAL OATS 450GM',
-        url: '/assets/onlineItemImages/1697951000000302871',
+        url: '/assets/onlineItemImages/OATS.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -382,7 +338,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'ORIGINAL OATS 900GM',
-        url: '/assets/onlineItemImages/1697951000000302910',
+        url: '/assets/onlineItemImages/OATS.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -404,7 +360,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CORN FLAKES 70GM',
-        url: '/assets/onlineItemImages/1697951000000302949',
+        url: '/assets/onlineItemImages/CornFlakes.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -426,7 +382,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'Chapati Flour (500gm)',
-        url: '/assets/onlineItemImages/1697951000000302988',
+        url: '/assets/onlineItemImages/chapatiflour.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -448,7 +404,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'BUTTER COOKIES 250GM (M C)',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/ButterCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -470,7 +426,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'COCONUT COOKIES 250GM (M C)',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/Coconut.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -492,7 +448,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SWEET & SALT COOKIES 250GM (M C)',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/SweetAndSalt.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -514,7 +470,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'TEA COOKIES 250GM (M C)',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/TeaCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -558,7 +514,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CHOCOCHIPS COOKIES 250GM(M C)',
-        url: '/assets/onlineItemImages/COOKIES_MAIN.png',
+        url: '/assets/onlineItemImages/ChocoChipCookies.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -580,7 +536,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'TANGY TAMATO MSL OATS 40GM',
-        url: '/assets/onlineItemImages/1697951000000303261',
+        url: '/assets/onlineItemImages/tangy.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -602,7 +558,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'MIX VEGGIE MSL OATS 40GM',
-        url: '/assets/onlineItemImages/1697951000000303300',
+        url: '/assets/onlineItemImages/mixoats.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -624,7 +580,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'WHITE SAUCE SEASONING 7GM',
-        url: '/assets/onlineItemImages/1697951000000303339',
+        url: '/assets/onlineItemImages/whitesauce.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -646,7 +602,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'TOMATO & HERB SEASONING 7GM',
-        url: '/assets/onlineItemImages/1697951000000303378',
+        url: '/assets/onlineItemImages/tomatoherb.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -712,7 +668,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CHAPATI FLOUR 1KG',
-        url: '/assets/onlineItemImages/1697951000000306576',
+        url: '/assets/onlineItemImages/chapatiflour.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -866,7 +822,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'FRUIT RUSK 200GM',
-        url: '/assets/onlineItemImages/1697951000000306849',
+        url: '/assets/onlineItemImages/fruitrusk.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -888,7 +844,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'FRUIT RUSK 60GM',
-        url: '/assets/onlineItemImages/1697951000000306888',
+        url: '/assets/onlineItemImages/fruitrusk.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -910,7 +866,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'IDILI RAWA (500GM)',
-        url: '/assets/onlineItemImages/1697951000000306927',
+        url: '/assets/onlineItemImages/idli.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -932,7 +888,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'MILK RUSK 200GM',
-        url: '/assets/onlineItemImages/1697951000000307005',
+        url: '/assets/onlineItemImages/milkrusk.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -954,7 +910,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'MILK RUSK 60GM',
-        url: '/assets/onlineItemImages/1697951000000307044',
+        url: '/assets/onlineItemImages/milkrusk.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -976,7 +932,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'OLIVE OIL 100ML( 1+1)PCS',
-        url: '/assets/onlineItemImages/1697951000000307083',
+        url: '/assets/onlineItemImages/oliveoil.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -998,7 +954,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'OLIVE OIL 500ML (1+1) PCS',
-        url: '/assets/onlineItemImages/1697951000000307122',
+        url: '/assets/onlineItemImages/oliveoil.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1012,50 +968,6 @@ export const onlineItems = [
     stock: 2,
   },
   {
-    id: '1697951000000307161',
-    title: 'PSYLLIUM HUSK 50GM',
-    layout: [],
-    categories: [],
-    meta: {
-      description: 'All items are saleable for the customer',
-      image: {
-        alt: 'PSYLLIUM HUSK 50GM',
-        url: '/assets/onlineItemImages/1697951000000307161',
-        id: '1',
-        updatedAt: Date.now().toString(),
-        createdAt: Date.now().toString(),
-      },
-      title: 'PSYLLIUM HUSK 50GM',
-    },
-    updatedAt: Date.now().toString(),
-    createdAt: Date.now().toString(),
-    priceJSON: '80.00',
-    slug: '1697951000000307161',
-    stock: 0,
-  },
-  {
-    id: '1697951000000307200',
-    title: 'PUNJABI DAL TADKA 300GM',
-    layout: [],
-    categories: [],
-    meta: {
-      description: 'All items are saleable for the customer',
-      image: {
-        alt: 'PUNJABI DAL TADKA 300GM',
-        url: '/assets/onlineItemImages/1697951000000307200',
-        id: '1',
-        updatedAt: Date.now().toString(),
-        createdAt: Date.now().toString(),
-      },
-      title: 'PUNJABI DAL TADKA 300GM',
-    },
-    updatedAt: Date.now().toString(),
-    createdAt: Date.now().toString(),
-    priceJSON: '150.00',
-    slug: '1697951000000307200',
-    stock: 0,
-  },
-  {
     id: '1697951000000307239',
     title: 'PUNJABI TADKA 500GM',
     layout: [],
@@ -1064,7 +976,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'PUNJABI TADKA 500GM',
-        url: '/assets/onlineItemImages/1697951000000307239',
+        url: '/assets/onlineItemImages/punjabitadka.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1086,7 +998,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'RAGI FLOUR 500GM',
-        url: '/assets/onlineItemImages/1697951000000307278',
+        url: '/assets/onlineItemImages/ragiflour.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1108,7 +1020,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SAGOO BIG 200GM',
-        url: '/assets/onlineItemImages/1697951000000307317',
+        url: '/assets/onlineItemImages/sagoo.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1130,7 +1042,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SAGOO BIG 450GM',
-        url: '/assets/onlineItemImages/1697951000000307356',
+        url: '/assets/onlineItemImages/sagoo.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1152,7 +1064,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SAGOO SMALL 200GM',
-        url: '/assets/onlineItemImages/1697951000000307395',
+        url: '/assets/onlineItemImages/sagoo.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1174,7 +1086,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SAGOO SMALL 500GM',
-        url: '/assets/onlineItemImages/1697951000000307434',
+        url: '/assets/onlineItemImages/sagoo.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1188,28 +1100,6 @@ export const onlineItems = [
     stock: 9,
   },
   {
-    id: '1697951000000307473',
-    title: 'SATTU 500GM',
-    layout: [],
-    categories: [],
-    meta: {
-      description: 'All items are saleable for the customer',
-      image: {
-        alt: 'SATTU 500GM',
-        url: '/assets/onlineItemImages/1697951000000307473',
-        id: '1',
-        updatedAt: Date.now().toString(),
-        createdAt: Date.now().toString(),
-      },
-      title: 'SATTU 500GM',
-    },
-    updatedAt: Date.now().toString(),
-    createdAt: Date.now().toString(),
-    priceJSON: '150.00',
-    slug: '1697951000000307473',
-    stock: 5,
-  },
-  {
     id: '1697951000000307551',
     title: 'SOOJI 1KG',
     layout: [],
@@ -1218,7 +1108,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SOOJI 1KG',
-        url: '/assets/onlineItemImages/1697951000000307551',
+        url: '/assets/onlineItemImages/Sooji.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1240,7 +1130,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SOOJI 500GM',
-        url: '/assets/onlineItemImages/1697951000000307590',
+        url: '/assets/onlineItemImages/Sooji.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1262,7 +1152,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CUSTARD POWDER 100GM',
-        url: '/assets/onlineItemImages/1697951000000307629',
+        url: '/assets/onlineItemImages/custard.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1276,50 +1166,6 @@ export const onlineItems = [
     stock: 0,
   },
   {
-    id: '1697951000000307668',
-    title: 'INSTANT BIRIYANI MIX 300GM',
-    layout: [],
-    categories: [],
-    meta: {
-      description: 'All items are saleable for the customer',
-      image: {
-        alt: 'INSTANT BIRIYANI MIX 300GM',
-        url: '/assets/onlineItemImages/1697951000000307668',
-        id: '1',
-        updatedAt: Date.now().toString(),
-        createdAt: Date.now().toString(),
-      },
-      title: 'INSTANT BIRIYANI MIX 300GM',
-    },
-    updatedAt: Date.now().toString(),
-    createdAt: Date.now().toString(),
-    priceJSON: '150.00',
-    slug: '1697951000000307668',
-    stock: 3,
-  },
-  {
-    id: '1697951000000307707',
-    title: 'INSTANT KHECHUDIMIX 500GM',
-    layout: [],
-    categories: [],
-    meta: {
-      description: 'All items are saleable for the customer',
-      image: {
-        alt: 'INSTANT KHECHUDIMIX 500GM',
-        url: '/assets/onlineItemImages/1697951000000307707',
-        id: '1',
-        updatedAt: Date.now().toString(),
-        createdAt: Date.now().toString(),
-      },
-      title: 'INSTANT KHECHUDIMIX 500GM',
-    },
-    updatedAt: Date.now().toString(),
-    createdAt: Date.now().toString(),
-    priceJSON: '200.00',
-    slug: '1697951000000307707',
-    stock: 0,
-  },
-  {
     id: '1697951000000307746',
     title: 'SOYA ROLL 200GM (BIG)',
     layout: [],
@@ -1328,7 +1174,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SOYA ROLL 200GM (BIG)',
-        url: '/assets/onlineItemImages/1697951000000307746',
+        url: '/assets/onlineItemImages/soyarol.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1350,7 +1196,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SOYA ROLL 200GM (SMALL)',
-        url: '/assets/onlineItemImages/1697951000000307785',
+        url: '/assets/onlineItemImages/soyarol.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1372,7 +1218,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SOYA ROLL BIG 1KG',
-        url: '/assets/onlineItemImages/1697951000000307824',
+        url: '/assets/onlineItemImages/soyarol.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1394,7 +1240,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'SOYA ROLL SMALL 1KG',
-        url: '/assets/onlineItemImages/1697951000000307863',
+        url: '/assets/onlineItemImages/soyarol.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1416,7 +1262,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'Sagoo Small 1kg',
-        url: '/assets/onlineItemImages/1697951000000308058',
+        url: '/assets/onlineItemImages/sagoo.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1438,7 +1284,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'Sagoo big 1kg',
-        url: '/assets/onlineItemImages/1697951000000308136',
+        url: '/assets/onlineItemImages/sagoo.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1460,7 +1306,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CRISPY CHOCO BITES 20GM',
-        url: '/assets/onlineItemImages/1697951000000308175',
+        url: '/assets/onlineItemImages/ChocoBites.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1482,7 +1328,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'CORN FLAKES 60GM',
-        url: '/assets/onlineItemImages/1697951000000308214',
+        url: '/assets/onlineItemImages/CornFlakes.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1504,7 +1350,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'ICY LEMONADE 170ML',
-        url: '/assets/onlineItemImages/1697951000000311022',
+        url: '/assets/onlineItemImages/lemonade.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1526,7 +1372,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'LITCHI LUSH 170ML',
-        url: '/assets/onlineItemImages/1697951000000311061',
+        url: '/assets/onlineItemImages/litchilush.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1548,7 +1394,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'LITCHI LUSH 300ML',
-        url: '/assets/onlineItemImages/1697951000000311100',
+        url: '/assets/onlineItemImages/litchilush.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1570,7 +1416,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'PINEAPPLE BLISH 170ML',
-        url: '/assets/onlineItemImages/1697951000000311139',
+        url: '/assets/onlineItemImages/pineapple.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1592,7 +1438,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'RIPE MANGO1.2L',
-        url: '/assets/onlineItemImages/1697951000000311178',
+        url: '/assets/onlineItemImages/rasiley.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1614,7 +1460,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'RIPE MANGO 160ML',
-        url: '/assets/onlineItemImages/1697951000000311217',
+        url: '/assets/onlineItemImages/rasiley.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1636,7 +1482,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'RIPE MANGO 300ML',
-        url: '/assets/onlineItemImages/1697951000000311256',
+        url: '/assets/onlineItemImages/rasiley.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
@@ -1658,7 +1504,7 @@ export const onlineItems = [
       description: 'All items are saleable for the customer',
       image: {
         alt: 'RIPE MANGO 600ML',
-        url: '/assets/onlineItemImages/1697951000000311295',
+        url: '/assets/onlineItemImages/rasiley.png',
         id: '1',
         updatedAt: Date.now().toString(),
         createdAt: Date.now().toString(),
