@@ -44,8 +44,8 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart, price }) => {
           <Image
             alt={title}
             src={metaImage.url}
-            width={300}
-            height={300}
+            width={400}
+            height={400}
             className={classes.image}
           />
         )}

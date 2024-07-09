@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,11 +14,43 @@ import CreateAccountForm from './CreateAccountForm'
 
 import classes from './index.module.scss'
 
-export default async function CreateAccount() {
+const carouselImages = [
+  // '/assets/login-page-images/4_2.jpg',
+  '/assets/login-page-images/4_3.png',
+  '/assets/login-page-images/4_4.png',
+  '/assets/login-page-images/4_5.png',
+  '/assets/login-page-images/4_6.png',
+]
+
+export default function CreateAccount() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex(prevIndex => (prevIndex + 1) % carouselImages.length)
+    }, 4000) // Change image every 2 seconds
+
+    return () => clearInterval(interval) // Cleanup interval on component unmount
+  }, [])
+
   return (
     <section className={classes.createAccount}>
       <div className={classes.heroImg}>
-        <Link href="/" className={classes.logo}>
+        <div className={classes.carouselContainer}>
+          {carouselImages.map((src, index) => (
+            <Image
+              key={index}
+              src={src}
+              alt={`Carousel image ${index + 1}`}
+              layout="fill"
+              objectFit="cover"
+              className={`${classes.carouselImage} ${
+                index === currentIndex ? classes.show : classes.hide
+              }`}
+            />
+          ))}
+        </div>
+        <Link href="/">
           {/* <Image src="" alt="logo" width={250} height={23} className={classes.logo} /> */}
         </Link>
       </div>
@@ -36,13 +70,4 @@ export default async function CreateAccount() {
       </div>
     </section>
   )
-}
-
-export const metadata: Metadata = {
-  title: 'Account',
-  description: 'Create an account or log in to your existing account.',
-  openGraph: mergeOpenGraph({
-    title: 'Account',
-    url: '/account',
-  }),
 }

@@ -30,7 +30,8 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "payload-types.ts"
   ],
   "exclude": [
     "node_modules"

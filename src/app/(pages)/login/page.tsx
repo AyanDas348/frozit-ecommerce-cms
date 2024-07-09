@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,10 +14,42 @@ import LoginForm from './LoginForm'
 
 import classes from './index.module.scss'
 
-export default async function Login() {
+const carouselImages = [
+  // '/assets/login-page-images/4_2.jpg',
+  '/assets/login-page-images/4_3.png',
+  '/assets/login-page-images/4_4.png',
+  '/assets/login-page-images/4_5.png',
+  '/assets/login-page-images/4_6.png',
+]
+
+export default function Login() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex(prevIndex => (prevIndex + 1) % carouselImages.length)
+    }, 4000) // Change image every 2 seconds
+
+    return () => clearInterval(interval) // Cleanup interval on component unmount
+  }, [])
+
   return (
     <section className={classes.login}>
       <div className={classes.heroImg}>
+        <div className={classes.carouselContainer}>
+          {carouselImages.map((src, index) => (
+            <Image
+              key={index}
+              src={src}
+              alt={`Carousel image ${index + 1}`}
+              layout="fill"
+              objectFit="cover"
+              className={`${classes.carouselImage} ${
+                index === currentIndex ? classes.show : classes.hide
+              }`}
+            />
+          ))}
+        </div>
         <Link href="/">
           {/* <Image src="" alt="logo" width={250} height={23} className={classes.logo} /> */}
         </Link>
@@ -35,13 +69,4 @@ export default async function Login() {
       </div>
     </section>
   )
-}
-
-export const metadata: Metadata = {
-  title: 'Login',
-  description: 'Login or create an account to get started.',
-  openGraph: mergeOpenGraph({
-    title: 'Login',
-    url: '/login',
-  }),
 }

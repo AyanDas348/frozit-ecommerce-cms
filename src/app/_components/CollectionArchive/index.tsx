@@ -1,13 +1,13 @@
 'use client'
 
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
-import qs from 'qs'
 
 import { Category, Product } from '../../../payload/payload-types'
 import type { ArchiveBlockProps } from '../../_blocks/ArchiveBlock/types'
 import { useFilter } from '../../_providers/Filter'
 import { onlineItems } from '../../constants/items'
 import { Card } from '../Card'
+import LottiePlayer from '../LottiePlayer'
 import { PageRange } from '../PageRange'
 import { Pagination } from '../Pagination'
 
@@ -154,6 +154,7 @@ export const CollectionArchive: React.FC<Props> = props => {
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>
       <div ref={scrollRef} className={classes.scrollRef} />
+      <LottiePlayer />
       {!isLoading && error && <div>{error}</div>}
       <Fragment>
         {showPageRange !== false && (
