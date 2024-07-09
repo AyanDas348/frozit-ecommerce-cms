@@ -12,6 +12,12 @@
   @include large-break {
     grid-template-columns: 1fr;
   }
+
+  @include small-break {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; // Adjust the gap as needed for better spacing
+  }
 }
 
 .header {
@@ -27,7 +33,7 @@
 
 .headerItemDetails {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
 }
 
 .headersubtotal {
@@ -52,4 +58,36 @@
   align-items: center;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--color-dark-50);
+}
+
+.checkoutButtonWrapper {
+  @include small-break {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: transparent;
+    border-top: 1px solid var(--color-dark-50);
+  }
+}
+
+.checkoutButtonWrapper .checkoutButton {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--color-magenta-dark);
+  color: white;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 20px;
+}
+
+@include small-break {
+  .summary {
+    padding: 10px;
+  }
 }

@@ -1,73 +1,20 @@
-
-@import '../../_css/common';
+@import '../../_css/queries.scss';
 
 .card {
-  border-radius: 4px;
+  border-radius: 12px;
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.content {
-  padding: 8px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
   background-color: white;
-  width: 100%;
-  color: black;
-
-  @include small-break {
-    padding: calc(var(--base) / 2);
-    gap: calc(var(--base) / 4);
-  }
-}
-
-.title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-
-  white-space: nowrap;
+  transition: box-shadow 300ms ease-in-out;
+  position: relative;
   overflow: hidden;
-  text-overflow: ellipsis;
-}
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.1);
+  /* Adding top shadow */
 
-.centerAlign {
-  align-items: center;
-}
-
-.body {
-  flex-grow: 1;
-}
-
-.priceActions {
-  gap: var(--base);
-}
-
-.price {
-  font-weight: 600;
-  margin: 0;
-}
-
-.leader {
-  @extend %label;
-  display: flex;
-  gap: var(--base);
-}
-
-.description {
-  margin: 0;
-  line-height: 24px;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hideImageOnMobile {
-  @include mid-break {
-    display: none;
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 -8px 16px rgba(0, 0, 0, 0.2);
+    /* Adding top shadow on hover */
   }
 }
 
@@ -75,34 +22,120 @@
   text-decoration: none;
   display: block;
   position: relative;
-  min-height: 262px;
   background-color: transparent;
-  border: 1px solid rgba(187, 127, 127, 0.5);
+  overflow: hidden;
+  height: 200px;
+  width: 100%;
 }
 
 .image {
-  padding: 24px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  aspect-ratio: 1/1;
-  max-width: 100%;
-  background-color: transparent;
+  /* Ensure the image covers the container */
+  object-position: center;
+  /* Center the image */
 }
 
 .placeholder {
   background-color: var(--theme-elevation-50);
   width: 100%;
-  height: 100%;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.actions {
+.content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: white;
+  width: 100%;
+  color: black;
+  flex-grow: 1;
+
+  @include small-break {
+    padding: calc(var(--base) / 2);
+    gap: calc(var(--base) / 4);
+  }
+}
+
+.discountBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.body {
+  flex-grow: 1;
+}
+
+.description {
+  margin: 0;
+  line-height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.priceSection {
   display: flex;
   align-items: center;
+  gap: 8px;
+}
 
-  @include mid-break {
-    flex-direction: column;
-    align-items: flex-start;
+.currentPrice {
+  font-weight: 700;
+  color: var(--theme-success-700);
+}
+
+.originalPrice {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.discount {
+  color: red;
+}
+
+.addToCartButton {
+  width: calc(100% - 32px);
+  /* Adjust width to account for padding */
+  padding: 12px;
+  border: none;
+  background-color: rgba(139, 0, 81, 1);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 200ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: rgba(139, 0, 81, 0.8);
   }
+}
+
+.cartIcon {
+  margin-right: 8px;
 }

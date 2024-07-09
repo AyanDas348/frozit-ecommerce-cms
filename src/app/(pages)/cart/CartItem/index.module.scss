@@ -11,6 +11,7 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    overflow: hidden;
 
     .mediaWrapper {
       width: 50%;
@@ -94,6 +95,8 @@
   outline: none;
   font-size: 16px;
   font-weight: 700;
+  background-color: white;
+  color: black;
 }
 
 .subtotalWrapper {

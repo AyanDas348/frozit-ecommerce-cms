@@ -87,6 +87,26 @@ export default async function NewPage({ params: { slug = 'home' } }) {
     },
   ]
 
+  const premiumProductsNames = [
+    'chana sattu',
+    'chuda powder',
+    'daliya',
+    'rusk',
+    'olive',
+    'punjabi',
+    'idili',
+    'ragi',
+    'sagoo',
+    'sattu',
+    'muffin',
+    'custard',
+    'corn flour',
+    'soya roll',
+  ]
+
+  const premiumProductsList = onlineItems.filter(item =>
+    premiumProductsNames.some(name => item.title.toLowerCase().includes(name))) // eslint-disable-line
+
   return (
     <React.Fragment>
       {slug === 'home' ? (

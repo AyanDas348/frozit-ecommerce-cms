@@ -50,7 +50,9 @@ export const ProductHero: React.FC<{
           <h6>Description</h6>
           <p>{description}</p>
         </div>
-        {outOfStock && <AddToCartButton product={product} className={classes.addToCartButton} />}
+        <div className={classes.addToCart}>
+          {outOfStock && <AddToCartButton product={product} className={classes.addToCartButton} />}
+        </div>
       </div>
     </Gutter>
   )

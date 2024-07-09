@@ -45,13 +45,13 @@ export const CollectionArchive: React.FC<Props> = props => {
     showPageRange,
     onResultChange,
     limit = 10,
-    populatedDocs,
-    populatedDocsTotal,
+    // populatedDocs,
+    // populatedDocsTotal,
   } = props
 
   const [results, setResults] = useState<Result>({
-    totalDocs: typeof populatedDocsTotal === 'number' ? populatedDocsTotal : 0,
-    docs: (populatedDocs?.map(doc => doc.value) || []) as any,
+    totalDocs: 0,
+    docs: [],
     page: 1,
     totalPages: 1,
     hasPrevPage: false,
@@ -69,12 +69,13 @@ export const CollectionArchive: React.FC<Props> = props => {
   const scrollToRef = useCallback(() => {
     const { current } = scrollRef
     if (current) {
-      // current.scrollIntoView({
-      //   behavior: 'smooth',
-      // })
+      current.scrollIntoView({
+        behavior: 'smooth',
+      })
     }
   }, [])
 
+  const onlineItemsId = onlineItems.map(item => item.id)
   useEffect(() => {
     if (!isLoading && typeof results.page !== 'undefined') {
       // scrollToRef()
@@ -90,28 +91,6 @@ export const CollectionArchive: React.FC<Props> = props => {
         setIsLoading(true)
       }
     }, 500)
-
-    const searchQuery = qs.stringify(
-      {
-        sort,
-        where: {
-          ...(categoryFilters && categoryFilters?.length > 0
-            ? {
-                categories: {
-                  in:
-                    typeof categoryFilters === 'string'
-                      ? [categoryFilters]
-                      : categoryFilters.map((cat: string) => cat).join(','),
-                },
-              }
-            : {}),
-        },
-        limit,
-        page,
-        depth: 1,
-      },
-      { encode: false },
-    )
 
     const makeRequest = async () => {
       try {
@@ -136,7 +115,9 @@ export const CollectionArchive: React.FC<Props> = props => {
                 height: 2865,
                 width: 2200,
                 mimeType: item.image_type,
-                url: item.image_document_id,
+                url: onlineItemsId.includes(item.item_id)
+                  ? onlineItems.find(i => i.id === item.item_id).meta.image.url
+                  : '',
               },
               title: 'item details',
             },
@@ -159,7 +140,7 @@ export const CollectionArchive: React.FC<Props> = props => {
       } catch (err) {
         console.warn(err) // eslint-disable-line no-console
         setIsLoading(false)
-        setError(`Unable to load "${relationTo} archive" data at this time.`)
+        // setError(`Unable to load "${relationTo} archive" data at this time.`)
       }
     }
 
@@ -168,7 +149,7 @@ export const CollectionArchive: React.FC<Props> = props => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [page, categoryFilters, relationTo, onResultChange, sort, limit])
+  }, [onlineItemsId, page])
 
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>

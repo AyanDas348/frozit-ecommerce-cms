@@ -11,10 +11,10 @@ import { useAuth } from '../../../_providers/Auth'
 
 import classes from './index.module.scss'
 
-const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
+const CartItem = ({ product, title, metaImage, qty, addItemToCart, price }) => {
+  console.log(metaImage)
   const [quantity, setQuantity] = useState(qty)
   const { user } = useAuth()
-
   const decrementQty = () => {
     const updatedQty = quantity > 1 ? quantity - 1 : 1
 
@@ -41,13 +41,19 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
       <Link href={`/products/${product.slug}`} className={classes.mediaWrapper}>
         {!metaImage && <span>No Image</span>}
         {metaImage && typeof metaImage !== 'string' && (
-          <Media className={classes.media} imgClassName={classes.image} resource={metaImage} fill />
+          <Image
+            alt={title}
+            src={metaImage.url}
+            width={300}
+            height={300}
+            className={classes.image}
+          />
         )}
       </Link>
       <div className={classes.itemDetails}>
         <div className={classes.titleWrapper}>
           <h6>{title}</h6>
-          <Price product={product} button={false} />
+          {/* <Price product={product} button={false} /> */}
         </div>
         <div className={classes.quantity}>
           <div className={classes.quantityBtn} onClick={decrementQty}>
@@ -85,8 +91,8 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
             appearance="primary"
           />
         </div> */}
+        Total : <Price product={product} quantity={quantity} button={false} amount={price} />
         <RemoveFromCartButton product={product} />
-        <Price product={product} quantity={quantity} button={false} />
       </div>
     </li>
   )

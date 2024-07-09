@@ -13,7 +13,7 @@ import classes from './index.module.scss'
 
 export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
   const navItems = header?.navItems || []
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   // user === undefined && classes.hide
   return (
     <nav className={[classes.nav].filter(Boolean).join(' ')}>
@@ -21,7 +21,11 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
         return <CMSLink key={i} {...link} appearance="none" />
       })}
       <CartLink />
-      {user && <Link href="/account">Account</Link>}
+      {/* {user && (
+        <Link href="/account" style={{ color: 'white' }}>
+          Account
+        </Link>
+      )} */}
       {!user && (
         <Button
           el="link"
@@ -31,14 +35,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
           onClick={() => (window.location.href = '/login')}
         />
       )}
-      {user && (
-        <Button
-          el="button"
-          label="Logout"
-          appearance="tertiary"
-          onClick={() => localStorage.removeItem('frozit-user')}
-        />
-      )}
+      {user && <Button el="button" label="Logout" appearance="tertiary" onClick={() => logout()} />}
     </nav>
   )
 }

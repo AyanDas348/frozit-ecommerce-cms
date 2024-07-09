@@ -34,23 +34,26 @@ export const Price: React.FC<{
   quantity?: number
   button?: 'addToCart' | 'removeFromCart' | false
   stock?: boolean | true
+  amount?: number
 }> = props => {
-  const { product, product: { priceJSON } = {}, button = 'addToCart', quantity } = props
+  const { product, product: { priceJSON } = {}, button = 'addToCart', quantity, amount } = props
 
   const [price, setPrice] = useState<{
     actualPrice: string
     withQuantity: string
   }>(() => ({
-    actualPrice: priceFromJSON(priceJSON),
-    withQuantity: priceFromJSON(priceJSON, quantity),
+    actualPrice: priceFromJSON(priceJSON || amount),
+    withQuantity: priceFromJSON(priceJSON || amount, quantity),
   }))
+
+  console.log(price)
 
   useEffect(() => {
     setPrice({
-      actualPrice: priceFromJSON(priceJSON),
-      withQuantity: priceFromJSON(priceJSON, quantity),
+      actualPrice: priceFromJSON(priceJSON || amount),
+      withQuantity: priceFromJSON(priceJSON || amount, quantity),
     })
-  }, [priceJSON, quantity])
+  }, [amount, priceJSON, quantity])
 
   return (
     <div className={classes.actions}>

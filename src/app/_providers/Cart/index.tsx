@@ -308,7 +308,7 @@ export const CartProvider = props => {
                 item_id: item.id,
                 quantity: item.quantity,
                 price: item.price,
-                imageUrl: item.imageUrl,
+                imageUrl: item.imageUrl || 'abcd',
               })
             }
           })
@@ -318,7 +318,7 @@ export const CartProvider = props => {
               item_id: item.id,
               quantity: item.quantity,
               price: item.price,
-              imageUrl: item.imageUrl,
+              imageUrl: item.imageUrl || 'abcd',
             })
           })
         }

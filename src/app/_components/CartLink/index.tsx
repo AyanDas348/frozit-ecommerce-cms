@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Fragment, useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { useCart } from '../../_providers/Cart'
@@ -21,6 +22,7 @@ export const CartLink: React.FC<{
   return (
     <Link className={[classes.cartLink, className].filter(Boolean).join(' ')} href="/cart">
       <Fragment>
+        <Image alt="cart" src="/assets/icons/icons8-cart-64.png" width={20} height={8} /> &nbsp;
         Cart
         {typeof length === 'number' && length > 0 && (
           <small className={classes.quantity}>({length})</small>

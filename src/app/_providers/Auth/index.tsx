@@ -128,21 +128,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = useCallback<Logout>(async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/logout`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (res.ok) {
-        setUser(null)
-        setStatus('loggedOut')
-        saveUserToLocalStorage(null)
-      } else {
-        throw new Error('An error occurred while attempting to logout.')
-      }
+      setUser(null)
+      setStatus('loggedOut')
+      saveUserToLocalStorage(null)
     } catch (e) {
       throw new Error('An error occurred while attempting to logout.')
     }
