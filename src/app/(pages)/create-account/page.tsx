@@ -15,11 +15,11 @@ import CreateAccountForm from './CreateAccountForm'
 import classes from './index.module.scss'
 
 const carouselImages = [
-  // '/assets/login-page-images/4_2.jpg',
-  '/assets/login-page-images/4_3.png',
-  '/assets/login-page-images/4_4.png',
-  '/assets/login-page-images/4_5.png',
-  '/assets/login-page-images/4_6.png',
+  '/assets/login-page-images/4_2.jpg',
+  '/assets/login-page-images/4_4.jpg',
+  '/assets/login-page-images/4_3.jpg',
+  // '/assets/login-page-images/4_5.png',
+  // '/assets/login-page-images/4_6.png',
 ]
 
 export default function CreateAccount() {
