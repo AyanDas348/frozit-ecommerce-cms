@@ -208,7 +208,7 @@ export const CheckoutPage = () => {
               <div className={classes.headerItemDetails}>
                 <p></p>
                 <p></p>
-                <p>Quantity</p>
+                {/* <p>Quantity</p> */}
               </div>
               <p className={classes.headersubtotal}>Subtotal</p>
             </div>

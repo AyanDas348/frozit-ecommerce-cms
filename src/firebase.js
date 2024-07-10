@@ -6,14 +6,14 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyD01DsjvDrIbl7cidRSe82BBRXTi-noWtQ',
-  authDomain: 'frozit-ecommerce.firebaseapp.com',
-  projectId: 'frozit-ecommerce',
-  storageBucket: 'frozit-ecommerce.appspot.com',
-  messagingSenderId: '198393857131',
-  appId: '1:198393857131:web:d7edfcb477e2abf43f9d2e',
+  apiKey: 'AIzaSyDZHSTK0Z1Oc7hZmkGQXc2QhRKc-1Q5CN0',
+  authDomain: 'frozit-93a71.firebaseapp.com',
+  projectId: 'frozit-93a71',
+  storageBucket: 'frozit-93a71.appspot.com',
+  messagingSenderId: '670058579127',
+  appId: '1:670058579127:web:85d57de7942fc276c6b932',
+  measurementId: 'G-VE6JGLQC7K',
 }
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)

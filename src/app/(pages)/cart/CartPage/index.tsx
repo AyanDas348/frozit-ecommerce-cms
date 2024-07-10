@@ -91,70 +91,72 @@ export const CartPage: React.FC<{
             </div>
           ) : (
             <div>
-              <div className={classes.addressWrapper}>
-                {addresses.length === 0 ? (
-                  <div>
-                    <p>No Address Available</p>
-                    <button
-                      onClick={() => {
+              {user && (
+                <div className={classes.addressWrapper}>
+                  {addresses.length === 0 ? (
+                    <div>
+                      <p>No Address Available</p>
+                      <button
+                        onClick={() => {
+                          setAddAddressModal(true)
+                        }}
+                      >
+                        + Add New
+                      </button>
+                    </div>
+                  ) : (
+                    <div className={classes.addressContainer}>
+                      <div className={classes.addressList}>
+                        <p>Delivering To:</p>
+                        <p>{addresses[selectedAddressIndex].street},&nbsp;</p>
+                        <p>
+                          {addresses[selectedAddressIndex].city},{' '}
+                          {addresses[selectedAddressIndex].state}&nbsp;
+                        </p>
+                        <p>
+                          {addresses[selectedAddressIndex].pinCode},{' '}
+                          {addresses[selectedAddressIndex].country}
+                        </p>
+                      </div>
+                      <button
+                        className={classes.changeButton}
+                        onClick={() => {
+                          setShowChangeAddressModal(true)
+                        }}
+                      >
+                        Change
+                      </button>
+                    </div>
+                  )}
+                  {showChangeAddressModal && (
+                    <SelectAddressModal
+                      addresses={addresses}
+                      onClose={() => {
+                        setShowChangeAddressModal(false)
+                      }}
+                      onOpenAddAddressModal={() => {
+                        setShowChangeAddressModal(false)
                         setAddAddressModal(true)
                       }}
-                    >
-                      + Add New
-                    </button>
-                  </div>
-                ) : (
-                  <div className={classes.addressContainer}>
-                    <div className={classes.addressList}>
-                      <p>Delivering To:</p>
-                      <p>{addresses[selectedAddressIndex].street},&nbsp;</p>
-                      <p>
-                        {addresses[selectedAddressIndex].city},{' '}
-                        {addresses[selectedAddressIndex].state}&nbsp;
-                      </p>
-                      <p>
-                        {addresses[selectedAddressIndex].pinCode},{' '}
-                        {addresses[selectedAddressIndex].country}
-                      </p>
-                    </div>
-                    <button
-                      className={classes.changeButton}
-                      onClick={() => {
-                        setShowChangeAddressModal(true)
+                      setSelectedAddressIndex={setSelectedAddressIndex}
+                      selectedAddressIndex={selectedAddressIndex}
+                    />
+                  )}
+                  {addAddressModal && (
+                    <Modal
+                      onClose={() => {
+                        setAddAddressModal(false)
+                        setShowChangeAddressModal(false)
                       }}
                     >
-                      Change
-                    </button>
-                  </div>
-                )}
-                {showChangeAddressModal && (
-                  <SelectAddressModal
-                    addresses={addresses}
-                    onClose={() => {
-                      setShowChangeAddressModal(false)
-                    }}
-                    onOpenAddAddressModal={() => {
-                      setShowChangeAddressModal(false)
-                      setAddAddressModal(true)
-                    }}
-                    setSelectedAddressIndex={setSelectedAddressIndex}
-                    selectedAddressIndex={selectedAddressIndex}
-                  />
-                )}
-                {addAddressModal && (
-                  <Modal
-                    onClose={() => {
-                      setAddAddressModal(false)
-                      setShowChangeAddressModal(false)
-                    }}
-                  >
-                    <AddAddressForm
-                      setAddresses={setAddresses}
-                      setSelectedAddressIndex={setSelectedAddressIndex}
-                    />
-                  </Modal>
-                )}
-              </div>
+                      <AddAddressForm
+                        setAddresses={setAddresses}
+                        setSelectedAddressIndex={setSelectedAddressIndex}
+                      />
+                    </Modal>
+                  )}
+                </div>
+              )}
               <div className={classes.cartWrapper}>
                 <div>
                   {/* CART LIST HEADER */}
@@ -212,7 +214,36 @@ export const CartPage: React.FC<{
                   </div>
 
                   <div className={classes.checkoutButtonWrapper}>
-                    {addresses.length > 0 && selectedAddressIndex >= 0 ? (
+                    {user && addresses.length === 0 && (
+                      <p className={classes.warningMessage}>
+                        Please select an address to proceed to checkout.
+                      </p>
+                    )}
+
+                    {user && addresses.length > 0 && selectedAddressIndex >= 0 && (
+                      <Button
+                        className={classes.checkoutButton}
+                        href={
+                          user
+                            ? `/checkout?addressId=${selectedAddressIndex}`
+                            : '/login?redirect=%2Fcheckout'
+                        }
+                        label={user ? 'Proceed to Checkout' : 'Login to checkout'}
+                      />
+                    )}
+
+                    {!user && (
+                      <Button
+                        className={classes.checkoutButton}
+                        href={
+                          user
+                            ? `/checkout?addressId=${selectedAddressIndex}`
+                            : '/login?redirect=%2Fcheckout'
+                        }
+                        label={user ? 'Proceed to Checkout' : 'Login to checkout'}
+                      />
+                    )}
+                    {/* {addresses.length > 0 && selectedAddressIndex >= 0 ? (
                       <Button
                         className={classes.checkoutButton}
                         href={
@@ -226,7 +257,7 @@ export const CartPage: React.FC<{
                       <p className={classes.warningMessage}>
                         Please select an address to proceed to checkout.
                       </p>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>

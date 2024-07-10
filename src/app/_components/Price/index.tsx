@@ -46,8 +46,6 @@ export const Price: React.FC<{
     withQuantity: priceFromJSON(priceJSON || amount, quantity),
   }))
 
-  console.log(price)
-
   useEffect(() => {
     setPrice({
       actualPrice: priceFromJSON(priceJSON || amount),

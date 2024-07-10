@@ -1,6 +1,7 @@
 const policies = {
   'default-src': ["'self'"],
   'script-src': [
+    '*',
     "'self'",
     "'unsafe-inline'",
     "'unsafe-eval'",
@@ -15,6 +16,7 @@ const policies = {
   'child-src': ["'self'"],
   'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
   'img-src': [
+    '*',
     "'self'",
     'https://*.stripe.com',
     'https://raw.githubusercontent.com',
@@ -24,6 +26,7 @@ const policies = {
   ],
   'font-src': ["'self'"],
   'frame-src': [
+    '*',
     "'self'",
     'https://checkout.stripe.com',
     'https://js.stripe.com',
@@ -33,6 +36,7 @@ const policies = {
     'https://api.razorpay.com/',
   ],
   'connect-src': [
+    '*',
     "'self'",
     'https://checkout.stripe.com',
     'https://api.stripe.com',

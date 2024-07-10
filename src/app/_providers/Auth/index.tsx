@@ -205,27 +205,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [])
 
   const loginWithPhone = useCallback<LoginWithPhone>(async args => {
-    const recaptcha = new firebaseAuth.RecaptchaVerifier(auth, 'recaptcha', {})
+    const recaptchaContainerId = 'recaptcha'
+    const recaptchaContainer = document.getElementById(recaptchaContainerId)
+
+    if (!recaptchaContainer) {
+      console.error(`Recaptcha container with id '${recaptchaContainerId}' not found.`)
+      return
+    }
+
+    const recaptcha = new firebaseAuth.RecaptchaVerifier(auth, recaptchaContainer, {
+      size: 'invisible',
+    })
+
     try {
-      const confirmation = await firebaseAuth.signInWithPhoneNumber(
+      // Sign in with phone number and get confirmation result
+      const confirmationResult = await firebaseAuth.signInWithPhoneNumber(
         auth,
         args.phoneNumber,
         recaptcha,
       )
-      return confirmation
-    } catch (e) {
-      console.error(e)
+
+      return confirmationResult
+    } catch (error) {
+      console.error('Error during phone authentication:', error)
+      throw error
     }
   }, [])
 
   const verifyOTP = async (user: firebaseAuth.ConfirmationResult, otp: string) => {
     try {
-      if (user) {
-        const credential = firebaseAuth.PhoneAuthProvider.credential(user.verificationId, otp)
-        firebaseAuth.signInWithCredential(auth, credential)
-      } else {
-        console.error('User is undefined. Unable to verify OTP.')
-      }
+      const credential = firebaseAuth.PhoneAuthProvider.credential(user.verificationId, otp)
+      const verifiedUser = await firebaseAuth.signInWithCredential(auth, credential)
+      const idToken = await verifiedUser.user.getIdToken()
+      const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      const backendUser = await req.json()
+      setUser(backendUser.data)
     } catch (err: any) {
       console.error(err)
     }

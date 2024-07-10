@@ -255,8 +255,6 @@ export const CartProvider = props => {
 
   useEffect(() => {
     if (!hasInitialized.current) return
-    console.log(authStatus)
-
     if (authStatus === 'loggedIn') {
       const getCart = async (): Promise<CartResponse> => {
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
@@ -294,7 +292,6 @@ export const CartProvider = props => {
       }
 
       getCart().then(response => {
-        console.log(response)
         const dbCart = response.data.data.itemDetails
         if (response.success && cart.items.length > 0) {
           cart.items.forEach(item => {

@@ -35,7 +35,6 @@ const CartItem: React.FC<CartItemProps> = ({
   price,
   isCheckout = false,
 }) => {
-  console.log(metaImage)
   const [quantity, setQuantity] = useState(qty)
   const { user } = useAuth()
   const decrementQty = () => {
