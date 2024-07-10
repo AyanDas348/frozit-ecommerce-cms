@@ -19,9 +19,19 @@
   position: relative;
   width: 90%;
   max-width: 500px;
+  max-height: 80vh;
+  /* Fixed height relative to viewport height */
+  overflow-y: auto;
+  margin: 10px;
+  /* Enable scrolling if content overflows */
 }
 
-.closeButton, .addButton {
+.modalContent::-webkit-scrollbar {
+  display: none;
+}
+
+.closeButton,
+.addButton {
   position: absolute;
   top: 10px;
   background: none;
@@ -32,11 +42,13 @@
 }
 
 .closeButton {
-  right: 50px;
+  right: 10px;
+  /* Adjust as needed */
 }
 
 .addButton {
-  right: 90px;
+  right: 50px;
+  /* Adjust as needed */
 }
 
 .modalActions {
@@ -50,7 +62,14 @@
 .addressList {
   margin-top: 20px;
   max-height: 300px;
+  /* Limit height of address list */
   overflow-y: auto;
+  /* Enable scrolling if address list overflows */
+}
+
+.addressList {
+  overflow: -moz-scrollbars-none;
+  /* For older Firefox versions */
 }
 
 .address {
@@ -68,4 +87,9 @@
 
 .address.selected {
   border-color: #007bff;
+}
+
+.plus {
+  transform: rotate(20deg);
+  transform-origin: center;
 }

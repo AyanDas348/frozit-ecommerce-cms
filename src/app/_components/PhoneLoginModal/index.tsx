@@ -66,8 +66,8 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
         >
           {error && <p className={classes.error}>{error}</p>}
           {step === 'phone' && (
-            <>
-              <div>
+            <div>
+              <div className={classes.field}>
                 <Input
                   name="phoneNumber"
                   label="Phone Number"
@@ -79,11 +79,11 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
                 <Button type="submit" appearance="primary" label="Get OTP" />
               </div>
               {!verificationId && <div id="recaptcha"></div>}
-            </>
+            </div>
           )}
           {step === 'otp' && (
             <>
-              <div>
+              <div className={classes.field}>
                 <Input
                   name="otp"
                   label="OTP"

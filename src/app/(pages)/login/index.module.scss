@@ -22,7 +22,7 @@
 .heroImg {
   height: 100%;
   width: 100%;
-  position: relative; // Position relative to ensure child positioning
+  position: relative;
 
   @include mid-break {
     background: none;
@@ -36,6 +36,10 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+
+  @include small-break {
+    display: none; // Hide carousel on small devices
+  }
 }
 
 .carouselImage {
@@ -45,21 +49,20 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 1s ease-in-out, transform 1s ease-in-out; // Smooth transition for opacity and transform
-  opacity: 0; // Initially hidden
-  transform: translateX(0); // Start position for fading in effect
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  opacity: 0;
+  transform: translateX(0);
 }
 
 .carouselImage.show {
-  opacity: 1; // Show the image
-  transform: translateX(0); // Center the image
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .carouselImage.hide {
-  opacity: 0; // Hide the image
-  transform: translateX(-100%); // Move the image out to the left
+  opacity: 0;
+  transform: translateX(-100%);
 }
-
 
 .formWrapper {
   display: flex;

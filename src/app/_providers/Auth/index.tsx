@@ -2,7 +2,9 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { response } from 'express'
 import * as firebaseAuth from 'firebase/auth'
+import { useRouter } from 'next/navigation'
 
 import { auth } from '../../../firebase'
 import { User } from '../../../payload/payload-types'
@@ -32,6 +34,8 @@ type LoginWithPhone = (args: { phoneNumber: string }) => Promise<firebaseAuth.Co
 
 type verifyOTP = (user: firebaseAuth.ConfirmationResult, otp: string) => Promise<void>
 
+type googleSignIn = () => Promise<void>
+
 type AuthContext = {
   user?: User | null
   setUser: (user: User | null) => void // eslint-disable-line no-unused-vars
@@ -45,6 +49,7 @@ type AuthContext = {
   verifyOTP: verifyOTP
   mobileUser?: firebaseAuth.User | null
   setMobileUser: (mobileUser: firebaseAuth.User | null) => void
+  googleSignIn: googleSignIn
 }
 
 const Context = createContext({} as AuthContext)
@@ -52,6 +57,7 @@ const Context = createContext({} as AuthContext)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>()
   const [mobileUser, setMobileUser] = useState<firebaseAuth.User | null>()
+  const router = useRouter()
 
   // used to track the single event of logging in or logging out
   // useful for `useEffect` hooks that should only run once
@@ -245,8 +251,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       })
       const backendUser = await req.json()
       setUser(backendUser.data)
+      setStatus('loggedIn')
+      saveUserToLocalStorage(backendUser.data)
+      router.push('/')
     } catch (err: any) {
       console.error(err)
+    }
+  }
+
+  const googleSignIn = async () => {
+    try {
+      const provider = new firebaseAuth.GoogleAuthProvider()
+      const verifiedUser = await firebaseAuth.signInWithPopup(auth, provider)
+      const idToken = await verifiedUser.user.getIdToken()
+      const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      const backendUser = await req.json()
+      console.log(backendUser)
+      setUser(backendUser.data)
+      setStatus('loggedIn')
+      saveUserToLocalStorage(backendUser.data)
+      router.push('/')
+    } catch (error: any) {
+      console.error(error)
     }
   }
 
@@ -265,6 +296,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         verifyOTP,
         mobileUser,
         setMobileUser,
+        googleSignIn,
       }}
     >
       {children}

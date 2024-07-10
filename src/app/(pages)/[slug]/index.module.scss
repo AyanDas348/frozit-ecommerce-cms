@@ -31,3 +31,19 @@
   font-weight: 700;
   font-size: 32px;
 }
+
+.desktopBg {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.mobileBg {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}

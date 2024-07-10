@@ -1,10 +1,6 @@
-const lottiejson = 'https://lottie.host/111eafd2-b609-4b2e-a4c2-4330aabccb79/10yotFeuPd.json'
-
-import Lottie from 'lottie-react'
-
 import classes from './index.module.scss'
 
-export default function Custom404() {
+export default function Loader() {
   return (
     <div className={classes.svgContainer}>
       <svg

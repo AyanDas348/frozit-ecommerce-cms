@@ -90,7 +90,7 @@ export const CartPage: React.FC<{
               )}
             </div>
           ) : (
-            <div>
+            <div className={classes.cart}>
               {user && (
                 <div className={classes.addressWrapper}>
                   {addresses.length === 0 ? (

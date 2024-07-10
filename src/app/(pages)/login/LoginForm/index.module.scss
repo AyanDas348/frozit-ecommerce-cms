@@ -1,27 +1,25 @@
-@import "../../../_css/common";
-
-.form {
-  margin-bottom: var(--base);
+.loginContainer {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin-top: 30px;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
 }
 
-.submit {
+.googleButton {
+  margin-bottom: 20px;
   width: 100%;
+  // max-width: 300px;
+}
+
+.otpButton {
+  width: 100%;
+  // max-width: 300px;
 }
 
 .message {
-  margin-bottom: var(--base);
+  margin-bottom: 20px;
 }
 
 .links {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  font-size: 16px;
+  margin-top: 20px;
 }

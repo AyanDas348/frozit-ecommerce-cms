@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  padding-top: 100px;
 
   @include small-break {
     margin: 0;
