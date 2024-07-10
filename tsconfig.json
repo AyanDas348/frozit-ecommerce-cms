@@ -24,14 +24,17 @@
       }
     ],
     "paths": {
-      "react": ["./node_modules/@types/react"],
+      "react": [
+        "./node_modules/@types/react"
+      ],
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "payload-types.ts"
+    "payload-types.ts",
+    "src/firebase.js"
   ],
   "exclude": [
     "node_modules"

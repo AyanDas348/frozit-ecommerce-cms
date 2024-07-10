@@ -1,0 +1,71 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+}
+
+.closeButton, .addButton {
+  position: absolute;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.closeButton {
+  right: 50px;
+}
+
+.addButton {
+  right: 90px;
+}
+
+.modalActions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.addressList {
+  margin-top: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.address {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.address:hover {
+  border-color: #888;
+}
+
+.address.selected {
+  border-color: #007bff;
+}

@@ -13,6 +13,7 @@ import { Price } from '../../../_components/Price'
 import { useAuth } from '../../../_providers/Auth'
 import { useCart } from '../../../_providers/Cart'
 import { useTheme } from '../../../_providers/Theme'
+import CartItem from '../../cart/CartItem'
 import AddressCard from '../AddressCard'
 import RazorpayPanel from '../RazorpayPanel'
 
@@ -43,61 +44,11 @@ export const CheckoutPage = () => {
 
   const { cart, cartIsEmpty, cartTotal } = useCart()
   const [orderDetails, setOrderDetails] = useState<OrderIntent>()
-  const [addresses, setAddresses] = useState<Address[]>([])
 
   const buyVal = useSearchParams().get('buy')
 
   const [selectedAddressIndex, setSelectedAddressIndex] = useState<number | null>(-1)
-
-  const [selectedTab, setSelectedTab] = useState(1)
-
-  const [address, setAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    pinCode: '',
-    country: '',
-    plotNo: '',
-  })
-
-  const handleChange = e => {
-    const { name, value } = e.target
-    setAddress({ ...address, [name]: value })
-  }
-
-  const handleSubmit = async e => {
-    e.preventDefault()
-    const dataToSend = {
-      ...address,
-      pinCode: parseInt(address.pinCode),
-    }
-    const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/add-address`, {
-      body: JSON.stringify(dataToSend),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: user.jwt,
-      },
-      method: 'POST',
-    })
-    const response = await request.json()
-    if (response.success) {
-      setAddresses(response.data.data.address)
-      setSelectedAddressIndex(response.data.data.address.length - 1)
-      setSelectedTab(1)
-      setAddress({
-        city: '',
-        country: '',
-        pinCode: '',
-        plotNo: '',
-        state: '',
-        street: '',
-      })
-    } else {
-      toast.error('Something went wrong', {
-        position: 'top-center',
-      })
-    }
-  }
+  const addressId = useSearchParams().get('addressId')
 
   useEffect(() => {
     if (user !== null && cartIsEmpty) {
@@ -118,17 +69,6 @@ export const CheckoutPage = () => {
       return data
     }
 
-    const getAddresses = async (): Promise<{ success: boolean; data: User }> => {
-      const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
-        method: 'GET',
-        headers: {
-          Authorization: user.jwt,
-        },
-      })
-      const data = await req.json()
-      return data
-    }
-
     if (user) {
       getCart().then(response => {
         if (response.success) {
@@ -138,11 +78,6 @@ export const CheckoutPage = () => {
               cartId: response.data.data.cartId,
             }
           })
-        }
-      })
-      getAddresses().then(response => {
-        if (response.success && typeof response.data !== 'undefined') {
-          setAddresses(response.data.userData.address)
         }
       })
     }
@@ -162,41 +97,6 @@ export const CheckoutPage = () => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (user && cart && hasMadePaymentIntent.current === false) {
-  //     hasMadePaymentIntent.current = true
-
-  //     const makeIntent = async () => {
-  //       try {
-  //         const paymentReq = await fetch(`http://localhost:3000/api/create-payment-intent`, {
-  //           method: 'POST',
-  //           credentials: 'include',
-  //         })
-
-  //         const res = await paymentReq.json()
-  //         console.log(res)
-
-  //         if (res.error) {
-  //           setError(res.error)
-  //         } else if (res.client_secret) {
-  //           setError(null)
-  //           setClientSecret(res.client_secret)
-  //         }
-  //       } catch (e) {
-  //         setError('Something went wrong.')
-  //       }
-  //     }
-
-  //     makeIntent()
-  //   }
-  // }, [cart, user])
-
-  // if (!user) return null
-
-  const handleSelectAddress = (index: number) => {
-    setSelectedAddressIndex(index)
-  }
-
   const createOrderId = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/buy-now`, {
@@ -206,7 +106,7 @@ export const CheckoutPage = () => {
           Authorization: user.jwt,
         },
         body: JSON.stringify({
-          addressId: selectedAddressIndex,
+          addressId,
           cartId: orderDetails.cartId,
         }),
       })
@@ -285,16 +185,8 @@ export const CheckoutPage = () => {
     }
   }
 
-  useEffect(() => {
-    if (addresses.length > 0) {
-      setSelectedAddressIndex(0)
-    } else {
-      setSelectedTab(1)
-    }
-  }, [addresses])
-
   return (
-    <Fragment>
+    <div className={classes.checkoutWrapper}>
       <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
       {cartIsEmpty && (
         <div>
@@ -308,146 +200,70 @@ export const CheckoutPage = () => {
         </div>
       )}
       {!cartIsEmpty && (
-        <div className={classes.col2}>
-          <div className={classes.items}>
-            <div className={classes.cartItems}>
+        <div className={classes.cartWrapper}>
+          <div>
+            {/* CART LIST HEADER */}
+            <div className={classes.header}>
+              <p>Products</p>
+              <div className={classes.headerItemDetails}>
+                <p></p>
+                <p></p>
+                <p>Quantity</p>
+              </div>
+              <p className={classes.headersubtotal}>Subtotal</p>
+            </div>
+            {/* CART ITEM LIST */}
+            <ul className={classes.itemsList}>
               {cart?.items?.map((item, index) => {
                 if (typeof item.product === 'object') {
                   const {
                     quantity,
                     product,
-                    product: { id, title, meta },
+                    product: { id, title, meta, stripeProductID },
                   } = item
-
-                  if (!quantity) return null
 
                   const isLast = index === (cart?.items?.length || 0) - 1
 
                   const metaImage = meta?.image
 
                   return (
-                    <Fragment key={index}>
-                      <div className={classes.row}>
-                        <div className={classes.rowContent}>
-                          <h6 className={classes.title}>{title}</h6>
-                          <Price
-                            product={product}
-                            button={false}
-                            quantity={quantity}
-                            stock={false}
-                          />
-                        </div>
-                      </div>
-                      {!isLast && <HR />}
-                    </Fragment>
+                    <CartItem
+                      product={product}
+                      title={title}
+                      metaImage={metaImage}
+                      qty={quantity}
+                      price={product.priceJSON}
+                      isCheckout={true}
+                    />
                   )
                 }
                 return null
               })}
-            </div>
-            <div className={classes.orderTotal}>{`Order total: ${cartTotal.raw}`}</div>
+            </ul>
           </div>
-          <div className={classes.addressColumn}>
-            <div className={classes.address}>
-              <p
-                className={`${classes.selectAddress} ${selectedTab === 1 ? classes.selected : ''}`}
-                onClick={() => setSelectedTab(1)}
-              >
-                Select Address
-              </p>
-              <p
-                className={`${classes.addNewAddress} ${selectedTab === 2 ? classes.selected : ''}`}
-                onClick={() => setSelectedTab(2)}
-              >
-                Add New Address
-              </p>
+          <div className={classes.summary}>
+            <div className={classes.row}>
+              <h6 className={classes.cartTotal}>Summary</h6>
             </div>
-            <div className={classes.addressCard}>
-              {selectedTab === 1 &&
-                addresses.length > 0 &&
-                addresses.map((address, index) => (
-                  <AddressCard
-                    key={index}
-                    address={address}
-                    index={index}
-                    isSelected={index === selectedAddressIndex}
-                    onSelect={handleSelectAddress}
-                  />
-                ))}
+
+            <div className={classes.row}>
+              <p className={classes.cartTotal}>Delivery Charge</p>
+              <p className={classes.cartTotal}>₹0</p>
             </div>
-            {selectedTab === 2 && (
-              <form className={classes.form} onSubmit={handleSubmit}>
-                <div className={classes.formGroup}>
-                  <label htmlFor="plotNo">Plot No:</label>
-                  <input
-                    type="text"
-                    id="plotNo"
-                    name="plotNo"
-                    value={address.plotNo}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={classes.formGroup}>
-                  <label htmlFor="street">Street:</label>
-                  <input
-                    type="text"
-                    id="street"
-                    name="street"
-                    value={address.street}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={classes.formGroup}>
-                  <label htmlFor="city">City:</label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    value={address.city}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={classes.formGroup}>
-                  <label htmlFor="state">State:</label>
-                  <input
-                    type="text"
-                    id="state"
-                    name="state"
-                    value={address.state}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={classes.formGroup}>
-                  <label htmlFor="pinCode">Pin Code:</label>
-                  <input
-                    type="number"
-                    id="pinCode"
-                    name="pinCode"
-                    value={address.pinCode}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={classes.formGroup}>
-                  <label htmlFor="country">Country:</label>
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={address.country}
-                    onChange={handleChange}
-                  />
-                </div>
-                <Button type="submit" appearance="primary">
-                  Submit
-                </Button>
-              </form>
-            )}
+
+            <div className={classes.row}>
+              <p className={classes.cartTotal}>Grand Total</p>
+              <p className={classes.cartTotal}>{cartTotal.formatted}</p>
+            </div>
+
+            <div className={classes.checkoutButtonWrapper}>
+              <Button className={classes.checkoutButton} onClick={() => processPayment()}>
+                Pay Now
+              </Button>
+            </div>
           </div>
         </div>
       )}
-      <Button type="button" onClick={() => processPayment()} appearance="secondary">
-        Pay Now
-      </Button>
-    </Fragment>
+    </div>
   )
 }

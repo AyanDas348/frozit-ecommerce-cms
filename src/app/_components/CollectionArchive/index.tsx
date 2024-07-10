@@ -127,14 +127,12 @@ export const CollectionArchive: React.FC<Props> = props => {
             stock: item.actual_available_stock,
           })),
           page: page,
-          totalPages: Array.isArray(json.data.data.items)
-            ? Math.ceil(json.data.data.totalItems / 9)
-            : 1,
+          totalPages: json.data.data.totalPages || 1,
           hasPrevPage: false,
-          hasNextPage: json.data.data.page_context.has_more_page,
+          hasNextPage: json.data.data.currenPage < json.data.data.totalPages ? true : false,
           prevPage: 1,
           nextPage: 1,
-          totalDocs: Array.isArray(json.data.data.items) ? json.data.data.items.length : 0,
+          totalDocs: json.data.data.totalItems || 0,
         })
         setIsLoading(false)
       } catch (err) {
@@ -154,7 +152,7 @@ export const CollectionArchive: React.FC<Props> = props => {
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>
       <div ref={scrollRef} className={classes.scrollRef} />
-      <LottiePlayer />
+      {isLoading && <LottiePlayer />}
       {!isLoading && error && <div>{error}</div>}
       <Fragment>
         {showPageRange !== false && (

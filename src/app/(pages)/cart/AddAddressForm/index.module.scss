@@ -1,0 +1,84 @@
+@import '../../../_css/common';
+
+// index.module.scss
+
+.formContainer {
+  // background-color: #f5f5f5; // Grayish background
+  // border-radius: 8px;
+  padding: 20px;
+  // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);s
+  width: 100%;
+  max-width: 500px; // Maximum width for larger screens
+  margin: 0 auto; // Center the form horizontally
+}
+
+.heading {
+  font-size: 24px;
+  color: #333; // Dark text color for better readability
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #333; // Dark text color
+}
+
+.inputText,
+.inputNumber {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 5px; // Space between label and input
+}
+
+.inputNumber {
+  -moz-appearance: textfield; // Remove spinner in Firefox
+}
+
+.inputNumber::-webkit-inner-spin-button,
+.inputNumber::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.submitButton {
+  background-color: var(--color-magenta-dark); // Dark magenta color
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  width: 100%;
+  text-align: center;
+}
+
+.submitButton:hover {
+  background-color: var(--color-magenta-light); // Lighter magenta on hover
+}
+
+// Responsive styling using breakpoints mixins
+@include small-break {
+  .formContainer {
+    padding: 15px;
+  }
+
+  .heading {
+    font-size: 20px;
+  }
+
+  .inputText,
+  .inputNumber {
+    font-size: 14px;
+  }
+
+  .submitButton {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}

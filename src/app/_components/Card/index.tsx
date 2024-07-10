@@ -108,7 +108,7 @@ export const Card: React.FC<{
     <div className={classes.card}>
       <div className={classes.mediaWrapper} onClick={() => router.push(`${href}`)}>
         {!metaImage && <div className={classes.placeholder}>No image</div>}
-        {metaImage && typeof metaImage !== 'string' && (
+        {metaImage && typeof metaImage !== 'string' && metaImage.url.startsWith('/assets') && (
           <Image
             alt={titleToUse}
             src={metaImage.url}

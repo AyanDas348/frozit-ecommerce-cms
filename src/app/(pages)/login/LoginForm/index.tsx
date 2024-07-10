@@ -2,6 +2,7 @@
 
 import React, { useCallback, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import * as firebaseAuth from 'firebase/auth'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -21,7 +22,7 @@ const LoginForm: React.FC = () => {
   const searchParams = useSearchParams()
   const allParams = searchParams.toString() ? `?${searchParams.toString()}` : ''
   const redirect = useRef(searchParams.get('redirect'))
-  const { login } = useAuth()
+  const { login, loginWithPhone, mobileUser } = useAuth()
   const router = useRouter()
   const [error, setError] = React.useState<string | null>(null)
 

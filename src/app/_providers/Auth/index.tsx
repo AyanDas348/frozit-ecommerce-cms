@@ -1,7 +1,10 @@
 'use client'
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import * as firebaseAuth from 'firebase/auth'
 
+import { auth } from '../../../firebase'
 import { User } from '../../../payload/payload-types'
 
 // eslint-disable-next-line no-unused-vars
@@ -25,6 +28,10 @@ type Login = (args: { email: string; password: string }) => Promise<User> // esl
 
 type Logout = () => Promise<void>
 
+type LoginWithPhone = (args: { phoneNumber: string }) => Promise<firebaseAuth.ConfirmationResult>
+
+type verifyOTP = (user: firebaseAuth.ConfirmationResult, otp: string) => Promise<void>
+
 type AuthContext = {
   user?: User | null
   setUser: (user: User | null) => void // eslint-disable-line no-unused-vars
@@ -34,12 +41,17 @@ type AuthContext = {
   resetPassword: ResetPassword
   forgotPassword: ForgotPassword
   status: undefined | 'loggedOut' | 'loggedIn'
+  loginWithPhone: LoginWithPhone
+  verifyOTP: verifyOTP
+  mobileUser?: firebaseAuth.User | null
+  setMobileUser: (mobileUser: firebaseAuth.User | null) => void
 }
 
 const Context = createContext({} as AuthContext)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>()
+  const [mobileUser, setMobileUser] = useState<firebaseAuth.User | null>()
 
   // used to track the single event of logging in or logging out
   // useful for `useEffect` hooks that should only run once
@@ -130,7 +142,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setUser(null)
       setStatus('loggedOut')
+      toast.success('Logged out successfully', { position: 'top-center' })
       saveUserToLocalStorage(null)
+      window.location.href = '/products'
     } catch (e) {
       throw new Error('An error occurred while attempting to logout.')
     }
@@ -190,6 +204,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [])
 
+  const loginWithPhone = useCallback<LoginWithPhone>(async args => {
+    const recaptcha = new firebaseAuth.RecaptchaVerifier(auth, 'recaptcha', {})
+    try {
+      const confirmation = await firebaseAuth.signInWithPhoneNumber(
+        auth,
+        args.phoneNumber,
+        recaptcha,
+      )
+      return confirmation
+    } catch (e) {
+      console.error(e)
+    }
+  }, [])
+
+  const verifyOTP = async (user: firebaseAuth.ConfirmationResult, otp: string) => {
+    try {
+      if (user) {
+        const credential = firebaseAuth.PhoneAuthProvider.credential(user.verificationId, otp)
+        firebaseAuth.signInWithCredential(auth, credential)
+      } else {
+        console.error('User is undefined. Unable to verify OTP.')
+      }
+    } catch (err: any) {
+      console.error(err)
+    }
+  }
+
   return (
     <Context.Provider
       value={{
@@ -201,6 +242,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         resetPassword,
         forgotPassword,
         status,
+        loginWithPhone,
+        verifyOTP,
+        mobileUser,
+        setMobileUser,
       }}
     >
       {children}
