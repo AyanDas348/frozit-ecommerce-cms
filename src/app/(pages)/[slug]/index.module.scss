@@ -15,7 +15,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(20%, 1fr));
   gap: 30px;
-  padding: 100px 0;
+  padding: 10px 0;
   width: 100%;
 
   @include mid-break {
@@ -25,4 +25,9 @@
   @include small-break {
     grid-template-columns: 100%;
   }
+}
+
+.sectionHeading {
+  font-weight: 700;
+  font-size: 32px;
 }

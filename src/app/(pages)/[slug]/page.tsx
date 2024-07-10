@@ -104,14 +104,59 @@ export default async function NewPage({ params: { slug = 'home' } }) {
     'soya roll',
   ]
 
+  const beverages = ['pineapple', 'litchi', 'icy', 'ripe']
+
   const premiumProductsList = onlineItems.filter(item =>
     premiumProductsNames.some(name => item.title.toLowerCase().includes(name))) // eslint-disable-line
+
+  const beveragesList = onlineItems.filter(item =>
+    beverages.some(name => item.title.toLowerCase().includes(name)),)
 
   return (
     <React.Fragment>
       {slug === 'home' ? (
         <section>
-          <Hero type="customHero" richText={richText} links={[]} media="" />
+          <Hero
+            type="customHero"
+            richText={richText}
+            links={[]}
+            media=""
+            bgImages={[
+              '/assets/banners/1_1.jpg',
+              '/assets/banners/1_3.jpg',
+              '/assets/banners/1.jpg',
+              '/assets/banners/3.jpg',
+              '/assets/banners/4.jpg',
+            ]}
+          />
+          <Gutter>
+            <label className={classes.sectionHeading}>
+              Beat the heat with our curated beverages
+            </label>
+          </Gutter>
+          <Gutter>
+            {/* <Categories categories={categories} /> */}
+            <div className={classes.onlineItems}>
+              {beveragesList
+                ?.map(item => {
+                  return { ...item, priceJSON: parseInt(item.priceJSON) }
+                })
+                ?.map((result, index) => {
+                  return <Card key={index} relationTo="products" doc={result} showCategories />
+                })}
+            </div>
+          </Gutter>
+          <Gutter>{''}</Gutter>
+          <Hero
+            type="customHero"
+            richText={richText}
+            links={[]}
+            media=""
+            bgImages={['/assets/banners/2.jpg']}
+          />
+          <Gutter>
+            <label className={classes.sectionHeading}>Explore some of our Premium Products</label>
+          </Gutter>
           <Gutter>
             {/* <Categories categories={categories} /> */}
             <div className={classes.onlineItems}>

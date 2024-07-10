@@ -61,6 +61,7 @@ export interface Page {
     }[]
     | null;
     media?: string | Media | null;
+    bgImages?: string[]
   };
   layout: (
     | {

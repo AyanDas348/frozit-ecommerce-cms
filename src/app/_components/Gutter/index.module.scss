@@ -1,7 +1,13 @@
+@import '../../_css/queries.scss';
+
 .gutter {
   max-width: 1920px;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 80px;
+  @include small-break {
+    padding-top: 40px;
+  }
 }
 
 .gutterLeft {

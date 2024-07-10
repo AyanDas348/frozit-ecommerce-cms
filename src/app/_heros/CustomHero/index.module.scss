@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
+
   @include small-break {
     margin: 0;
   }
@@ -20,12 +21,8 @@
   align-items: center;
   background-size: cover;
   background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
 
-  /* Set default background position to right */
-
-  // background-position: right;
-
-  /* Mobile-first approach: Center background image on small devices */
   @media only screen and (max-width: 767px) {
     background-position: center;
   }
@@ -38,6 +35,7 @@
     background-position: right;
     /* Adjust as needed */
   }
+
   .heroWrapper::after {
     background-color: rgba(255, 255, 255, 1);
   }
