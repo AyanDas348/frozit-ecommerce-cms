@@ -78,7 +78,7 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
                 />
                 <Button type="submit" appearance="primary" label="Get OTP" />
               </div>
-              {!verificationId && <div id="recaptcha"></div>}
+              {!verificationId && <div id="recaptcha" style={{ display: 'none' }}></div>}
             </div>
           )}
           {step === 'otp' && (
