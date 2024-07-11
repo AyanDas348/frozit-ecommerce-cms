@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
+import { Button } from '../../../_components/Button'
 import { useAuth } from '../../../_providers/Auth'
 
 import styles from './index.module.scss'
@@ -87,6 +88,17 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
       <form onSubmit={handleSubmit}>
         <h2 className={styles.heading}>Add Address</h2>
         <label className={styles.label}>
+          Plot No:
+          <input
+            type="text"
+            name="plotNo"
+            value={address.plotNo}
+            onChange={handleChange}
+            className={styles.inputText}
+            placeholder="Enter plot number"
+          />
+        </label>
+        <label className={styles.label}>
           Street:
           <input
             type="text"
@@ -141,20 +153,9 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
             placeholder="Enter country"
           />
         </label>
-        <label className={styles.label}>
-          Plot No:
-          <input
-            type="text"
-            name="plotNo"
-            value={address.plotNo}
-            onChange={handleChange}
-            className={styles.inputText}
-            placeholder="Enter plot number"
-          />
-        </label>
-        <button type="submit" className={styles.submitButton}>
+        <Button type="submit" appearance="primary">
           Submit
-        </button>
+        </Button>
       </form>
     </div>
   )
