@@ -47,16 +47,15 @@ type AuthContext = {
   status: undefined | 'loggedOut' | 'loggedIn'
   loginWithPhone: LoginWithPhone
   verifyOTP: verifyOTP
-  mobileUser?: firebaseAuth.User | null
-  setMobileUser: (mobileUser: firebaseAuth.User | null) => void
   googleSignIn: googleSignIn
+  authLoading?: boolean
 }
 
 const Context = createContext({} as AuthContext)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>()
-  const [mobileUser, setMobileUser] = useState<firebaseAuth.User | null>()
+  const [authLoading, setAuthLoading] = useState<boolean>()
   const router = useRouter()
 
   // used to track the single event of logging in or logging out
@@ -213,6 +212,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loginWithPhone = useCallback<LoginWithPhone>(async args => {
     const recaptchaContainerId = 'recaptcha'
     const recaptchaContainer = document.getElementById(recaptchaContainerId)
+    setAuthLoading(true)
 
     if (!recaptchaContainer) {
       console.error(`Recaptcha container with id '${recaptchaContainerId}' not found.`)
@@ -230,15 +230,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         args.phoneNumber,
         recaptcha,
       )
+      setAuthLoading(false)
 
       return confirmationResult
     } catch (error) {
+      setAuthLoading(false)
       console.error('Error during phone authentication:', error)
       throw error
     }
   }, [])
 
   const verifyOTP = async (user: firebaseAuth.ConfirmationResult, otp: string) => {
+    setAuthLoading(true)
     try {
       const credential = firebaseAuth.PhoneAuthProvider.credential(user.verificationId, otp)
       const verifiedUser = await firebaseAuth.signInWithCredential(auth, credential)
@@ -253,8 +256,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(backendUser.data)
       setStatus('loggedIn')
       saveUserToLocalStorage(backendUser.data)
+      setAuthLoading(false)
+      toast.success('Logged in successfully', { position: 'top-center' })
       router.push('/')
     } catch (err: any) {
+      setAuthLoading(false)
       console.error(err)
     }
   }
@@ -275,8 +281,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(backendUser.data)
       setStatus('loggedIn')
       saveUserToLocalStorage(backendUser.data)
+      toast.success('Logged in successfully', { position: 'top-center' })
       router.push('/')
     } catch (error: any) {
+      setAuthLoading(false)
       console.error(error)
     }
   }
@@ -294,9 +302,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         status,
         loginWithPhone,
         verifyOTP,
-        mobileUser,
-        setMobileUser,
         googleSignIn,
+        authLoading,
       }}
     >
       {children}

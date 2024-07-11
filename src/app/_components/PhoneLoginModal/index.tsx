@@ -22,7 +22,7 @@ interface PhoneLoginModalProps {
 }
 
 const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClose }) => {
-  const { loginWithPhone, verifyOTP } = useAuth()
+  const { loginWithPhone, verifyOTP, authLoading } = useAuth()
   const {
     register,
     handleSubmit,
@@ -76,7 +76,11 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
                   error={errors.phoneNumber}
                   type="number"
                 />
-                <Button type="submit" appearance="primary" label="Get OTP" />
+                <Button
+                  type="submit"
+                  appearance="primary"
+                  label={authLoading ? 'Sending OTP' : 'Send OTP'}
+                />
               </div>
               {!verificationId && <div id="recaptcha" style={{ display: 'none' }}></div>}
             </div>
@@ -92,7 +96,11 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
                   error={errors.otp}
                   type="text"
                 />
-                <Button type="submit" appearance="primary" label="Verify Now" />
+                <Button
+                  type="submit"
+                  appearance="primary"
+                  label={authLoading ? 'Verifying OTP' : 'Verify Now'}
+                />
               </div>
             </>
           )}
