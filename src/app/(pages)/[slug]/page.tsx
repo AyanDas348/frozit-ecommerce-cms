@@ -78,27 +78,6 @@ export default function NewPage({ params: { slug = 'home' } }) {
       ],
       type: 'h2',
     },
-    {
-      children: [
-        {
-          text: '\nProviding you Ready to Eat Frozen Foods, ',
-        },
-      ],
-    },
-    {
-      children: [
-        {
-          text: 'Fresh & Packed Delectable Bakery products,',
-        },
-      ],
-    },
-    {
-      children: [
-        {
-          text: 'Refreshing Drinks and much more',
-        },
-      ],
-    },
   ]
 
   const premiumProductsNames = [
@@ -148,7 +127,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
         <section>
           {loading && <Loader />}
           <div className={classes.desktopBg}>
-            <Hero type="customHero" richText={richText} links={[]} media="" bgImages={dektopBg} />
+            <Hero type="customHero" richText={[]} links={[]} media="" bgImages={dektopBg} />
           </div>
           <div className={classes.mobileBg}>
             <Hero type="customHero" richText={[]} links={[]} media="" bgImages={mobilebg} />
