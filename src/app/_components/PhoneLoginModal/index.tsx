@@ -85,7 +85,7 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
                 <Button
                   type="submit"
                   appearance="primary"
-                  label={authLoading ? 'Sending OTP' : 'Send OTP'}
+                  label={authLoading ? 'Sending OTP ...' : 'Send OTP'}
                 />
               </div>
               {!verificationId && <div id="recaptcha" style={{ display: 'none' }}></div>}
@@ -105,7 +105,7 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
                 <Button
                   type="submit"
                   appearance="primary"
-                  label={authLoading ? 'Verifying OTP' : 'Verify Now'}
+                  label={authLoading ? 'Verifying OTP ...' : 'Verify Now'}
                 />
               </div>
             </>

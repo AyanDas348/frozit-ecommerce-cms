@@ -5,11 +5,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 30px;
   width: 100%;
-  padding-top: 40px;
+  padding-top: 130px;
 
   @include small-break {
     grid-template-columns: 1fr;
-    padding-top: 20px;
+    padding-top: 170px;
   }
 }
 
@@ -63,5 +63,5 @@
 }
 
 .addToCart {
-  width: 50%;
+  width: 100%;
 }
