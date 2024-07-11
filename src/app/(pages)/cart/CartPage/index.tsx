@@ -2,6 +2,7 @@
 
 import React, { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { Page, Settings, User } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
@@ -66,10 +67,13 @@ export const CartPage: React.FC<{
   }, [user])
 
   const [isPhoneLoginModalOpen, setIsPhoneLoginModalOpen] = useState(false)
+  const router = useRouter()
 
   const handleCheckoutClick = () => {
     if (!user) {
       setIsPhoneLoginModalOpen(true)
+    } else {
+      router.push(`/checkout?addressId=${selectedAddressIndex}`)
     }
   }
 
