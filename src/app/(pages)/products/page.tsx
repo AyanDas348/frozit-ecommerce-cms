@@ -21,26 +21,9 @@ const Products = async () => {
     createdAt: Date.now().toString(),
     hero: {
       type: 'lowImpact',
-      richText: [
-        {
-          type: 'h1',
-          children: [
-            {
-              text: 'All products',
-            },
-          ],
-        },
-        {
-          type: 'p',
-          children: [
-            {
-              text: 'View Products',
-            },
-          ],
-        },
-      ],
       links: [],
       media: null,
+      richText: [],
     },
     id: '',
     layout: [

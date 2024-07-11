@@ -8,6 +8,7 @@ import { Button } from '../../../_components/Button'
 import { HR } from '../../../_components/HR'
 import { LoadingShimmer } from '../../../_components/LoadingShimmer'
 import { Media } from '../../../_components/Media'
+import PhoneLoginModal from '../../../_components/PhoneLoginModal'
 import { Price } from '../../../_components/Price'
 import { RemoveFromCartButton } from '../../../_components/RemoveFromCartButton'
 import { useAuth } from '../../../_providers/Auth'
@@ -64,6 +65,14 @@ export const CartPage: React.FC<{
     }
   }, [user])
 
+  const [isPhoneLoginModalOpen, setIsPhoneLoginModalOpen] = useState(false)
+
+  const handleCheckoutClick = () => {
+    if (!user) {
+      setIsPhoneLoginModalOpen(true)
+    }
+  }
+
   return (
     <Fragment>
       <br />
@@ -94,15 +103,17 @@ export const CartPage: React.FC<{
               {user && (
                 <div className={classes.addressWrapper}>
                   {addresses.length === 0 ? (
-                    <div>
+                    <div id="address">
                       <p>No Address Available</p>
-                      <button
+                      <Button
+                        type="button"
+                        appearance="primary"
                         onClick={() => {
                           setAddAddressModal(true)
                         }}
                       >
                         + Add New
-                      </button>
+                      </Button>
                     </div>
                   ) : (
                     <div className={classes.addressContainer}>
@@ -215,19 +226,16 @@ export const CartPage: React.FC<{
 
                   <div className={classes.checkoutButtonWrapper}>
                     {user && addresses.length === 0 && (
-                      <p className={classes.warningMessage}>
-                        Please select an address to proceed to checkout.
+                      <p className={classes.checkoutButton}>
+                        Please select an address to checkout.
                       </p>
                     )}
 
                     {user && addresses.length > 0 && selectedAddressIndex >= 0 && (
                       <Button
                         className={classes.checkoutButton}
-                        href={
-                          user
-                            ? `/checkout?addressId=${selectedAddressIndex}`
-                            : '/login?redirect=%2Fcheckout'
-                        }
+                        onClick={handleCheckoutClick}
+                        href={user ? `/checkout?addressId=${selectedAddressIndex}` : null}
                         label={user ? 'Proceed to Checkout' : 'Login to checkout'}
                       />
                     )}
@@ -235,11 +243,8 @@ export const CartPage: React.FC<{
                     {!user && (
                       <Button
                         className={classes.checkoutButton}
-                        href={
-                          user
-                            ? `/checkout?addressId=${selectedAddressIndex}`
-                            : '/login?redirect=%2Fcheckout'
-                        }
+                        onClick={handleCheckoutClick}
+                        href={user ? `/checkout?addressId=${selectedAddressIndex}` : null}
                         label={user ? 'Proceed to Checkout' : 'Login to checkout'}
                       />
                     )}
@@ -258,6 +263,10 @@ export const CartPage: React.FC<{
                         Please select an address to proceed to checkout.
                       </p>
                     )} */}
+                    <PhoneLoginModal
+                      isOpen={isPhoneLoginModalOpen}
+                      onRequestClose={() => setIsPhoneLoginModalOpen(false)}
+                    />
                   </div>
                 </div>
               </div>

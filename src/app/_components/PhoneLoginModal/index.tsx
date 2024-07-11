@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Modal from 'react-modal'
 import * as firebaseAuth from 'firebase/auth'
+import { useRouter } from 'next/navigation'
 
 import { useAuth } from '../../_providers/Auth'
 import { Button } from '../Button'
@@ -42,10 +43,15 @@ const PhoneLoginModal: React.FC<PhoneLoginModalProps> = ({ isOpen, onRequestClos
     }
   }
 
+  const router = useRouter()
+
   const handleOtpSubmit = async (data: { otp: string }) => {
     try {
       await verifyOTP(verificationId, data.otp)
       onRequestClose()
+      if (typeof window !== 'undefined' && window.location.pathname === '/login') {
+        router.push('/')
+      }
     } catch (error) {
       setError('Invalid OTP. Please try again.')
     }

@@ -25,11 +25,11 @@ export const ArchiveBlock: React.FC<
 
   return (
     <div id={`block-${id}`} className={classes.archiveBlock}>
-      {introContent && (
+      {/* {introContent && (
         <Gutter className={classes.introContent}>
           <RichText content={introContent} />
         </Gutter>
-      )}
+      )} */}
       <CollectionArchive
         populateBy={populateBy}
         relationTo={relationTo}

@@ -258,7 +258,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       saveUserToLocalStorage(backendUser.data)
       setAuthLoading(false)
       toast.success('Logged in successfully', { position: 'top-center' })
-      router.push('/')
     } catch (err: any) {
       setAuthLoading(false)
       console.error(err)

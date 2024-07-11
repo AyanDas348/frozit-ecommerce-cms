@@ -26,7 +26,7 @@ export const CustomHero: React.FC<Page['hero']> = ({ richText, media, links, bgI
     <section className={classes.hero}>
       <div className={classes.heroWrapper} style={{ backgroundImage: `url(${bgImages[index]})` }}>
         <div className={classes.heroTextBox}>
-          <RichText content={richText} />
+          {richText.length !== 0 && <RichText content={richText} />}
 
           {Array.isArray(links) && links.length > 0 && (
             <ul className={classes.links}>

@@ -147,7 +147,7 @@ export const CollectionArchive: React.FC<Props> = props => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [onlineItemsId, page])
+  }, [page])
 
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>

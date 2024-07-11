@@ -82,7 +82,8 @@ export const Card: React.FC<{
   //   })()
   // }, [metaImage, slug])
 
-  const { cart, addItemToCart, isProductInCart, hasInitializedCart } = useCart()
+  const { cart, addItemToCart, isProductInCart, hasInitializedCart, setHasInitializedCart } =
+    useCart()
   const [isInCart, setIsInCart] = useState<boolean>()
 
   useEffect(() => {
@@ -99,6 +100,9 @@ export const Card: React.FC<{
         price: priceJSON,
         id: doc.id,
       })
+      if (!hasInitializedCart) {
+        setHasInitializedCart(true)
+      }
     }
   }
 

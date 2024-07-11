@@ -151,7 +151,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
             <Hero type="customHero" richText={richText} links={[]} media="" bgImages={dektopBg} />
           </div>
           <div className={classes.mobileBg}>
-            <Hero type="customHero" richText={richText} links={[]} media="" bgImages={mobilebg} />
+            <Hero type="customHero" richText={[]} links={[]} media="" bgImages={mobilebg} />
           </div>
           <Gutter>
             <label className={classes.sectionHeading}>
@@ -173,7 +173,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
           <Gutter>{''}</Gutter>
           <Hero
             type="customHero"
-            richText={richText}
+            richText={[]}
             links={[]}
             media=""
             bgImages={['/assets/banners/2.jpg']}

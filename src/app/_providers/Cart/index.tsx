@@ -26,6 +26,7 @@ export type CartContext = {
     raw: number
   }
   hasInitializedCart: boolean
+  setHasInitializedCart: (item: boolean) => void
 }
 
 interface CartResponse {
@@ -128,6 +129,7 @@ export const CartProvider = props => {
     const syncCartFromLocalStorage = async () => {
       const localCart = localStorage.getItem('cart')
       const parsedCart = JSON.parse(localCart || '{}')
+      console.log(localCart, parsedCart)
 
       if (parsedCart?.items && parsedCart?.items?.length > 0) {
         const items: CartItem[] = await Promise.all(
@@ -148,10 +150,12 @@ export const CartProvider = props => {
 
         dispatchCart({ type: 'SET_CART', payload: { items } })
       } else {
+        console.log('i ran')
         dispatchCart({ type: 'SET_CART', payload: { items: [] } })
       }
     }
     if (!hasInitialized.current) {
+      console.log('i ran 3')
       hasInitialized.current = true
       syncCartFromLocalStorage()
     }
@@ -215,6 +219,7 @@ export const CartProvider = props => {
     }
 
     if (authStatus === 'loggedOut') {
+      console.log('i ran')
       dispatchCart({ type: 'CLEAR_CART' })
     }
   }, [user, authStatus])
@@ -254,7 +259,7 @@ export const CartProvider = props => {
   )
 
   useEffect(() => {
-    if (!hasInitialized.current) return
+    if (!hasInitialized.current || !user) return
     if (authStatus === 'loggedIn') {
       const getCart = async (): Promise<CartResponse> => {
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
@@ -346,6 +351,11 @@ export const CartProvider = props => {
     })
   }, [cart, hasInitialized])
 
+  useEffect(() => {
+    if (hasInitializedCart) {
+      hasInitialized.current = true
+    }
+  }, [hasInitializedCart])
   return (
     <Context.Provider
       value={{
@@ -357,6 +367,7 @@ export const CartProvider = props => {
         isProductInCart,
         cartTotal: total,
         hasInitializedCart,
+        setHasInitializedCart,
       }}
     >
       {children}
