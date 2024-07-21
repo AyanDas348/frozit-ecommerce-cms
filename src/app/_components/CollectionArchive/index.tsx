@@ -38,6 +38,7 @@ export type Props = {
 
 export const CollectionArchive: React.FC<Props> = props => {
   const { categoryFilters, sort } = useFilter()
+  console.log(categoryFilters)
 
   const {
     className,
@@ -90,20 +91,30 @@ export const CollectionArchive: React.FC<Props> = props => {
       if (hasHydrated) {
         setIsLoading(true)
       }
-    }, 500)
+    })
 
     const makeRequest = async () => {
       try {
-        const req = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items?page=${page}`,
-        )
-        const json = await req.json()
+        const categoryFilterPresent = categoryFilters.length > 0
+        let response
+
+        if (categoryFilterPresent) {
+          const request = await fetch(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${categoryFilters[0]}`,
+          )
+          response = await request.json()
+        } else {
+          const req = await fetch(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items?page=${page}`,
+          )
+          response = await req.json()
+        }
         clearTimeout(timer)
         hasHydrated.current = true
 
         // const { docs } = json as { docs: Product[] }
         setResults({
-          docs: json.data.data.items.map(item => ({
+          docs: response.data.data.items.map(item => ({
             categories: [],
             id: item.item_id,
             meta: {
@@ -127,60 +138,72 @@ export const CollectionArchive: React.FC<Props> = props => {
             stock: item.actual_available_stock,
           })),
           page: page,
-          totalPages: json.data.data.totalPages || 1,
+          totalPages: response.data.data.totalPages || 1,
           hasPrevPage: false,
-          hasNextPage: json.data.data.currenPage < json.data.data.totalPages ? true : false,
+          hasNextPage:
+            response?.data?.data?.currenPage < response?.data?.data?.totalPages ? true : false,
           prevPage: 1,
           nextPage: 1,
-          totalDocs: json.data.data.totalItems || 0,
+          totalDocs: response?.data?.data?.totalItems || 0,
         })
-        setIsLoading(false)
       } catch (err) {
-        console.warn(err) // eslint-disable-line no-console
+        console.warn(err)
         setIsLoading(false)
-        // setError(`Unable to load "${relationTo} archive" data at this time.`)
       }
     }
 
     makeRequest()
 
+    // Set isLoading to false after 5 seconds regardless of the request state
+    const loadingTimeout = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+
     return () => {
-      if (timer) clearTimeout(timer)
+      clearTimeout(timer)
+      clearTimeout(loadingTimeout)
     }
-  }, [page])
+  }, [page, categoryFilters])
+
+  useEffect(() => {
+    if (sort === 'lowToHigh') {
+    }
+  }, [sort])
 
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>
       <div ref={scrollRef} className={classes.scrollRef} />
       {isLoading && <LottiePlayer />}
       {!isLoading && error && <div>{error}</div>}
-      <Fragment>
-        {showPageRange !== false && (
-          <div className={classes.pageRange}>
-            <PageRange
-              totalDocs={results.totalDocs}
-              currentPage={results.page}
-              collection={relationTo}
-              limit={limit}
-            />
+      {!isLoading && (
+        <Fragment>
+          {showPageRange !== false && (
+            <div className={classes.pageRange}>
+              <PageRange
+                totalDocs={results.totalDocs}
+                currentPage={results.page}
+                collection={relationTo}
+                limit={limit}
+              />
+            </div>
+          )}
+
+          <div className={classes.grid}>
+            {results.docs?.map((result, index) => {
+              return <Card key={index} relationTo="products" doc={result} showCategories />
+            })}
           </div>
-        )}
 
-        <div className={classes.grid}>
-          {results.docs?.map((result, index) => {
-            return <Card key={index} relationTo="products" doc={result} showCategories />
-          })}
-        </div>
-
-        {results.totalPages > 1 && (
-          <Pagination
-            className={classes.pagination}
-            page={results.page}
-            totalPages={results.totalPages}
-            onClick={setPage}
-          />
-        )}
-      </Fragment>
+          {results.totalPages > 1 && (
+            <Pagination
+              className={classes.pagination}
+              page={results.page}
+              totalPages={results.totalPages}
+              onClick={setPage}
+            />
+          )}
+        </Fragment>
+      )}
     </div>
   )
 }

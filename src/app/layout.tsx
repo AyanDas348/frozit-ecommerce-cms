@@ -17,15 +17,10 @@ const jost = Ubuntu({
   // variable: '--font-jost',
 })
 
+import { ToastContainer } from 'react-toastify'
 import Script from 'next/script'
 
-function Payment() {
-  return (
-    <>
-      <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
-    </>
-  )
-}
+import 'react-toastify/dist/ReactToastify.css'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -47,6 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {/* @ts-expect-error */}
           <Footer1 />
         </Providers>
+        <ToastContainer />
       </body>
     </html>
   )

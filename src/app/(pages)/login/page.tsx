@@ -35,7 +35,12 @@ export default function Login() {
 
   return (
     <section className={classes.login}>
-      <div className={classes.heroImg}>
+      <div className={classes.logoContainer}>
+        <Link href="/">
+          <Image src="/assets/logo/logo.png" alt="logo" width={170} height={50} />
+        </Link>
+      </div>
+      {/* <div className={classes.heroImg}>
         <div className={classes.carouselContainer}>
           {carouselImages.map((src, index) => (
             <Image
@@ -51,9 +56,8 @@ export default function Login() {
           ))}
         </div>
         <Link href="/">
-          {/* <Image src="" alt="logo" width={250} height={23} className={classes.logo} /> */}
         </Link>
-      </div>
+      </div> */}
       <div className={classes.formWrapper}>
         <div className={classes.formContainer}>
           <Button appearance="secondary" href="/" type="button" className={classes.logo}>

@@ -21,7 +21,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ label, value, isSelected, on
     <label className={classes.checkboxWrapper}>
       <input
         type="checkbox"
-        checked={isChecked}
+        checked={isSelected}
         onChange={handleCheckboxChange}
         className={classes.checkbox}
       />

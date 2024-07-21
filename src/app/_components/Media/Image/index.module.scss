@@ -1,7 +1,18 @@
-.placeholder-color-light {
-  // background-color: rgba(0, 0, 0, 0.05);
+/* index.module.scss */
+.image {
+  transition: transform 0.2s;
 }
 
-.placeholder {
-  // background-color: var(--theme-elevation-50);
+.image.zoomed {
+  transform: scale(2); /* Adjust the zoom level as needed */
+}
+
+.imageWrapper {
+  // position: relative;
+  // overflow: hidden;
+  cursor: zoom-in;
+}
+
+.image-wrapper.zoomed {
+  cursor: zoom-out; /* Cursor changes back when zoomed */
 }

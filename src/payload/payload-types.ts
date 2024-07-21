@@ -201,7 +201,7 @@ export interface Product {
   item_id?: string;
   title: string;
   publishedOn?: string | null;
-  layout: (
+  layout?: (
     | {
       invertBackground?: boolean | null;
       richText: {

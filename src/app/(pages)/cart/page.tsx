@@ -21,22 +21,8 @@ export const dynamic = 'force-dynamic'
 
 export default async function Cart() {
   let page: Page | null = null
-
-  try {
-    page = await fetchDoc<Page>({
-      collection: 'pages',
-      slug: 'cart',
-    })
-  } catch (error) {
-    console.error(error)
-  }
-
   if (!page) {
     page = staticCart
-  }
-
-  if (!page) {
-    return notFound()
   }
 
   let settings: Settings | null = null
@@ -51,7 +37,7 @@ export default async function Cart() {
     <div className={classes.container}>
       <Gutter>
         <h3>Cart</h3>
-        <CartPage settings={settings} page={page} />
+        <CartPage page={page} />
       </Gutter>
       {/* <Blocks blocks={page?.layout} disableBottomPadding /> */}
     </div>

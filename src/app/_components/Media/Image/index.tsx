@@ -23,6 +23,7 @@ export const Image: React.FC<MediaProps> = props => {
   } = props
 
   const [isLoading, setIsLoading] = React.useState(true)
+  const [isZoomed, setIsZoomed] = React.useState(false)
 
   let width: number | undefined
   let height: number | undefined
@@ -51,25 +52,39 @@ export const Image: React.FC<MediaProps> = props => {
     .map(([, value]) => `(max-width: ${value}px) ${value}px`)
     .join(', ')
 
+  const handleImageClick = () => {
+    setIsZoomed(prev => !prev)
+  }
+
   return (
-    <NextImage
-      className={[isLoading && classes.placeholder, classes.image, imgClassName]
-        .filter(Boolean)
-        .join(' ')}
-      src={typeof resource !== 'string' && resource.url}
-      alt={alt || ''}
-      onClick={onClick}
-      onLoad={() => {
-        setIsLoading(false)
-        if (typeof onLoadFromProps === 'function') {
-          onLoadFromProps()
-        }
-      }}
-      fill={fill}
-      width={!fill ? width : undefined}
-      height={!fill ? height : undefined}
-      sizes={sizes}
-      priority={priority}
-    />
+    <div
+      className={[classes.imageWrapper, isZoomed && classes.zoomed].filter(Boolean).join(' ')}
+      onClick={handleImageClick}
+    >
+      <NextImage
+        className={[
+          isLoading && classes.placeholder,
+          classes.image,
+          imgClassName,
+          isZoomed && classes.zoomed,
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        src={typeof resource !== 'string' && resource.url}
+        alt={alt || ''}
+        onClick={onClick}
+        onLoad={() => {
+          setIsLoading(false)
+          if (typeof onLoadFromProps === 'function') {
+            onLoadFromProps()
+          }
+        }}
+        fill={fill}
+        width={!fill ? width : undefined}
+        height={!fill ? height : undefined}
+        sizes={sizes}
+        priority={priority}
+      />
+    </div>
   )
 }

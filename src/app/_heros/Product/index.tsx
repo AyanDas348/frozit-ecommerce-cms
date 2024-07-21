@@ -1,4 +1,8 @@
+'use client'
+
 import React, { Fragment } from 'react'
+import { FaShareAlt } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
 import { Category, Product } from '../../../payload/payload-types'
 import { AddToCartButton } from '../../_components/AddToCartButton'
@@ -13,6 +17,18 @@ export const ProductHero: React.FC<{
 }> = ({ product }) => {
   const { title, categories, meta: { image: metaImage, description } = {}, stock } = product
   const outOfStock = stock <= 0
+
+  const handleShare = () => {
+    const productUrl = window.location.href
+    navigator.clipboard.writeText(productUrl).then(
+      () => {
+        toast.success('Product URL copied to clipboard!', { position: 'top-center' })
+      },
+      err => {
+        toast.error('Failed to copy: ', err)
+      },
+    )
+  }
 
   return (
     <Gutter className={classes.productHero}>
@@ -52,6 +68,9 @@ export const ProductHero: React.FC<{
         </div>
         <div className={classes.addToCart}>
           {outOfStock && <AddToCartButton product={product} className={classes.addToCartButton} />}
+          <button className={classes.shareButton} onClick={() => handleShare()}>
+            <FaShareAlt />
+          </button>
         </div>
       </div>
     </Gutter>

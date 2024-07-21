@@ -54,7 +54,24 @@ const Products = async () => {
     },
     _status: 'published',
   }
+
   let categories: Category[] | null = defaultCategories
+  try {
+    const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/category`)
+    const response = await request.json()
+    if (response.success) {
+      const data = response.data.data
+      categories = data.map(category => ({
+        id: category.category_id,
+        title: category.category_name,
+        media: null,
+        updatedAt: Date.now().toString(),
+        createdAt: Date.now().toString(),
+      }))
+    }
+  } catch (e) {
+    console.log(e)
+  }
 
   return (
     <div className={classes.container}>

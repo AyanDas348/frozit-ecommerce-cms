@@ -1,6 +1,7 @@
 .svgContainer {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   top: 50%; /* Adjust height as needed */
 }

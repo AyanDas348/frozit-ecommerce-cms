@@ -32,6 +32,7 @@ export default function Loader() {
           />
         </path>
       </svg>
+      <h3>Loading products ...</h3>
     </div>
   )
 }

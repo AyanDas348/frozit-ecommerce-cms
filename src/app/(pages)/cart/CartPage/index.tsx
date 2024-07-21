@@ -31,7 +31,6 @@ interface Address {
 }
 
 export const CartPage: React.FC<{
-  settings: Settings
   page: Page
 }> = props => {
   const { user } = useAuth()

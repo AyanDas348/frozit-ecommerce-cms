@@ -61,7 +61,7 @@ export const CartProvider = props => {
     raw: 0,
   })
   const hasInitialized = useRef(false)
-  const [hasInitializedCart, setHasInitializedCart] = useState(false)
+  const [hasInitializedCart, setHasInitializedCart] = useState(true)
 
   const addItemToCart = useCallback(incomingItem => {
     dispatchCart({ type: 'ADD_ITEM', payload: incomingItem })

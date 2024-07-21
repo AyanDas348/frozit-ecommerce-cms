@@ -2,7 +2,7 @@
 
 .login {
   display: grid;
-  grid-template-columns: 1fr 45%;
+  grid-template-columns: 1fr;
   height: 100vh;
 
   @include mid-break {
@@ -17,6 +17,12 @@
     color: var(--color-gray-500);
     padding-bottom: 20px;
   }
+}
+
+.logoContainer{
+  position: absolute;
+  top: 5%;
+  left: 5%;
 }
 
 .heroImg {
@@ -74,7 +80,8 @@
   background: transparent;
 
   @include mid-break {
-    justify-content: flex-start;
+    justify-content: center;
+    align-self: center;
     padding: 10px;
   }
 }

@@ -64,4 +64,20 @@
 
 .addToCart {
   width: 100%;
+  column-gap: 20px;
+  display: flex;
+}
+
+.shareButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem; /* Adjust the size as needed */
+  color: #333; /* Adjust the color as needed */
+  display: flex;
+  align-items: center;
+}
+
+.shareButton:hover {
+  color: #000; /* Adjust the hover color as needed */
 }
