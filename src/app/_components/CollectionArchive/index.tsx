@@ -38,7 +38,6 @@ export type Props = {
 
 export const CollectionArchive: React.FC<Props> = props => {
   const { categoryFilters, sort } = useFilter()
-  console.log(categoryFilters)
 
   const {
     className,
@@ -100,12 +99,12 @@ export const CollectionArchive: React.FC<Props> = props => {
 
         if (categoryFilterPresent) {
           const request = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${categoryFilters[0]}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${categoryFilters[0]}&priceOrder=${sort}`,
           )
           response = await request.json()
         } else {
           const req = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items?page=${page}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items?page=${page}&priceOrder=${sort}`,
           )
           response = await req.json()
         }
@@ -118,7 +117,7 @@ export const CollectionArchive: React.FC<Props> = props => {
             categories: [],
             id: item.item_id,
             meta: {
-              description: '',
+              description: item.description || '',
               image: {
                 alt: item.image_name,
                 caption: null,
@@ -126,9 +125,9 @@ export const CollectionArchive: React.FC<Props> = props => {
                 height: 2865,
                 width: 2200,
                 mimeType: item.image_type,
-                url: onlineItemsId.includes(item.item_id)
-                  ? onlineItems.find(i => i.id === item.item_id).meta.image.url
-                  : '',
+                url: item.imageUrl
+                  ? item.imageUrl
+                  : onlineItems.find(i => i.id === item.item_id).meta.image.url,
               },
               title: 'item details',
             },
@@ -144,7 +143,7 @@ export const CollectionArchive: React.FC<Props> = props => {
             response?.data?.data?.currenPage < response?.data?.data?.totalPages ? true : false,
           prevPage: 1,
           nextPage: 1,
-          totalDocs: response?.data?.data?.totalItems || 0,
+          totalDocs: response?.data?.data?.totalItems || response?.data?.data?.items.length,
         })
       } catch (err) {
         console.warn(err)
@@ -163,7 +162,7 @@ export const CollectionArchive: React.FC<Props> = props => {
       clearTimeout(timer)
       clearTimeout(loadingTimeout)
     }
-  }, [page, categoryFilters])
+  }, [page, categoryFilters, sort])
 
   useEffect(() => {
     if (sort === 'lowToHigh') {

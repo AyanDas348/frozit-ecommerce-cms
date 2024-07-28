@@ -41,7 +41,7 @@ const Products = async () => {
         populateBy: 'collection',
         relationTo: 'products',
         categories: [],
-        limit: 10,
+        limit: 16,
         id: '1',
         blockName: 'Archive Block',
         blockType: 'archive',

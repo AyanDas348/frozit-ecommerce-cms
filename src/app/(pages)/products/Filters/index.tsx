@@ -45,17 +45,18 @@ const Filters = ({ categories }: { categories: Category[] }) => {
         <HR className={classes.hr} />
         <h6 className={classes.title}>Sort By</h6>
         <div className={classes.categories}>
+          <label className={classes.label}>Price</label>
           <RadioButton
-            label="Latest"
-            value="lowToHigh"
-            isSelected={sort === 'lowToHigh'}
+            label="High to Low"
+            value="-1"
+            isSelected={sort === '-1'}
             onRadioChange={handleSort}
             groupName="sort"
           />
           <RadioButton
-            label="Oldest"
-            value="highToLow"
-            isSelected={sort === 'highToLow'}
+            label="Low to High"
+            value="1"
+            isSelected={sort === '1'}
             onRadioChange={handleSort}
             groupName="sort"
           />

@@ -63,11 +63,11 @@ export const ProductHero: React.FC<{
         <Price product={product} button={'addToCart'} />
 
         <div className={classes.description}>
-          <h6>Description</h6>
+          {/* <h6>Description</h6> */}
           <p>{description}</p>
         </div>
         <div className={classes.addToCart}>
-          {outOfStock && <AddToCartButton product={product} className={classes.addToCartButton} />}
+          <AddToCartButton product={product} className={classes.addToCartButton} />
           <button className={classes.shareButton} onClick={() => handleShare()}>
             <FaShareAlt />
           </button>
