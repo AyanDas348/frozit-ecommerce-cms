@@ -114,7 +114,7 @@ export const CollectionArchive: React.FC<Props> = props => {
         // const { docs } = json as { docs: Product[] }
         setResults({
           docs: response.data.data.items.map(item => ({
-            categories: [],
+            categories: item.category_id,
             id: item.item_id,
             meta: {
               description: item.description || '',
@@ -125,9 +125,9 @@ export const CollectionArchive: React.FC<Props> = props => {
                 height: 2865,
                 width: 2200,
                 mimeType: item.image_type,
-                url: item.imageUrl
-                  ? item.imageUrl
-                  : onlineItems.find(i => i.id === item.item_id).meta.image.url,
+                url: onlineItems.find(i => i.id === item.item_id).meta.image.url
+                  ? onlineItems.find(i => i.id === item.item_id).meta.image.url
+                  : item.imageUrl,
               },
               title: 'item details',
             },

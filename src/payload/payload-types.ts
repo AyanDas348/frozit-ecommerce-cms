@@ -384,7 +384,7 @@ export interface Product {
     }
   )[]
   | null;
-  categories?: (string | Category)[] | null;
+  categories?: string;
   relatedProducts?: (string | Product)[] | null;
   slug?: string | null;
   skipSync?: boolean | null;

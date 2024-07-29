@@ -3,7 +3,7 @@ export const onlineItems = [
     id: '1697951000000302286',
     title: 'ALMOND PISTA COOKIES 250GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -25,7 +25,7 @@ export const onlineItems = [
     id: '1697951000000302325',
     title: 'ALMOND PISTA COOKIES 400GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -47,7 +47,7 @@ export const onlineItems = [
     id: '1697951000000302403',
     title: 'BUTTER COOKIES 250GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -69,7 +69,7 @@ export const onlineItems = [
     id: '1697951000000302442',
     title: 'BUTTER COOKIES 400GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -91,7 +91,7 @@ export const onlineItems = [
     id: '1697951000000302481',
     title: 'CHOCOCHIP COOKIES 400GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -113,7 +113,7 @@ export const onlineItems = [
     id: '1697951000000302520',
     title: 'CHOCOCHIPS COOKIES 250GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -135,7 +135,7 @@ export const onlineItems = [
     id: '1697951000000302559',
     title: 'COCONUT COOKIES 250GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -157,7 +157,7 @@ export const onlineItems = [
     id: '1697951000000302598',
     title: 'SWEET AND SALT COOKIES 250 GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -179,7 +179,7 @@ export const onlineItems = [
     id: '1697951000000302637',
     title: 'TEA COOKIES 250GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -201,7 +201,7 @@ export const onlineItems = [
     id: '1697951000000302676',
     title: 'TEA COOKIES 400GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -223,7 +223,7 @@ export const onlineItems = [
     id: '1697951000000302715',
     title: 'Corn Flakes(250 GM)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -245,7 +245,7 @@ export const onlineItems = [
     id: '1697951000000302754',
     title: 'CRISPY CHOCO BITES(250GM)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -267,7 +267,7 @@ export const onlineItems = [
     id: '1697951000000302793',
     title: 'CRISPY CHOCO BITES 27GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -289,7 +289,7 @@ export const onlineItems = [
     id: '1697951000000302832',
     title: 'Crunchy Muesli(500GM)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -311,7 +311,7 @@ export const onlineItems = [
     id: '1697951000000302871',
     title: 'ORIGINAL OATS 450GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -333,7 +333,7 @@ export const onlineItems = [
     id: '1697951000000302910',
     title: 'ORIGINAL OATS 900GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -355,7 +355,7 @@ export const onlineItems = [
     id: '1697951000000302949',
     title: 'CORN FLAKES 70GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -377,7 +377,7 @@ export const onlineItems = [
     id: '1697951000000302988',
     title: 'Chapati Flour (500gm)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -399,7 +399,7 @@ export const onlineItems = [
     id: '1697951000000303027',
     title: 'BUTTER COOKIES 250GM (M C)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -421,7 +421,7 @@ export const onlineItems = [
     id: '1697951000000303066',
     title: 'COCONUT COOKIES 250GM (M C)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -443,7 +443,7 @@ export const onlineItems = [
     id: '1697951000000303105',
     title: 'SWEET & SALT COOKIES 250GM (M C)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -465,7 +465,7 @@ export const onlineItems = [
     id: '1697951000000303144',
     title: 'TEA COOKIES 250GM (M C)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -487,7 +487,7 @@ export const onlineItems = [
     id: '1697951000000303183',
     title: 'ALMOND PISTA COOKIES 250GM(M C)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -509,7 +509,7 @@ export const onlineItems = [
     id: '1697951000000303222',
     title: 'CHOCOCHIPS COOKIES 250GM(M C)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -531,7 +531,7 @@ export const onlineItems = [
     id: '1697951000000303261',
     title: 'TANGY TAMATO MSL OATS 40GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -553,7 +553,7 @@ export const onlineItems = [
     id: '1697951000000303300',
     title: 'MIX VEGGIE MSL OATS 40GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -575,7 +575,7 @@ export const onlineItems = [
     id: '1697951000000303339',
     title: 'WHITE SAUCE SEASONING 7GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -597,7 +597,7 @@ export const onlineItems = [
     id: '1697951000000303378',
     title: 'TOMATO & HERB SEASONING 7GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -619,7 +619,7 @@ export const onlineItems = [
     id: '1697951000000306498',
     title: 'CHANA SATTU 200GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -641,7 +641,7 @@ export const onlineItems = [
     id: '1697951000000306537',
     title: 'CHANA SATTU 500GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -663,7 +663,7 @@ export const onlineItems = [
     id: '1697951000000306576',
     title: 'CHAPATI FLOUR 1KG',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -685,7 +685,7 @@ export const onlineItems = [
     id: '1697951000000306615',
     title: 'CHUDA POWDER 500GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -707,7 +707,7 @@ export const onlineItems = [
     id: '1697951000000306654',
     title: 'CORN FLOUR 100GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -729,7 +729,7 @@ export const onlineItems = [
     id: '1697951000000306693',
     title: 'CORN FLOUR 1KG',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -751,7 +751,7 @@ export const onlineItems = [
     id: '1697951000000306732',
     title: 'DALIYA 1KG',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -773,7 +773,7 @@ export const onlineItems = [
     id: '1697951000000306771',
     title: 'DALIYA 300GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -795,7 +795,7 @@ export const onlineItems = [
     id: '1697951000000306810',
     title: 'DALIYA 500GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -817,7 +817,7 @@ export const onlineItems = [
     id: '1697951000000306849',
     title: 'FRUIT RUSK 200GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -839,7 +839,7 @@ export const onlineItems = [
     id: '1697951000000306888',
     title: 'FRUIT RUSK 60GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -861,7 +861,7 @@ export const onlineItems = [
     id: '1697951000000306927',
     title: 'IDILI RAWA (500GM)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -883,7 +883,7 @@ export const onlineItems = [
     id: '1697951000000307005',
     title: 'MILK RUSK 200GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -905,7 +905,7 @@ export const onlineItems = [
     id: '1697951000000307044',
     title: 'MILK RUSK 60GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -927,7 +927,7 @@ export const onlineItems = [
     id: '1697951000000307083',
     title: 'OLIVE OIL 100ML( 1+1)PCS',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -949,7 +949,7 @@ export const onlineItems = [
     id: '1697951000000307122',
     title: 'OLIVE OIL 500ML (1+1) PCS',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -971,7 +971,7 @@ export const onlineItems = [
     id: '1697951000000307239',
     title: 'PUNJABI TADKA 500GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -993,7 +993,7 @@ export const onlineItems = [
     id: '1697951000000307278',
     title: 'RAGI FLOUR 500GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1015,7 +1015,7 @@ export const onlineItems = [
     id: '1697951000000307317',
     title: 'SAGOO BIG 200GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1037,7 +1037,7 @@ export const onlineItems = [
     id: '1697951000000307356',
     title: 'SAGOO BIG 450GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1059,7 +1059,7 @@ export const onlineItems = [
     id: '1697951000000307395',
     title: 'SAGOO SMALL 200GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1081,7 +1081,7 @@ export const onlineItems = [
     id: '1697951000000307434',
     title: 'SAGOO SMALL 500GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1103,7 +1103,7 @@ export const onlineItems = [
     id: '1697951000000307551',
     title: 'SOOJI 1KG',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1125,7 +1125,7 @@ export const onlineItems = [
     id: '1697951000000307590',
     title: 'SOOJI 500GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1147,7 +1147,7 @@ export const onlineItems = [
     id: '1697951000000307629',
     title: 'CUSTARD POWDER 100GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1169,7 +1169,7 @@ export const onlineItems = [
     id: '1697951000000307746',
     title: 'SOYA ROLL 200GM (BIG)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1191,7 +1191,7 @@ export const onlineItems = [
     id: '1697951000000307785',
     title: 'SOYA ROLL 200GM (SMALL)',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1213,7 +1213,7 @@ export const onlineItems = [
     id: '1697951000000307824',
     title: 'SOYA ROLL BIG 1KG',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1235,7 +1235,7 @@ export const onlineItems = [
     id: '1697951000000307863',
     title: 'SOYA ROLL SMALL 1KG',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1257,7 +1257,7 @@ export const onlineItems = [
     id: '1697951000000308058',
     title: 'Sagoo Small 1kg',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1279,7 +1279,7 @@ export const onlineItems = [
     id: '1697951000000308136',
     title: 'Sagoo big 1kg',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1301,7 +1301,7 @@ export const onlineItems = [
     id: '1697951000000308175',
     title: 'CRISPY CHOCO BITES 20GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1323,7 +1323,7 @@ export const onlineItems = [
     id: '1697951000000308214',
     title: 'CORN FLAKES 60GM',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1345,7 +1345,7 @@ export const onlineItems = [
     id: '1697951000000311022',
     title: 'ICY LEMONADE 170ML',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1367,7 +1367,7 @@ export const onlineItems = [
     id: '1697951000000311061',
     title: 'LITCHI LUSH 170ML',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1389,7 +1389,7 @@ export const onlineItems = [
     id: '1697951000000311100',
     title: 'LITCHI LUSH 300ML',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1411,7 +1411,7 @@ export const onlineItems = [
     id: '1697951000000311139',
     title: 'PINEAPPLE BLISH 170ML',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1433,7 +1433,7 @@ export const onlineItems = [
     id: '1697951000000311178',
     title: 'RIPE MANGO1.2L',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1455,7 +1455,7 @@ export const onlineItems = [
     id: '1697951000000311217',
     title: 'RIPE MANGO 160ML',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1477,7 +1477,7 @@ export const onlineItems = [
     id: '1697951000000311256',
     title: 'RIPE MANGO 300ML',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {
@@ -1499,7 +1499,7 @@ export const onlineItems = [
     id: '1697951000000311295',
     title: 'RIPE MANGO 600ML',
     layout: [],
-    categories: [],
+    categories: '',
     meta: {
       description: 'All items are saleable for the customer',
       image: {

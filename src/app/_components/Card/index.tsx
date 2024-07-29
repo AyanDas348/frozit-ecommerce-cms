@@ -127,7 +127,7 @@ export const Card: React.FC<{
         {titleToUse && <h4 className={classes.title}>{titleToUse}</h4>}
         {description && (
           <div className={classes.body}>
-            <p className={classes.description}>{sanitizedDescription}</p>
+            {/* <p className={classes.description}>{sanitizedDescription}</p> */}
           </div>
         )}
         <div className={classes.priceSection}>

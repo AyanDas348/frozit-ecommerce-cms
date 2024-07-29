@@ -13,6 +13,23 @@
   }
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(25%, 1fr));
+  gap: 30px;
+  padding: 0;
+  width: 100%;
+  padding-top: 40px;
+
+  @include mid-break {
+    gap: 20px;
+  }
+
+  @include small-break {
+    grid-template-columns: 100%;
+  }
+}
+
 .mediaWrapper {
   position: relative;
   min-height: 400px;
@@ -72,12 +89,15 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem; /* Adjust the size as needed */
-  color: #333; /* Adjust the color as needed */
+  font-size: 1.5rem;
+  /* Adjust the size as needed */
+  color: #333;
+  /* Adjust the color as needed */
   display: flex;
   align-items: center;
 }
 
 .shareButton:hover {
-  color: #000; /* Adjust the hover color as needed */
+  color: #000;
+  /* Adjust the hover color as needed */
 }

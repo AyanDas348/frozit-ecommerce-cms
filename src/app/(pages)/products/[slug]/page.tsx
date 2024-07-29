@@ -33,6 +33,7 @@ export default async function ProductFunc({ params: { slug } }) {
       title: json.data.data.name,
       image: hardcodedItem?.meta?.image || '',
     },
+    categories: '1697951000000336031',
   }
 
   try {
@@ -60,6 +61,7 @@ export default async function ProductFunc({ params: { slug } }) {
         title: json.data.data.item.name,
         image: hardcodedItem?.meta?.image || '',
       },
+      categories: json.data.data.category_id,
     }
   } catch (error) {
     console.error(error) // eslint-disable-line no-console
