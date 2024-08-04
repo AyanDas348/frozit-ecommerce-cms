@@ -154,9 +154,10 @@ export const CheckoutPage = () => {
             const res = await result.json()
             console.log(response)
 
-            if (res.isOk) {
+            if (res.success) {
               clearInterval(intervalId)
-              alert('Payment succeeded')
+              toast.success('Payment succeeded', { position: 'top-center' })
+              router.push('/orders')
             } else {
               console.log('Payment not confirmed yet:', res.message)
             }

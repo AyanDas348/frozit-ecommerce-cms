@@ -10,6 +10,7 @@ import { Card } from '../../_components/Card'
 import { Gutter } from '../../_components/Gutter'
 import { Media } from '../../_components/Media'
 import { Price } from '../../_components/Price'
+import RatingStars from '../../_components/Rating'
 import { onlineItems } from '../../constants/items'
 
 import classes from './index.module.scss'
@@ -124,6 +125,9 @@ export const ProductHero: React.FC<{
             <button className={classes.shareButton} onClick={() => handleShare()}>
               <FaShareAlt />
             </button>
+          </div>
+          <div className={classes.rating}>
+            <RatingStars rating={product.rating} disabled={true} itemId={product.id} />
           </div>
         </div>
       </Gutter>

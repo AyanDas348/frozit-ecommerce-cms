@@ -12,7 +12,9 @@ interface Address {
   state: string
   pinCode: string
   country: string
-  plotNo: string // Add plotNo to the interface
+  plotNo: string
+  email: string
+  phoneNumber: string
 }
 
 interface AddAddressFormProps {
@@ -30,7 +32,9 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
     state: '',
     pinCode: '',
     country: '',
-    plotNo: '', // Initialize plotNo in state
+    plotNo: '',
+    email: '',
+    phoneNumber: '',
   })
 
   const { user } = useAuth()
@@ -69,7 +73,9 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
           state: '',
           pinCode: '',
           country: '',
-          plotNo: '', // Reset plotNo along with other fields
+          plotNo: '',
+          email: '',
+          phoneNumber: '',
         })
       } else {
         toast.error('Something went wrong', {

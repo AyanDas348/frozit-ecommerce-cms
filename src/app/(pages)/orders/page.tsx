@@ -1,18 +1,14 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Metadata } from 'next'
-import Link from 'next/link'
+import { UserCircle2 } from 'lucide-react'
 import { notFound } from 'next/navigation'
 
 import { Order } from '../../../payload/payload-types'
-import { Button } from '../../_components/Button'
-import { Gutter } from '../../_components/Gutter'
 import { HR } from '../../_components/HR'
+import RatingStars from '../../_components/Rating'
 import { RenderParams } from '../../_components/RenderParams'
 import { useAuth } from '../../_providers/Auth'
 import { formatDateTime } from '../../_utilities/formatDateTime'
-import { getMeUser } from '../../_utilities/getMeUser'
-import { mergeOpenGraph } from '../../_utilities/mergeOpenGraph'
 
 import classes from './index.module.scss'
 
@@ -29,45 +25,37 @@ export default function Orders() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/get-all-orders`, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `JWT ${''}`, // Replace with actual token logic
+            Authorization: user.jwt,
           },
           cache: 'no-store',
         })
 
-        if (!response.ok) {
-          notFound()
-          return
-        }
-
         const json = await response.json()
-        if ('error' in json && json.error) {
-          notFound()
-          return
-        }
-        if ('errors' in json && json.errors) {
-          notFound()
-          return
-        }
 
-        setOrders(json.docs)
+        setOrders(json.data.data)
       } catch (error) {
         console.error(error)
         notFound()
       }
     }
+    if (user) {
+      fetchOrders()
+    }
+  }, [user])
 
-    fetchOrders()
-  }, [])
+  console.log(orders)
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ width: '33%' }}>
-        <p></p>
+    <div className={classes.mainContainer}>
+      <div className={classes.account}>
+        <p>
+          <UserCircle2 />
+        </p>
       </div>
-      <div className={classes.orders} style={{ width: '66%' }}>
+      <div className={classes.orders}>
         <h1>Orders</h1>
         {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
           <p className={classes.noOrders}>You have no orders.</p>
@@ -76,29 +64,37 @@ export default function Orders() {
         {orders && orders.length > 0 && (
           <ul className={classes.ordersList}>
             {orders?.map((order, index) => (
-              <li key={order.id} className={classes.listItem}>
-                <Link className={classes.item} href={`/orders/${order.id}`}>
+              <li key={order._id} className={classes.listItem}>
+                <div className={classes.item}>
                   <div className={classes.itemContent}>
-                    <h4 className={classes.itemTitle}>{`Order ${order.id}`}</h4>
+                    <h4 className={classes.itemTitle}>{`Order #${index + 1}`}</h4>
+                    <ul>
+                      {order.orderItems.map(item => {
+                        return (
+                          <li className={classes.starContainer}>
+                            {item.itemName || ''} {`(${item.quantity})`}
+                            <RatingStars
+                              rating={item.rating}
+                              itemId={item.itemId}
+                              orderId={order._id}
+                              disabled={order.status !== 'delivered'}
+                            />
+                          </li>
+                        )
+                      })}
+                    </ul>
                     <div className={classes.itemMeta}>
                       <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
                       <p>
                         {'Total: '}
-                        {new Intl.NumberFormat('en-US', {
+                        {order.totalPrice.toLocaleString('en-IN', {
                           style: 'currency',
-                          currency: 'usd',
-                        }).format(order.total / 100)}
+                          currency: 'INR',
+                        })}
                       </p>
                     </div>
                   </div>
-                  <Button
-                    appearance="secondary"
-                    label="View Order"
-                    className={classes.button}
-                    el="button"
-                  />
-                </Link>
-                {/* {index !== orders.length - 1 && <HR />} */}
+                </div>
                 <HR />
               </li>
             ))}

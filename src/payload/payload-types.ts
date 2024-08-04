@@ -198,9 +198,11 @@ export interface Category {
 }
 export interface Product {
   id: string;
+  _id?: string;
   item_id?: string;
   title: string;
   publishedOn?: string | null;
+  rating?: number | 4;
   layout?: (
     | {
       invertBackground?: boolean | null;
@@ -399,20 +401,22 @@ export interface Product {
   stock: number | 0;
 }
 export interface Order {
-  id: string;
+  _id: string;
   orderedBy?: (string | null) | User;
   stripePaymentIntentID?: string | null;
-  total: number;
-  items?:
+  totalPrice: number;
+  orderItems?:
   | {
-    product: string | Product;
-    price?: number | null;
-    quantity?: number | null;
-    id?: string | null;
+    itemId: string;
+    price: number;
+    quantity: number;
+    itemName: string;
+    rating: number | 0;
   }[]
   | null;
   updatedAt: string;
   createdAt: string;
+  status: string;
 }
 export interface User {
   id: string;
@@ -451,6 +455,7 @@ export interface User {
     uid: string,
     _id: string,
   }
+  _id: string,
 }
 export interface Redirect {
   id: string;

@@ -1,0 +1,32 @@
+@import '../../_css/common';
+
+.star-rating {
+  display: flex;
+  direction: row;
+}
+
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.star {
+  transition: color 200ms;
+}
+
+.starInput{
+  display: none;
+  cursor: pointer;
+}
+
+.starContainer {
+  display: flex;
+  
+  @include mid-break{
+    flex-direction: row;
+  }
+}

@@ -10,6 +10,7 @@ import { Product } from '../../../payload/payload-types'
 import { useCart } from '../../_providers/Cart'
 import { Media } from '../Media'
 import { Price } from '../Price'
+import RatingStars from '../Rating'
 
 import classes from './index.module.scss'
 
@@ -65,23 +66,6 @@ export const Card: React.FC<{
     setPrice,
   ] = useState(priceJSON)
 
-  // useEffect(() => {
-  //   ;(async () => {
-  //     console.log(metaImage)
-  //     if (typeof metaImage !== 'string' && metaImage.url !== '') {
-  //       const response = await axios.get(
-  //         `https://www.zohoapis.com/inventory/v1/documents/${slug}?organization_id=60029131613`,
-  //       )
-
-  //       console.log(response)
-
-  //       if (!response.status) {
-  //         throw new Error('Network response was not ok')
-  //       }
-  //     }
-  //   })()
-  // }, [metaImage, slug])
-
   const { cart, addItemToCart, isProductInCart, hasInitializedCart, setHasInitializedCart } =
     useCart()
   const [isInCart, setIsInCart] = useState<boolean>()
@@ -91,7 +75,7 @@ export const Card: React.FC<{
   }, [isProductInCart, cart, doc])
 
   const handleAddToCartClick = event => {
-    event.stopPropagation() // Prevents the click event from propagating to the parent Link
+    event.stopPropagation()
     if (!isInCart) {
       addItemToCart({
         product: doc,
@@ -130,10 +114,15 @@ export const Card: React.FC<{
             {/* <p className={classes.description}>{sanitizedDescription}</p> */}
           </div>
         )}
-        <div className={classes.priceSection}>
-          <span className={classes.currentPrice}>₹{priceJSON}</span>
-          <span className={classes.originalPrice}></span>
-          <span className={classes.discount}></span>
+        <div className={classes.details}>
+          <div className={classes.priceSection}>
+            <span className={classes.currentPrice}>₹{priceJSON}</span>
+            <span className={classes.originalPrice}></span>
+            <span className={classes.discount}></span>
+          </div>
+          <div className={classes.ratingSection}>
+            <RatingStars rating={doc.rating} itemId={doc.id} disabled={true} />
+          </div>
         </div>
         <button className={classes.addToCartButton} type="button" onClick={handleAddToCartClick}>
           <span className={classes.cartIcon}>
