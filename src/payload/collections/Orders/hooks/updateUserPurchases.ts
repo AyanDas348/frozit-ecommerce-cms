@@ -1,28 +1,3 @@
-import type { AfterChangeHook } from 'payload/dist/collections/config/types'
-
-import type { Order } from '../../../payload-types'
-
-export const updateUserPurchases: AfterChangeHook<Order> = async ({ doc, req, operation }) => {
-  const { payload } = req
-
-  if ((operation === 'create' || operation === 'update') && doc.orderedBy && doc.orderItems) {
-    const orderedBy = typeof doc.orderedBy === 'string' ? doc.orderedBy : doc.orderedBy.id
-
-    const user = await payload.findByID({
-      collection: 'users',
-      id: orderedBy,
-    })
-
-    if (user) {
-      await payload.update({
-        collection: 'users',
-        id: orderedBy,
-        data: {
-          purchases: [],
-        },
-      })
-    }
-  }
-
-  return
+export const updateUserPurchases: () => number = () => {
+  return 1
 }
