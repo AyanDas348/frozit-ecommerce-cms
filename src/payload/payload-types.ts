@@ -402,6 +402,7 @@ export interface Product {
 }
 export interface Order {
   _id: string;
+  id?: string;
   orderedBy?: (string | null) | User;
   stripePaymentIntentID?: string | null;
   totalPrice: number;
