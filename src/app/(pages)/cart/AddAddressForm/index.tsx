@@ -94,6 +94,28 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
       <form onSubmit={handleSubmit}>
         <h2 className={styles.heading}>Add Address</h2>
         <label className={styles.label}>
+          Receiver's Email:
+          <input
+            type="text"
+            name="email"
+            value={address.email}
+            onChange={handleChange}
+            className={styles.inputText}
+            placeholder="Enter email"
+          />
+        </label>
+        <label className={styles.label}>
+          Receiver's Phone:
+          <input
+            type="text"
+            name="phone"
+            value={address.plotNo}
+            onChange={handleChange}
+            className={styles.inputText}
+            placeholder="Enter phone number"
+          />
+        </label>
+        <label className={styles.label}>
           Plot No:
           <input
             type="text"
