@@ -149,7 +149,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setStatus('loggedOut')
       toast.success('Logged out successfully', { position: 'top-center' })
       saveUserToLocalStorage(null)
-      window.location.href = '/products'
+      window.location.href = '/'
     } catch (e) {
       throw new Error('An error occurred while attempting to logout.')
     }

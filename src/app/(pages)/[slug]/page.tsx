@@ -123,6 +123,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
       return {
         ...item,
         priceJSON: parseInt(item.priceJSON),
+        rating: 4,
       }
     })
 

@@ -58,6 +58,7 @@ export const ProductHero: React.FC<{
           slug: item.item_id,
           title: item.item_name,
           stock: item.actual_available_stock,
+          rating: 4,
         }))
 
         setRelatedProducts(mappedProducts)
@@ -68,8 +69,6 @@ export const ProductHero: React.FC<{
 
     fetchRelatedProducts()
   }, [categories])
-
-  console.log(relatedProducts, product)
 
   const handleShare = () => {
     const productUrl = window.location.href

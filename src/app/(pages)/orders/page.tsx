@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { UserCircle2 } from 'lucide-react'
+import { ChevronRight, UserCircle2 } from 'lucide-react'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Order } from '../../../payload/payload-types'
@@ -19,7 +20,7 @@ export default function Orders() {
   //   )}&redirect=${encodeURIComponent('/orders')}`,
   // })
 
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const [orders, setOrders] = useState<Order[] | null>(null)
 
   useEffect(() => {
@@ -51,9 +52,23 @@ export default function Orders() {
   return (
     <div className={classes.mainContainer}>
       <div className={classes.account}>
-        <p>
-          <UserCircle2 />
+        <p className={classes.myAccount}>
+          <UserCircle2 style={{ width: '50px', height: '50px' }} />
+          My Account
         </p>
+        <ul className={classes.accountLinks}>
+          <li className={classes.accountLinkItem}>
+            <Link href={'/orders'}>Orders</Link>
+            <ChevronRight />
+          </li>
+          <li className={classes.accountLinkItem}>
+            <Link href={'/cart'}>Cart</Link>
+            <ChevronRight />
+          </li>
+          <li className={classes.accountLinkItem} onClick={() => logout()}>
+            Logout <ChevronRight />
+          </li>
+        </ul>
       </div>
       <div className={classes.orders}>
         <h1>Orders</h1>

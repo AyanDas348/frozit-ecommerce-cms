@@ -34,6 +34,7 @@ export default async function ProductFunc({ params: { slug } }) {
       image: hardcodedItem?.meta?.image || '',
     },
     categories: '1697951000000336031',
+    rating: json.data.data.rating || 4,
   }
 
   try {

@@ -18,3 +18,65 @@
   opacity: 0;
   visibility: hidden;
 }
+
+.userSection {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.accountLinks {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  font-size: 16px;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(0px);
+  z-index: 100;
+
+  &.open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.accountLinkItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-items: center;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+.arrow {
+transition: ease-in 4ms;
+}
+
+@media (max-width: 768px) {
+  .nav > *:not(.userSection) {
+    display: none;
+  }
+
+  .userSection {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .accountLinks {
+    width: 200px !important;
+    transform: translateY(30px);
+  }
+}

@@ -13,12 +13,39 @@
 .account {
   flex: 1 1 33.33%;
   padding: 1rem;
+  margin-top: 180px;
+  padding-left: 100px;
   // border-right: 1px solid #ddd;
 
   @include mid-break {
     flex: 1 1 100%;
     width: 100%;
   }
+}
+
+.myAccount {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  font-size: 40px;
+}
+
+.accountLinks {
+  font-size: 30px;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+  padding-left: 80px;
+  width: 100%;
+  padding-right: 100px;
+}
+
+.accountLinkItem {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
 }
 
 .orders {
