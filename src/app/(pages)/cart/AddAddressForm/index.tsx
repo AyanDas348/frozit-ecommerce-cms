@@ -20,6 +20,7 @@ interface Address {
 interface AddAddressFormProps {
   setAddresses: React.Dispatch<React.SetStateAction<Address[]>>
   setSelectedAddressIndex: React.Dispatch<React.SetStateAction<number>>
+  close: () => void
 }
 
 const AddAddressForm: React.FC<AddAddressFormProps> = ({
@@ -58,7 +59,7 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.jwt}`, // Ensure JWT is properly formatted
+          Authorization: `${user.jwt}`, // Ensure JWT is properly formatted
         },
         body: JSON.stringify(dataToSend),
       })
@@ -77,6 +78,7 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
           email: '',
           phoneNumber: '',
         })
+        close()
       } else {
         toast.error('Something went wrong', {
           position: 'top-center',
@@ -96,7 +98,7 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
         <label className={styles.label}>
           Receiver's Email:
           <input
-            type="text"
+            type="email"
             name="email"
             value={address.email}
             onChange={handleChange}
@@ -107,11 +109,11 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
         <label className={styles.label}>
           Receiver's Phone:
           <input
-            type="text"
-            name="phone"
-            value={address.plotNo}
+            type="tel"
+            name="phoneNumber"
+            value={address.phoneNumber}
             onChange={handleChange}
-            className={styles.inputText}
+            className={styles.inputNumber}
             placeholder="Enter phone number"
           />
         </label>

@@ -166,6 +166,7 @@ export const CartPage: React.FC<{
                       <AddAddressForm
                         setAddresses={setAddresses}
                         setSelectedAddressIndex={setSelectedAddressIndex}
+                        close={() => setAddAddressModal(false)}
                       />
                     </Modal>
                   )}
