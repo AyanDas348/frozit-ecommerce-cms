@@ -152,17 +152,21 @@ export const CheckoutPage = () => {
               },
             })
             const res = await result.json()
-            console.log(response)
 
             if (res.success) {
-              clearInterval(intervalId)
-              toast.success('Payment succeeded', { position: 'top-center' })
+              // clearInterval(intervalId)
+              toast.success(res.message, { position: 'top-center' })
               router.push('/orders')
             } else {
               console.log('Payment not confirmed yet:', res.message)
+              toast.error(res.message, { position: 'top-center' })
+              router.push('/cart')
             }
           }
-          const intervalId = setInterval(checkPaymentStatus, 1000)
+          if (data.razorpay_signature) {
+            checkPaymentStatus()
+          }
+          // const intervalId = setInterval(checkPaymentStatus, 1000)
         },
         prefill: {
           name: user.name,

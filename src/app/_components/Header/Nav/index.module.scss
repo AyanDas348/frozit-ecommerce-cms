@@ -9,14 +9,35 @@
   transition: opacity 100ms linear;
   visibility: visible;
 
-  > * {
+  >* {
     text-decoration: none;
+  }
+  @include small-break{
+    flex-wrap: nowrap;
   }
 }
 
 .hide {
   opacity: 0;
   visibility: hidden;
+}
+
+.searchBar {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 250px;
+  background-color: white;
+  border-radius: 14px;
+  padding: 4px 6px;
+}
+
+.searchInput {
+  background-color: white;
+  border: none;
+  outline: none;
+  color: black;
 }
 
 .userSection {
@@ -62,16 +83,16 @@
 }
 
 .arrow {
-transition: ease-in 4ms;
+  transition: ease-in 4ms;
 }
 
 @media (max-width: 768px) {
-  .nav > *:not(.userSection) {
+  .nav>*:not(.userSection):not(.searchBar) {
     display: none;
   }
 
   .userSection {
-    width: 100%;
+    width: fit-content;
     justify-content: center;
   }
 

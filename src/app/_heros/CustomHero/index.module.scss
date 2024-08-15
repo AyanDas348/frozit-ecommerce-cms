@@ -11,7 +11,7 @@
 
   @include small-break {
     margin: 0;
-    padding-top: 60px;
+    padding-top: 80px;
   }
 }
 
@@ -25,6 +25,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   transition: background-image 2s ease-in-out;
+  position: relative;
 
   @media only screen and (max-width: 767px) {
     background-position: center;
@@ -57,14 +58,20 @@
   /* Ensure it's behind the content */
 }
 
+.overlay {
+  height: 100%;
+}
 
 .heroTextBox {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  // padding: 15% var(--gutter-h);
+  justify-content: end;
+  padding: 200px var(--gutter-h);
   width: 100%;
   color: white;
+  z-index: 100;
+  row-gap: 20px;
+  height: 100%;
 }
 
 .links {
@@ -79,4 +86,8 @@
   &>* {
     margin: calc(var(--base) / 2);
   }
+}
+
+.ctaText{
+  z-index: 100;
 }
