@@ -53,7 +53,7 @@ const arrayHasItems = array => Array.isArray(array) && array.length > 0
 
 export const CartProvider = props => {
   const { children } = props
-  const { user, status: authStatus } = useAuth()
+  const { user, status: authStatus, firebaseUser } = useAuth()
 
   const [cart, dispatchCart] = useReducer(cartReducer, { items: [] })
   const [total, setTotal] = useState<{ formatted: string; raw: number }>({
@@ -71,19 +71,20 @@ export const CartProvider = props => {
     (incomingProduct: Product) => {
       dispatchCart({ type: 'DELETE_ITEM', payload: incomingProduct })
       const deleteItemFromCart = async () => {
+        const token = await firebaseUser.getIdToken()
         const request = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/remove-from-cart?item_id=${incomingProduct.id}`,
           {
             method: 'DELETE',
             headers: {
-              Authorization: user.jwt,
+              Authorization: `Bearer ${token}`,
             },
           },
         )
       }
       deleteItemFromCart()
     },
-    [user],
+    [firebaseUser],
   )
 
   const clearCart = useCallback(() => {
@@ -195,14 +196,15 @@ export const CartProvider = props => {
   }
 
   useEffect(() => {
-    if (!hasInitialized.current || !user) return
+    if (!hasInitialized.current || !user || !firebaseUser) return
     hasInitialized.current = true
     const getCart = async (): Promise<CartResponse> => {
+      const token = await firebaseUser.getIdToken()
       const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: user.jwt,
+          Authorization: `Bearer ${token}`,
         },
       })
       const data = await req.json()
@@ -222,7 +224,7 @@ export const CartProvider = props => {
       console.log('i ran')
       dispatchCart({ type: 'CLEAR_CART' })
     }
-  }, [user, authStatus])
+  }, [user, authStatus, firebaseUser])
 
   const flattenedCart = {
     ...cart,
@@ -262,11 +264,12 @@ export const CartProvider = props => {
     if (!hasInitialized.current || !user) return
     if (authStatus === 'loggedIn') {
       const getCart = async (): Promise<CartResponse> => {
+        const token = await firebaseUser.getIdToken()
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: user.jwt,
+            Authorization: `Bearer ${token}`,
           },
         })
         const data = await req.json()
@@ -274,23 +277,25 @@ export const CartProvider = props => {
       }
       const addToCart = async (item: ItemDetail) => {
         const body = [item]
+        const token = await firebaseUser.getIdToken()
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-cart`, {
           method: 'POST',
           body: JSON.stringify(body),
           headers: {
             'Content-Type': 'application/json',
-            Authorization: user.jwt,
+            Authorization: `Bearer ${token}`,
           },
         })
         return await req.json()
       }
 
       const updateCart = async (item_id: string, quantity: number) => {
+        const token = await firebaseUser.getIdToken()
         await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/update-cart`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: user.jwt,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ item_id, quantity }),
         })

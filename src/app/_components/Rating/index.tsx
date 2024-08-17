@@ -22,7 +22,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({
 }) => {
   const [rating, setRating] = useState(initialRating)
 
-  const { user } = useAuth()
+  const { user, firebaseUser } = useAuth()
 
   const location = usePathname()
 
@@ -32,11 +32,12 @@ const RatingStars: React.FC<RatingStarsProps> = ({
       return
     }
     setRating(value)
+    const token = await firebaseUser.getIdToken()
     const request = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/ratings?orderId=${orderId}&item_id=${itemId}&rating=${value}`,
       {
         headers: {
-          Authorization: user.jwt,
+          Authorization: `Bearer ${token}`,
         },
       },
     )

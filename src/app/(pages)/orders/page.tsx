@@ -20,16 +20,17 @@ export default function Orders() {
   //   )}&redirect=${encodeURIComponent('/orders')}`,
   // })
 
-  const { user, logout } = useAuth()
+  const { user, logout, firebaseUser } = useAuth()
   const [orders, setOrders] = useState<Order[] | null>(null)
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        const token = await firebaseUser.getIdToken()
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/get-all-orders`, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: user.jwt,
+            Authorization: `Bearer ${token}`,
           },
           cache: 'no-store',
         })
@@ -45,7 +46,7 @@ export default function Orders() {
     if (user) {
       fetchOrders()
     }
-  }, [user])
+  }, [firebaseUser, user])
 
   console.log(orders)
 

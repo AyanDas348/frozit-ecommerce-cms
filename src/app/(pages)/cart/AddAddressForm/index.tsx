@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
+import { X } from 'lucide-react'
 
 import { Button } from '../../../_components/Button'
 import { useAuth } from '../../../_providers/Auth'
@@ -38,7 +39,7 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
     phoneNumber: '',
   })
 
-  const { user } = useAuth()
+  const { user, firebaseUser } = useAuth()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -55,11 +56,12 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
     }
 
     try {
+      const token = await firebaseUser.getIdToken()
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/add-address`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `${user.jwt}`, // Ensure JWT is properly formatted
+          Authorization: `Bearer ${token}`, // Ensure JWT is properly formatted
         },
         body: JSON.stringify(dataToSend),
       })
@@ -94,7 +96,10 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({
   return (
     <div className={styles.formContainer}>
       <form onSubmit={handleSubmit}>
-        <h2 className={styles.heading}>Add Address</h2>
+        <h2 className={styles.heading}>
+          Add Address
+          <X />
+        </h2>
         <label className={styles.label}>
           Receiver's Email:
           <input

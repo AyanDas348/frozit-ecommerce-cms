@@ -37,7 +37,7 @@ interface Address {
 }
 
 export const CheckoutPage = () => {
-  const { user } = useAuth()
+  const { user, firebaseUser } = useAuth()
   const router = useRouter()
   const [error, setError] = React.useState<string | null>(null)
   const { theme } = useTheme()
@@ -58,11 +58,12 @@ export const CheckoutPage = () => {
 
   useEffect(() => {
     const getCart = async () => {
+      const token = await firebaseUser.getIdToken()
       const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: user.jwt,
+          Authorization: `Bearer ${token}`,
         },
       })
       const data = await req.json()
@@ -81,7 +82,7 @@ export const CheckoutPage = () => {
         }
       })
     }
-  }, [user])
+  }, [firebaseUser, user])
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -99,11 +100,12 @@ export const CheckoutPage = () => {
 
   const createOrderId = async () => {
     try {
+      const token = await firebaseUser.getIdToken()
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/buy-now`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: user.jwt,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           addressId,
@@ -142,13 +144,16 @@ export const CheckoutPage = () => {
             razorpay_signature: response.razorpay_signature,
           }
 
+          console.log(data)
+
           const checkPaymentStatus = async () => {
+            const token = await firebaseUser.getIdToken()
             const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/check-status`, {
               method: 'POST',
               body: JSON.stringify(data),
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: user.jwt,
+                Authorization: `Bearer ${token}`,
               },
             })
             const res = await result.json()

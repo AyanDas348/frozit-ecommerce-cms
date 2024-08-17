@@ -33,7 +33,7 @@ interface Address {
 export const CartPage: React.FC<{
   page: Page
 }> = props => {
-  const { user } = useAuth()
+  const { user, firebaseUser } = useAuth()
 
   const { cart, cartIsEmpty, addItemToCart, cartTotal, hasInitializedCart } = useCart()
   const [addresses, setAddresses] = useState<Address[]>([])
@@ -48,10 +48,11 @@ export const CartPage: React.FC<{
   useEffect(() => {
     if (user) {
       const getAddresses = async (): Promise<{ success: boolean; data: User }> => {
+        const token = await firebaseUser.getIdToken()
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
           method: 'GET',
           headers: {
-            Authorization: user.jwt,
+            Authorization: `Bearer ${token}`,
           },
         })
         const data = await req.json()
@@ -63,7 +64,7 @@ export const CartPage: React.FC<{
         }
       })
     }
-  }, [user])
+  }, [firebaseUser, user])
 
   const [isPhoneLoginModalOpen, setIsPhoneLoginModalOpen] = useState(false)
   const router = useRouter()

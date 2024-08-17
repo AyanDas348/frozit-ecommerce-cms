@@ -49,6 +49,7 @@ type AuthContext = {
   verifyOTP: verifyOTP
   googleSignIn: googleSignIn
   authLoading?: boolean
+  firebaseUser: firebaseAuth.User
 }
 
 const Context = createContext({} as AuthContext)
@@ -56,6 +57,7 @@ const Context = createContext({} as AuthContext)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>()
   const [authLoading, setAuthLoading] = useState<boolean>()
+  const [firebaseUser, setFirebaseUser] = useState<firebaseAuth.User>()
   const router = useRouter()
 
   // used to track the single event of logging in or logging out
@@ -245,6 +247,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const credential = firebaseAuth.PhoneAuthProvider.credential(user.verificationId, otp)
       const verifiedUser = await firebaseAuth.signInWithCredential(auth, credential)
+      setFirebaseUser(verifiedUser.user)
       const idToken = await verifiedUser.user.getIdToken()
       const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
         method: 'GET',
@@ -269,6 +272,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const provider = new firebaseAuth.GoogleAuthProvider()
       const verifiedUser = await firebaseAuth.signInWithPopup(auth, provider)
       const idToken = await verifiedUser.user.getIdToken()
+      setFirebaseUser(verifiedUser.user)
       const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
         method: 'GET',
         headers: {
@@ -303,6 +307,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         verifyOTP,
         googleSignIn,
         authLoading,
+        firebaseUser,
       }}
     >
       {children}
