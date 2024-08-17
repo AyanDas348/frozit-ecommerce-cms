@@ -105,3 +105,17 @@
   color: #000;
   /* Adjust the hover color as needed */
 }
+
+.miniImage {
+  height: 200px !important;
+  width: 200px !important;
+  row-gap: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 5px;
+  cursor: pointer;
+  z-index: 100;
+  // position: absolute;
+  left: 10px;
+  top: 10px;
+}

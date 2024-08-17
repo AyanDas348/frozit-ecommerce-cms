@@ -70,7 +70,7 @@ export const CheckoutPage = () => {
       return data
     }
 
-    if (user) {
+    if (user && firebaseUser) {
       getCart().then(response => {
         if (response.success) {
           setOrderDetails(prev => {
@@ -143,8 +143,6 @@ export const CheckoutPage = () => {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
           }
-
-          console.log(data)
 
           const checkPaymentStatus = async () => {
             const token = await firebaseUser.getIdToken()

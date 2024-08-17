@@ -43,12 +43,10 @@ export default function Orders() {
         notFound()
       }
     }
-    if (user) {
+    if (user && firebaseUser) {
       fetchOrders()
     }
   }, [firebaseUser, user])
-
-  console.log(orders)
 
   return (
     <div className={classes.mainContainer}>

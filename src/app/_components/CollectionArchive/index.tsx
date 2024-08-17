@@ -125,6 +125,7 @@ export const CollectionArchive: React.FC<Props> = props => {
                 height: 2865,
                 width: 2200,
                 mimeType: item.image_type,
+                urls: item.imageUrls.length > 0 ? item.imageUrls : [],
                 url: onlineItems.find(i => i.id === item.item_id).meta.image.url
                   ? onlineItems.find(i => i.id === item.item_id).meta.image.url
                   : item.imageUrl,

@@ -130,7 +130,6 @@ export const CartProvider = props => {
     const syncCartFromLocalStorage = async () => {
       const localCart = localStorage.getItem('cart')
       const parsedCart = JSON.parse(localCart || '{}')
-      console.log(localCart, parsedCart)
 
       if (parsedCart?.items && parsedCart?.items?.length > 0) {
         const items: CartItem[] = await Promise.all(
@@ -151,12 +150,10 @@ export const CartProvider = props => {
 
         dispatchCart({ type: 'SET_CART', payload: { items } })
       } else {
-        console.log('i ran')
         dispatchCart({ type: 'SET_CART', payload: { items: [] } })
       }
     }
     if (!hasInitialized.current) {
-      console.log('i ran 3')
       hasInitialized.current = true
       syncCartFromLocalStorage()
     }
@@ -211,7 +208,7 @@ export const CartProvider = props => {
       return data
     }
 
-    if (authStatus === 'loggedIn') {
+    if (authStatus === 'loggedIn' && firebaseUser) {
       getCart().then(cart => {
         if (cart.success) {
           const transformedData = transformIncomingCartResponse(cart.data.data.itemDetails)
@@ -221,7 +218,6 @@ export const CartProvider = props => {
     }
 
     if (authStatus === 'loggedOut') {
-      console.log('i ran')
       dispatchCart({ type: 'CLEAR_CART' })
     }
   }, [user, authStatus, firebaseUser])
@@ -262,7 +258,7 @@ export const CartProvider = props => {
 
   useEffect(() => {
     if (!hasInitialized.current || !user) return
-    if (authStatus === 'loggedIn') {
+    if (authStatus === 'loggedIn' && firebaseUser) {
       const getCart = async (): Promise<CartResponse> => {
         const token = await firebaseUser.getIdToken()
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-cart`, {

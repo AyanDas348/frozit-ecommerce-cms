@@ -173,6 +173,7 @@ export interface Media {
   updatedAt: string;
   createdAt: string;
   url?: string | null;
+  urls?: string[] | [];
   filename?: string | null;
   mimeType?: string | null;
   filesize?: number | null;

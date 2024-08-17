@@ -67,21 +67,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const saveUserToLocalStorage = (user: User | null) => {
     if (user) {
       localStorage.setItem('frozit-user', JSON.stringify(user))
+      // localStorage.setItem('frozit-firebase-user', JSON.stringify(firebaseUser))
     } else {
+      localStorage.removeItem('frozit-firebase-user')
       localStorage.removeItem('frozit-user')
     }
   }
 
   const loadUserFromLocalStorage = () => {
     const userData = localStorage.getItem('frozit-user')
+    // const firebaseData = localStorage.getItem('frozit-firebase-user')
+
     if (userData) {
       setUser(JSON.parse(userData))
       setStatus('loggedIn')
     }
   }
 
+  const restoreFirebaseUser = () => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        setFirebaseUser(user)
+      }
+    })
+  }
+
   useEffect(() => {
     loadUserFromLocalStorage()
+    restoreFirebaseUser()
   }, [])
 
   const create = useCallback<Create>(async args => {
@@ -272,6 +285,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const provider = new firebaseAuth.GoogleAuthProvider()
       const verifiedUser = await firebaseAuth.signInWithPopup(auth, provider)
       const idToken = await verifiedUser.user.getIdToken()
+      localStorage.setItem('frozit-firebase-user', JSON.stringify(verifiedUser.user))
       setFirebaseUser(verifiedUser.user)
       const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {
         method: 'GET',

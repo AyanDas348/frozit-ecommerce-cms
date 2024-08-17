@@ -80,8 +80,6 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
     setSearchResults([])
   }, [pathname])
 
-  console.log(searchResults)
-
   return (
     <nav className={[classes.nav].filter(Boolean).join(' ')}>
       <div className={classes.searchBar} ref={searchBarRef}>

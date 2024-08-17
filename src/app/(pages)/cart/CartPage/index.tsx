@@ -46,7 +46,7 @@ export const CartPage: React.FC<{
   const [addAddressModal, setAddAddressModal] = useState(false)
 
   useEffect(() => {
-    if (user) {
+    if (user && firebaseUser) {
       const getAddresses = async (): Promise<{ success: boolean; data: User }> => {
         const token = await firebaseUser.getIdToken()
         const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/get-user`, {

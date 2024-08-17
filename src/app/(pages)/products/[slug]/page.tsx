@@ -6,7 +6,6 @@ import { onlineItems } from '../../../constants/items'
 
 export default async function ProductFunc({ params: { slug } }) {
   const hardcodedItem = onlineItems?.find(item => item.id === slug.toString())
-  console.log(slug)
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-item-details?item_id=${slug}`,
   )
@@ -24,21 +23,27 @@ export default async function ProductFunc({ params: { slug } }) {
     ],
     slug: slug,
     _status: 'published',
-    title: json.data.data.name,
+    title: json?.data?.data?.name,
     updatedAt: Date.now().toString(),
-    priceJSON: json.data.data.sales_rate,
+    priceJSON: json.data.data.rate,
     stock: json.data.data.stock_on_hand,
     meta: {
       description: json.data.data.description,
       title: json.data.data.name,
-      image: hardcodedItem?.meta?.image || '',
+      image: {
+        alt: hardcodedItem.meta.image.alt,
+        createdAt: hardcodedItem.meta.image.createdAt,
+        id: hardcodedItem.meta.image.id,
+        updatedAt: hardcodedItem.meta.image.updatedAt,
+        url: hardcodedItem.meta.image.url,
+        urls: json.data.data.imageUrls,
+      },
     },
     categories: '1697951000000336031',
-    rating: json.data.data.rating || 4,
+    rating: json?.data?.data?.rating || 4,
   }
 
   try {
-    const json = await req.json()
     product = {
       createdAt: Date.now().toString(),
       id: slug,
@@ -51,16 +56,21 @@ export default async function ProductFunc({ params: { slug } }) {
       ],
       slug: slug,
       _status: 'published',
-      title: json.data.data.item.name,
+      title: json.data.data.name,
       updatedAt: Date.now().toString(),
-      priceJSON: json.data.data.item.sales_rate,
-      stock: json.data.data.item.warehouses.find(
-        warehouse => warehouse.warehouse_id === '1697951000000042277',
-      ).warehouse_stock_on_hand,
+      priceJSON: json.data.data.rate,
+      stock: json.data.data.stock_on_hand,
       meta: {
-        description: json.data.data.item.description,
-        title: json.data.data.item.name,
-        image: hardcodedItem?.meta?.image || '',
+        description: json.data.data.description,
+        title: json.data.data.name,
+        image: {
+          alt: hardcodedItem.meta.image.alt,
+          createdAt: hardcodedItem.meta.image.createdAt,
+          id: hardcodedItem.meta.image.id,
+          updatedAt: hardcodedItem.meta.image.updatedAt,
+          url: hardcodedItem.meta.image.url,
+          urls: json.data.data.imageUrls,
+        },
       },
       categories: json.data.data.category_id,
     }
