@@ -2,6 +2,14 @@
 
 .orders {
   margin-bottom: var(--block-padding);
+  width: 100%;
+  height: 120vh;
+}
+
+.orderDetails {
+  margin-top: 100px;
+  // height: 80%;
+  width: 100%;
 }
 
 .id {

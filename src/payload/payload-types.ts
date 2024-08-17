@@ -419,6 +419,7 @@ export interface Order {
   updatedAt: string;
   createdAt: string;
   status: string;
+  shipRocketAwb?: string;
 }
 export interface User {
   id: string;

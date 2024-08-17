@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Order } from '../../../payload/payload-types'
+import { Button } from '../../_components/Button'
 import { HR } from '../../_components/HR'
 import RatingStars from '../../_components/Rating'
 import { RenderParams } from '../../_components/RenderParams'
@@ -47,6 +48,8 @@ export default function Orders() {
       fetchOrders()
     }
   }, [firebaseUser, user])
+
+  console.log(orders)
 
   return (
     <div className={classes.mainContainer}>
@@ -108,6 +111,11 @@ export default function Orders() {
                       </p>
                     </div>
                   </div>
+                  {order.shipRocketAwb && (
+                    <Button appearance="primary" href={`/orders/${order.shipRocketAwb}`}>
+                      Track Order
+                    </Button>
+                  )}
                 </div>
                 <HR />
               </li>
