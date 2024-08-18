@@ -96,7 +96,23 @@
 .sectionHeading {
   font-weight: 700;
   font-size: 32px;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
+  justify-content: center;
+  width: 100%;
+  display: flex;
+}
+
+.sectionText {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  padding: 0px 30px;
+
+  @include mid-break{
+    padding: 0px 0px;
+    text-align: left;
+  }
 }
 
 .desktopBg {

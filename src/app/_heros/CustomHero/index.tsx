@@ -39,7 +39,7 @@ export const CustomHero: React.FC<Page['hero']> = ({ richText, media, links, bgI
           <div className={classes.heroTextBox}>
             {richText.length !== 0 && <RichText content={richText} />}
             <h2 className={classes.ctaText}>Explore all our products</h2>
-            <div style={{ width: '50%', zIndex: '100' }}>
+            <div style={{ width: '50%', zIndex: '1' }}>
               <Button appearance="primary" href="/products">
                 Shop Now
                 <ArrowUpRight />

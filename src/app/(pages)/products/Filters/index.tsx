@@ -47,14 +47,14 @@ const Filters = ({ categories }: { categories: Category[] }) => {
         <div className={classes.categories}>
           <label className={classes.label}>Price</label>
           <RadioButton
-            label="High to Low"
+            label="Low to High"
             value="-1"
             isSelected={sort === '-1'}
             onRadioChange={handleSort}
             groupName="sort"
           />
           <RadioButton
-            label="Low to High"
+            label="High to Low"
             value="1"
             isSelected={sort === '1'}
             onRadioChange={handleSort}

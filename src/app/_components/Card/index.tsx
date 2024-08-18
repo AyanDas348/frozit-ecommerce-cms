@@ -121,7 +121,7 @@ export const Card: React.FC<{
             <span className={classes.discount}></span>
           </div>
           <div className={classes.ratingSection}>
-            <RatingStars rating={doc.rating} itemId={doc.id} disabled={true} />
+            <RatingStars rating={doc?.rating || 4} itemId={doc.id} disabled={true} />
           </div>
         </div>
         <button className={classes.addToCartButton} type="button" onClick={handleAddToCartClick}>

@@ -181,6 +181,14 @@ export default function NewPage({ params: { slug = 'home' } }) {
               <label className={classes.sectionHeading}>
                 Choose from our varied range of products
               </label>
+              <p className={classes.sectionText}>
+                Our company specializes in producing a range of healthy and nutritious food
+                products, including frozen ready-to-eat meals, instant mixes, and beverages, using
+                advanced German technology. We have a strong presence in the Indian market, where
+                our products hold a leading position. We are dedicated to providing fresh,
+                wholesome, and delicious foods, with each packet embodying our passion, dedication,
+                and hard work.
+              </p>
               <ul className={classes.radioInputs}>
                 {categories?.map(category => (
                   <li key={category.id} className={classes.radio}>

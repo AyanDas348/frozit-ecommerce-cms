@@ -86,13 +86,34 @@ export const CollectionArchive: React.FC<Props> = props => {
     // hydrate the block with fresh content after first render
     // don't show loader unless the request takes longer than x ms
     // and don't show it during initial hydration
+
     const timer: NodeJS.Timeout = setTimeout(() => {
       if (hasHydrated) {
         setIsLoading(true)
       }
     })
 
+    // Set isLoading to false after 5 seconds regardless of the request state
+    const loadingTimeout = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(loadingTimeout)
+    }
+  }, [])
+
+  const [newResult, setNewResults] = useState<Product[]>([])
+
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false
+      return // Skip the first render
+    }
+
     const makeRequest = async () => {
+      console.log('i ran')
       try {
         const categoryFilterPresent = categoryFilters.length > 0
         let response
@@ -108,44 +129,49 @@ export const CollectionArchive: React.FC<Props> = props => {
           )
           response = await req.json()
         }
-        clearTimeout(timer)
-        hasHydrated.current = true
 
-        // const { docs } = json as { docs: Product[] }
-        setResults({
-          docs: response.data.data.items.map(item => ({
-            categories: item.category_id,
-            id: item.item_id,
-            meta: {
-              description: item.description || '',
-              image: {
-                alt: item.image_name,
-                caption: null,
-                filename: item.image_name,
-                height: 2865,
-                width: 2200,
-                mimeType: item.image_type,
-                urls: item.imageUrls.length > 0 ? item.imageUrls : [],
-                url: onlineItems.find(i => i.id === item.item_id).meta.image.url
-                  ? onlineItems.find(i => i.id === item.item_id).meta.image.url
-                  : item.imageUrl,
-              },
-              title: 'item details',
+        const docs = response.data.data.items.map(item => ({
+          categories: item.category_id || '1697951000000336031',
+          id: item.item_id,
+          meta: {
+            description: item.description || '',
+            image: {
+              alt: item.image_name || '',
+              caption: null,
+              filename: item.image_name || '',
+              height: 2865,
+              width: 2200,
+              mimeType: item.image_type || '',
+              urls: (item.imageUrls || []).length > 0 ? item.imageUrls : [],
+              url: onlineItems?.find(i => i.id === item.item_id)?.meta?.image?.url
+                ? onlineItems.find(i => i.id === item.item_id).meta.image.url
+                : item.imageUrls[0],
             },
-            priceJSON: item.rate,
-            slug: item.item_id,
-            title: item.item_name,
-            stock: item.actual_available_stock,
-          })),
+            title: 'item details',
+          },
+          priceJSON: item.rate || 0,
+          slug: item.item_id,
+          title: item.item_name || '',
+          stock: item.actual_available_stock || 0,
+        }))
+
+        setNewResults(docs)
+
+        // console.log(docs)
+
+        setResults({
+          docs,
           page: page,
           totalPages: response.data.data.totalPages || 1,
           hasPrevPage: false,
           hasNextPage:
-            response?.data?.data?.currenPage < response?.data?.data?.totalPages ? true : false,
+            response?.data?.data?.currentPage < response?.data?.data?.totalPages ? true : false,
           prevPage: 1,
           nextPage: 1,
           totalDocs: response?.data?.data?.totalItems || response?.data?.data?.items.length,
         })
+        // clearTimeout(timer)
+        hasHydrated.current = true
       } catch (err) {
         console.warn(err)
         setIsLoading(false)
@@ -153,22 +179,11 @@ export const CollectionArchive: React.FC<Props> = props => {
     }
 
     makeRequest()
+  }, [categoryFilters, page, sort])
 
-    // Set isLoading to false after 5 seconds regardless of the request state
-    const loadingTimeout = setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+  const initialRender = useRef(true)
 
-    return () => {
-      clearTimeout(timer)
-      clearTimeout(loadingTimeout)
-    }
-  }, [page, categoryFilters, sort])
-
-  useEffect(() => {
-    if (sort === 'lowToHigh') {
-    }
-  }, [sort])
+  console.log(newResult)
 
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>

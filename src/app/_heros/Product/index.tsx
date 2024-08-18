@@ -3,6 +3,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { FaShareAlt } from 'react-icons/fa'
 import { toast } from 'react-toastify'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 
 import { Category, Product } from '../../../payload/payload-types'
@@ -85,7 +86,23 @@ export const ProductHero: React.FC<{
 
   const [selectedIndex, setSelectedIndex] = useState(0)
 
-  console.log(metaImage)
+  const handleLeftClick = () => {
+    if (metaImage && typeof metaImage !== 'string') {
+      setSelectedIndex(prevIndex => {
+        const length = metaImage.urls?.length || 1
+        return prevIndex === 0 ? length - 1 : prevIndex - 1
+      })
+    }
+  }
+
+  const handleRightClick = () => {
+    if (metaImage && typeof metaImage !== 'string') {
+      setSelectedIndex(prevIndex => {
+        const length = metaImage.urls?.length || 1
+        return prevIndex === length - 1 ? 0 : prevIndex + 1
+      })
+    }
+  }
 
   return (
     <Gutter>
@@ -95,27 +112,19 @@ export const ProductHero: React.FC<{
           {metaImage && typeof metaImage !== 'string' && (
             <Image
               className={classes.image}
-              src={metaImage.urls.length > 0 ? metaImage.urls[selectedIndex] : metaImage.url}
+              src={
+                (metaImage.urls || []).length > 0 ? metaImage.urls[selectedIndex] : metaImage.url
+              }
               fill
               alt={title}
             />
           )}
-          <div className={classes.miniImage}>
-            {typeof metaImage !== 'string' &&
-              metaImage.urls.length > 0 &&
-              metaImage.urls.map((media, index) => {
-                return (
-                  <Image
-                    src={media}
-                    alt={title}
-                    width={typeof window !== undefined && window.innerWidth <= 768 ? 50 : 80}
-                    height={typeof window !== undefined && window.innerWidth <= 768 ? 50 : 80}
-                    style={{ border: '1px solid rgba(187, 127, 127, 0.5)', padding: '2px 5px' }}
-                    onClick={() => setSelectedIndex[index]}
-                  />
-                )
-              })}
-          </div>
+          {typeof metaImage !== 'string' && (metaImage.urls || [])?.length > 0 && (
+            <ChevronLeft className={classes.imageLeft} onClick={() => handleLeftClick()} />
+          )}
+          {typeof metaImage !== 'string' && (metaImage.urls || [])?.length > 0 && (
+            <ChevronRight className={classes.imageRight} onClick={() => handleRightClick()} />
+          )}
         </div>
 
         <div className={classes.details}>
@@ -152,7 +161,11 @@ export const ProductHero: React.FC<{
             </button>
           </div>
           <div className={classes.rating}>
-            <RatingStars rating={product.rating} disabled={true} itemId={product.id} />
+            <RatingStars
+              rating={product.rating ? 4 : product.rating}
+              disabled={true}
+              itemId={product.id}
+            />
           </div>
         </div>
       </Gutter>

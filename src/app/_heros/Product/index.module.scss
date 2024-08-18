@@ -119,3 +119,23 @@
   left: 10px;
   top: 10px;
 }
+
+.imageRight {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 60px !important;
+  height: 60px !important;
+  translate: 0% -50%;
+  cursor: pointer;
+}
+
+.imageLeft {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 60px !important;
+  height: 60px !important;
+  translate: 0% -50%;
+  cursor: pointer;
+}
