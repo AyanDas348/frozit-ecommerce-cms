@@ -40,6 +40,8 @@ export default function NewPage({ params: { slug = 'home' } }) {
             }))
             setCategories(data)
             setSelectedCategory(data[0].title)
+            await handleCategoryChange(data[0])
+            setLoading(false)
           }
         } catch (e) {
           console.log(e)
@@ -127,7 +129,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
       }
     })
 
-  const [categorizedList, setCategorizedList] = useState<Product[]>(cookiesList)
+  const [categorizedList, setCategorizedList] = useState<Product[]>()
 
   const handleCategoryChange = async (category: Category) => {
     setSelectedCategory(category.title)
@@ -149,9 +151,8 @@ export default function NewPage({ params: { slug = 'home' } }) {
               height: 2865,
               width: 2200,
               mimeType: item.image_type,
-              url: onlineItemsId.includes(item.item_id)
-                ? onlineItems.find(i => i.id === item.item_id).meta.image.url
-                : '',
+              url: item.imageUrls[0],
+              urls: item.imageUrls,
             },
             title: 'item details',
           },
@@ -162,6 +163,8 @@ export default function NewPage({ params: { slug = 'home' } }) {
       }),
     )
   }
+
+  console.log(categorizedList)
 
   return (
     <React.Fragment>

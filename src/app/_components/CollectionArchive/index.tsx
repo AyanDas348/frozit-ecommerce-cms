@@ -113,7 +113,6 @@ export const CollectionArchive: React.FC<Props> = props => {
     }
 
     const makeRequest = async () => {
-      console.log('i ran')
       try {
         const categoryFilterPresent = categoryFilters.length > 0
         let response
@@ -143,9 +142,7 @@ export const CollectionArchive: React.FC<Props> = props => {
               width: 2200,
               mimeType: item.image_type || '',
               urls: (item.imageUrls || []).length > 0 ? item.imageUrls : [],
-              url: onlineItems?.find(i => i.id === item.item_id)?.meta?.image?.url
-                ? onlineItems.find(i => i.id === item.item_id).meta.image.url
-                : item.imageUrls[0],
+              url: item.imageUrls[0],
             },
             title: 'item details',
           },
@@ -156,8 +153,6 @@ export const CollectionArchive: React.FC<Props> = props => {
         }))
 
         setNewResults(docs)
-
-        // console.log(docs)
 
         setResults({
           docs,
@@ -182,8 +177,6 @@ export const CollectionArchive: React.FC<Props> = props => {
   }, [categoryFilters, page, sort])
 
   const initialRender = useRef(true)
-
-  console.log(newResult)
 
   return (
     <div className={[classes.collectionArchive, className].filter(Boolean).join(' ')}>

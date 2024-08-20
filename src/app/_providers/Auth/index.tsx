@@ -294,7 +294,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       })
       const backendUser = await req.json()
-      console.log(backendUser)
       setUser(backendUser.data)
       setStatus('loggedIn')
       saveUserToLocalStorage(backendUser.data)

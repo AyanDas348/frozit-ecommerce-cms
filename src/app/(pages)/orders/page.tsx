@@ -49,8 +49,6 @@ export default function Orders() {
     }
   }, [firebaseUser, user])
 
-  console.log(orders)
-
   return (
     <div className={classes.mainContainer}>
       <div className={classes.account}>
