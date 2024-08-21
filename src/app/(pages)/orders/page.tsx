@@ -92,7 +92,7 @@ export default function Orders() {
                               rating={item.rating}
                               itemId={item.itemId}
                               orderId={order._id}
-                              disabled={order.status !== 'delivered'}
+                              disabled={order.status.toLowerCase() !== 'delivered'}
                             />
                           </li>
                         )
@@ -109,11 +109,19 @@ export default function Orders() {
                       </p>
                     </div>
                   </div>
-                  {order.shipRocketAwb && (
+                  {order.shipRocketAwb && (order.status.toLowerCase() !== 'delivered' && order.status.toLowerCase() !== 'cancelled') && (
                     <Button appearance="primary" href={`/orders/${order.shipRocketAwb}`}>
                       Track Order
                     </Button>
                   )}
+                  <p
+                    style={{
+                      textTransform: 'uppercase', // Block letters (uppercase)
+                      color: order.status.toLowerCase() === 'cancelled' ? 'red' : 'green', // Red for cancelled, green for others
+                    }}
+                  >
+                    Status: {order.status}
+                  </p>
                 </div>
                 <HR />
               </li>

@@ -36,6 +36,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({
     const request = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/ratings?orderId=${orderId}&item_id=${itemId}&rating=${value}`,
       {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
         },
