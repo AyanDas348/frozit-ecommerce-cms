@@ -107,10 +107,10 @@ export const CollectionArchive: React.FC<Props> = props => {
   const [newResult, setNewResults] = useState<Product[]>([])
 
   useEffect(() => {
-    if (initialRender.current) {
-      initialRender.current = false
-      return // Skip the first render
-    }
+    // if (initialRender.current) {
+    //   initialRender.current = false
+    //   return // Skip the first render
+    // }
 
     const makeRequest = async () => {
       try {

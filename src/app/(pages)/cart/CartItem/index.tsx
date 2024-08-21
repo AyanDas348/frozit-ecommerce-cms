@@ -62,7 +62,7 @@ const CartItem: React.FC<CartItemProps> = ({
     <li className={classes.item} key={title}>
       <Link href={`/products/${product.slug}`} className={classes.mediaWrapper}>
         {!metaImage && <span>No Image</span>}
-        {metaImage && typeof metaImage !== 'string' && metaImage.url.startsWith('/assets') && (
+        {metaImage && typeof metaImage !== 'string' && (
           <Image
             alt={title}
             src={metaImage.url}

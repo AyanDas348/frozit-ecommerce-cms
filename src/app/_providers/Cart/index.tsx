@@ -174,10 +174,11 @@ export const CartProvider = props => {
           image: {
             alt: item.name,
             id: item.item_id,
-            url: item.imageUrl,
+            url: item.imageUrls[0],
             createdAt: item.created_time,
             updatedAt: item.last_modified_time,
             filename: item.image_name,
+            urls: item.imageUrls,
           },
           title: item.image_name,
         },
