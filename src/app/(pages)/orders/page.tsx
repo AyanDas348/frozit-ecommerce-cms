@@ -86,14 +86,23 @@ export default function Orders() {
                     <ul>
                       {order.orderItems.map(item => {
                         return (
-                          <li className={classes.starContainer}>
-                            {item.itemName || ''} {`(${item.quantity})`}
-                            <RatingStars
-                              rating={item.rating}
-                              itemId={item.itemId}
-                              orderId={order._id}
-                              disabled={order.status.toLowerCase() !== 'delivered'}
-                            />
+                          <li key={item.itemId} className={classes.starContainer}>
+                            {item.imageUrl && (
+                              <img
+                                src={item.imageUrl}
+                                alt={item.itemName || 'Product image'}
+                                className={classes.itemImage}
+                              />
+                            )}
+                            <span className={classes.itemName}>{item.itemName || ''} {`(${item.quantity})`}</span>
+                            <div className={classes.ratingContainer}>
+                              <RatingStars
+                                rating={item.rating}
+                                itemId={item.itemId}
+                                orderId={order._id}
+                                disabled={order.status.toLowerCase() !== 'delivered'}
+                              />
+                            </div>
                           </li>
                         )
                       })}
@@ -117,10 +126,12 @@ export default function Orders() {
                   <p
                     style={{
                       textTransform: 'uppercase', // Block letters (uppercase)
-                      color: order.status.toLowerCase() === 'cancelled' ? 'red' : 'green', // Red for cancelled, green for others
+                      color: order.status.toLowerCase() === 'cancelled' ? 'red' : 'green', // Red for cancelled, green for others,
+                      marginRight: "15%",
+                      fontWeight: 'bold'
                     }}
                   >
-                    Status: {order.status}
+                    Status:{order.status}
                   </p>
                 </div>
                 <HR />
@@ -133,6 +144,9 @@ export default function Orders() {
     </div>
   )
 }
+
+
+
 
 // export const metadata: Metadata = {
 //   title: 'Orders',
