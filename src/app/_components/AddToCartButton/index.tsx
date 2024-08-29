@@ -23,7 +23,7 @@ export const AddToCartButton: React.FC<{
   const [isInCart, setIsInCart] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
   const [cartItemId, setCartItemId] = useState<string | null>(null)
-  const { user, status: authStatus, firebaseUser } = useAuth()
+  const { firebaseUser } = useAuth()
 
   const router = useRouter()
 
@@ -54,7 +54,9 @@ export const AddToCartButton: React.FC<{
     }
 
     try {
-      const newQuantity = change // Prevent quantity from going below 1
+      const newQuantity = quantity + change
+      if (newQuantity < 0) return // Prevent quantity from going below 0
+
       const token = await firebaseUser.getIdToken()
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/update-cart`, {
         method: 'PUT',
@@ -62,14 +64,14 @@ export const AddToCartButton: React.FC<{
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ item_id: cartItemId, quantity: newQuantity }),
+        body: JSON.stringify({ item_id: cartItemId, quantity: change }),
       })
 
       if (!response.ok) {
         throw new Error('Failed to update cart')
       }
 
-      setQuantity(quantity + change)
+      setQuantity(newQuantity)
     } catch (error) {
       console.error('Error updating cart:', error)
     }
@@ -102,7 +104,10 @@ export const AddToCartButton: React.FC<{
         throw new Error('Failed to add to cart')
       }
 
-
+      // After adding to cart, update state and navigate to cart page
+      setIsInCart(true)
+      setCartItemId(product.id) // Assuming ID is same as item_id
+      router.push('/cart')
     } catch (error) {
       console.error('Error adding to cart:', error)
     }
@@ -114,13 +119,15 @@ export const AddToCartButton: React.FC<{
         <div className={classes.quantityControls}>
           <Button
             label="-"
-            onClick={() => updateCart(cartItemId!, -1)} // Reduce quantity by 1
-            disabled={quantity <= 1} // Disable button if quantity is 1
+            onClick={() => cartItemId && updateCart(cartItemId, -1)} // Reduce quantity by 1
+            disabled={quantity <= 0} // Disable button if quantity is 1
+            className={classes.quantityButton} // Apply button styles
           />
-          <span>{quantity}</span>
+          <span className={classes.quantityCounter}>{quantity}</span> {/* Apply counter styles */}
           <Button
             label="+"
-            onClick={() => updateCart(cartItemId!, 1)} // Increase quantity by 1
+            onClick={() => cartItemId && updateCart(cartItemId, 1)} // Increase quantity by 1
+            className={classes.quantityButton} // Apply button styles
           />
           <Button
             href="/cart"
