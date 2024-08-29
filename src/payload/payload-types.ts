@@ -16,6 +16,14 @@ export type CartItems =
   }[]
   | null;
 
+export type WishlistItems = | {
+  product?: (string | null) | Product;
+  id?: string | null;
+  imageUrl?: string | '';
+  price: number | 0;
+}[]
+  | null;
+
 export interface Config {
   collections: {
     pages: Page;
@@ -430,6 +438,7 @@ export interface User {
   cart?: {
     items?: CartItems;
   };
+  wishlist?: WishlistItems;
   skipSync?: boolean | null;
   updatedAt: string;
   createdAt: string;

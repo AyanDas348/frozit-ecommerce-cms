@@ -1,6 +1,7 @@
-import type { CartItems, Product, User } from '../../../payload/payload-types'
+import type { CartItems, Product, User, WishlistItems } from '../../../payload/payload-types'
 
 export type CartItem = CartItems[0]
+export type WishlistItem = WishlistItems[0]
 
 type CartType = User['cart']
 

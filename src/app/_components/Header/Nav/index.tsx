@@ -135,6 +135,12 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
               <Link href={'/cart'}>Cart</Link>
               <ChevronRight />
             </li>
+            <Link href={'/wishlist'}>
+              <li className={classes.accountLinkItem}>
+                Wishlist
+                <ChevronRight />
+              </li>
+            </Link>
             <li
               className={classes.accountLinkItem}
               onClick={() => {

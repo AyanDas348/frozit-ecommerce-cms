@@ -2,41 +2,19 @@
 
 import React, { Fragment, useEffect, useState } from 'react'
 import axios from 'axios'
+import { Heart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Product } from '../../../payload/payload-types'
+import { useAuth } from '../../_providers/Auth'
 import { useCart } from '../../_providers/Cart'
 import { Media } from '../Media'
 import { Price } from '../Price'
 import RatingStars from '../Rating'
 
 import classes from './index.module.scss'
-
-// const priceFromJSON = (priceJSON): string => {
-//   let price = ''
-
-//   if (priceJSON) {
-//     try {
-//       const parsed = JSON.parse(priceJSON)?.data[0]
-//       const priceValue = parsed.unit_amount
-//       const priceType = parsed.type
-//       price = `${parsed.currency === 'usd' ? '$' : ''}${(priceValue / 100).toFixed(2)}`
-//       if (priceType === 'recurring') {
-//         price += `/${
-//           parsed.recurring.interval_count > 1
-//             ? `${parsed.recurring.interval_count} ${parsed.recurring.interval}`
-//             : parsed.recurring.interval
-//         }`
-//       }
-//     } catch (e) {
-//       console.error(`Cannot parse priceJSON`) // eslint-disable-line no-console
-//     }
-//   }
-
-//   return price
-// }
 
 export const Card: React.FC<{
   alignItems?: 'center'
@@ -60,19 +38,35 @@ export const Card: React.FC<{
   const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
   const href = `/products/${slug}`
+  const { firebaseUser } = useAuth()
+  const [isProductInWishlist, setIsProductInWishlist] = useState(false)
 
   const [
     price, // eslint-disable-line no-unused-vars
     setPrice,
   ] = useState(priceJSON)
 
-  const { cart, addItemToCart, isProductInCart, hasInitializedCart, setHasInitializedCart } =
-    useCart()
+  const {
+    cart,
+    addItemToCart,
+    isProductInCart,
+    hasInitializedCart,
+    setHasInitializedCart,
+    isInWishlist,
+  } = useCart()
   const [isInCart, setIsInCart] = useState<boolean>()
 
   useEffect(() => {
     setIsInCart(isProductInCart(doc))
-  }, [isProductInCart, cart, doc])
+
+    const checkWishlist = async () => {
+      const wishlist = await isInWishlist()
+      const index = wishlist.findIndex(item => item.itemId === slug)
+      setIsProductInWishlist(index !== -1)
+    }
+
+    checkWishlist()
+  }, [isProductInCart, cart, doc, slug, firebaseUser])
 
   const handleAddToCartClick = event => {
     event.stopPropagation()
@@ -92,8 +86,45 @@ export const Card: React.FC<{
 
   const router = useRouter()
 
+  const handleAddToWishlist = async id => {
+    const token = await firebaseUser.getIdToken()
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-wishlist?item_id=${id}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    const response = await req.json()
+  }
+
+  const removeFromWishlist = async id => {
+    const token = await firebaseUser.getIdToken()
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/remove-wishlist?item_id=${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    const wishlist = await isInWishlist()
+    const index = wishlist.findIndex(item => item.itemId === slug)
+    setIsProductInWishlist(index !== -1)
+  }
+
   return (
     <div className={classes.card}>
+      {/* <div className={classes.wishList}>
+        <Heart
+          className={classes.heart}
+          onClick={() => handleAddToWishlist(slug)}
+          fill={isProductInWishlist ? 'red' : 'white'}
+        />
+      </div> */}
       <div className={classes.mediaWrapper} onClick={() => router.push(`${href}`)}>
         {!metaImage && <div className={classes.placeholder}>No image</div>}
         {metaImage && typeof metaImage !== 'string' && (
@@ -129,6 +160,22 @@ export const Card: React.FC<{
             <Image alt="cart" src="/assets/icons/icons8-cart-64.png" width={30} height={10} />
           </span>{' '}
           {isInCart ? 'Added to Cart' : 'Add to cart'}
+        </button>
+        <button
+          className={classes.addToWishlistButton}
+          type="button"
+          onClick={() => {
+            if (isProductInWishlist) {
+              removeFromWishlist(slug.toString())
+            } else {
+              handleAddToWishlist(slug.toString())
+            }
+          }}
+        >
+          <span className={classes.cartIcon}>
+            <Heart width={30} height={30} />
+          </span>{' '}
+          {isProductInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
         </button>
       </div>
     </div>

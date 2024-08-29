@@ -12,7 +12,7 @@ import React, {
 
 import { CartItems, Product, User } from '../../../payload/payload-types'
 import { useAuth } from '../Auth'
-import { CartItem, cartReducer } from './reducer'
+import { CartItem, cartReducer, WishlistItem } from './reducer'
 
 export type CartContext = {
   cart: User['cart']
@@ -25,8 +25,10 @@ export type CartContext = {
     formatted: string
     raw: number
   }
+  isInWishlist: () => Promise<any>
   hasInitializedCart: boolean
   setHasInitializedCart: (item: boolean) => void
+  wishlist: User['wishlist']
 }
 
 interface CartResponse {
@@ -53,15 +55,35 @@ const arrayHasItems = array => Array.isArray(array) && array.length > 0
 
 export const CartProvider = props => {
   const { children } = props
-  const { user, status: authStatus, firebaseUser } = useAuth()
+  const { user, status: authStatus, firebaseUser, restoreFirebaseUser } = useAuth()
 
   const [cart, dispatchCart] = useReducer(cartReducer, { items: [] })
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([])
   const [total, setTotal] = useState<{ formatted: string; raw: number }>({
     formatted: '0.00',
     raw: 0,
   })
   const hasInitialized = useRef(false)
   const [hasInitializedCart, setHasInitializedCart] = useState(true)
+
+  const getWishlist = async () => {
+    const token = await firebaseUser.getIdToken()
+    const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-wishlist`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const response = await req.json()
+    return response.data.data
+  }
+
+  const isInWishlist = async () => {
+    if (!firebaseUser) return []
+    const wishListBackend = await getWishlist()
+    setWishlist(wishListBackend)
+    return wishListBackend
+  }
 
   const addItemToCart = useCallback(incomingItem => {
     dispatchCart({ type: 'ADD_ITEM', payload: incomingItem })
@@ -358,6 +380,7 @@ export const CartProvider = props => {
       hasInitialized.current = true
     }
   }, [hasInitializedCart])
+
   return (
     <Context.Provider
       value={{
@@ -370,6 +393,8 @@ export const CartProvider = props => {
         cartTotal: total,
         hasInitializedCart,
         setHasInitializedCart,
+        wishlist,
+        isInWishlist,
       }}
     >
       {children}

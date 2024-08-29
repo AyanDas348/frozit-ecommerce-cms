@@ -50,6 +50,7 @@ type AuthContext = {
   googleSignIn: googleSignIn
   authLoading?: boolean
   firebaseUser: firebaseAuth.User
+  restoreFirebaseUser: () => void
 }
 
 const Context = createContext({} as AuthContext)
@@ -321,6 +322,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         googleSignIn,
         authLoading,
         firebaseUser,
+        restoreFirebaseUser,
       }}
     >
       {children}

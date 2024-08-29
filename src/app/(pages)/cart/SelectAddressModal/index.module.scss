@@ -62,9 +62,9 @@
 }
 
 // Hide scrollbars
-.modalContent::-webkit-scrollbar {
-  display: none; // Hide scrollbar for WebKit browsers
-}
+// .modalContent::-webkit-scrollbar {
+//   display: none; // Hide scrollbar for WebKit browsers
+// }
 
 .addressList::-webkit-scrollbar {
   width: 0; // Hide scrollbar for WebKit browsers

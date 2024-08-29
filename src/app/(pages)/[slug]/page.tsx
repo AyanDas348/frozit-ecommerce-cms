@@ -164,8 +164,6 @@ export default function NewPage({ params: { slug = 'home' } }) {
     )
   }
 
-  console.log(categorizedList)
-
   return (
     <React.Fragment>
       {slug === 'home' ? (
