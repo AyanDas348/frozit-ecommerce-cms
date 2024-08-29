@@ -18,7 +18,7 @@ export const AddToCartButton: React.FC<{
 }> = props => {
   const { product, className, appearance = 'primary' } = props
 
-  const { cart, isProductInCart, hasInitializedCart } = useCart()
+  const { cart, isProductInCart, hasInitializedCart, addItemToCart } = useCart()
 
   const [isInCart, setIsInCart] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
@@ -44,6 +44,10 @@ export const AddToCartButton: React.FC<{
         setCartItemId(item.id ?? null)
       }
     }
+  }, [isProductInCart, product, cart])
+
+    useEffect(() => {
+    setIsInCart(isProductInCart(product))
   }, [isProductInCart, product, cart])
 
   // Update cart method
@@ -74,42 +78,6 @@ export const AddToCartButton: React.FC<{
       setQuantity(newQuantity)
     } catch (error) {
       console.error('Error updating cart:', error)
-    }
-  }
-
-  // Add to Cart Handler
-  const handleAddToCart = async () => {
-    if (!firebaseUser) {
-      console.error('User is not authenticated')
-      return
-    }
-
-    try {
-      const token = await firebaseUser.getIdToken()
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/add-to-cart`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify([{
-          item_id: product.id,
-          quantity: quantity,
-          imageUrl: typeof product.meta.image !== 'string' ? product.meta.image.url : '',
-          price: product.priceJSON,
-        }]),
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to add to cart')
-      }
-
-      // After adding to cart, update state and navigate to cart page
-      setIsInCart(true)
-      setCartItemId(product.id) // Assuming ID is same as item_id
-      router.push('/cart')
-    } catch (error) {
-      console.error('Error adding to cart:', error)
     }
   }
 
@@ -149,7 +117,21 @@ export const AddToCartButton: React.FC<{
           ]
             .filter(Boolean)
             .join(' ')}
-          onClick={handleAddToCart}
+          onClick={
+        !isInCart
+          ? () => {
+              addItemToCart({
+                product,
+                quantity,
+                imageUrl:  typeof product.meta.image !== 'string' ? product.meta.image.url : '',
+                price: product.priceJSON,
+                id: product.id,
+              })
+
+              // router.push('/cart')
+            }
+          : undefined
+      }
         />
       )}
     </div>
