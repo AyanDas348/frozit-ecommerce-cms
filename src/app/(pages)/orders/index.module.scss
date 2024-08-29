@@ -145,3 +145,26 @@
 .button {
   flex-shrink: 0;
 }
+
+.starContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.itemImage {
+  width: 20%;
+  height: 20%;
+  object-fit: cover;
+  margin-right: 8px;
+  border-radius: 3px;
+}
+
+.itemName {
+  flex-grow: 1;
+  margin-right: 8px;
+}
+
+.ratingContainer {
+  font-size: 0.8em; // This will make the stars smaller
+}

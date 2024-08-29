@@ -422,6 +422,7 @@ export interface Order {
     quantity: number;
     itemName: string;
     rating: number | 0;
+    imageUrl: string
   }[]
   | null;
   updatedAt: string;
