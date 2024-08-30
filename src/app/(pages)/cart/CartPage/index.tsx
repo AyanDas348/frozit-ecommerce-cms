@@ -207,6 +207,7 @@ export const CartPage: React.FC<{
                             qty={quantity}
                             addItemToCart={addItemToCart}
                             price={product.priceJSON}
+                            originalPrice={product.originalPriceJSON}
                           />
                         )
                       }

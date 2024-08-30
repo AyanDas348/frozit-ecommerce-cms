@@ -295,6 +295,7 @@ export interface Product {
   )[];
   stripeProductID?: string | null;
   priceJSON?: number | 0;
+  originalPriceJSON?: number | 0;
   enablePaywall?: boolean | null;
   paywall?:
   | (

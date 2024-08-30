@@ -23,6 +23,7 @@ interface CartItemProps {
   qty: number
   addItemToCart?: (item: CartItemType) => void
   price: number
+  originalPrice: number
   isCheckout?: boolean
 }
 
