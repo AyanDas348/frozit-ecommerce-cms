@@ -20,7 +20,12 @@ import classes from './index.module.scss'
 export const ProductHero: React.FC<{
   product: Product
 }> = ({ product }) => {
-  const { title, categories, meta: { image: metaImage, description, ingredients } = {}, stock } = product
+  const {
+    title,
+    categories,
+    meta: { image: metaImage, description, ingredients } = {},
+    stock,
+  } = product
   const outOfStock = stock <= 0
 
   const [relatedProducts, setRelatedProducts] = useState([])
@@ -165,8 +170,13 @@ export const ProductHero: React.FC<{
           </div>
           <div className={classes.description}>
             <p>{description}</p>
-            <p>{ingredients}</p>
           </div>
+          {ingredients && (
+            <div className={classes.ingredients}>
+              <h6>Ingredients</h6>
+              <p>{ingredients}</p>
+            </div>
+          )}
           <div className={classes.addToCart}>
             <AddToCartButton product={product} className={classes.addToCartButton} />
           </div>
