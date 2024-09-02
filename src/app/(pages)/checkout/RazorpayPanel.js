@@ -35,7 +35,7 @@ class RazorPanel extends Component {
           amount: response.data.data.totalPrice * 100,
           currency: 'INR',
           name: 'FROZIT',
-          description: 'Cart Buy',
+          description: 'Frozit',
           order_id: this.state.orderID,
           handler: function (response) {
             alert(response.razorpay_payment_id)

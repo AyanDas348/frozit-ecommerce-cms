@@ -146,6 +146,7 @@ export const CartProvider = props => {
         updatedAt: itemDetails.last_modified_time,
         meta: {
           description: itemDetails.description,
+          ingredients: itemDetails?.cf_ingredients ?? '',
           image: {
             alt: itemDetails.image_name || '',
             id: id || '',
@@ -208,6 +209,7 @@ export const CartProvider = props => {
         priceJSON: item.price,
         meta: {
           description: item.description,
+          ingredients: item?.cf_ingredients ?? '',
           image: {
             alt: item.name,
             id: item.item_id,

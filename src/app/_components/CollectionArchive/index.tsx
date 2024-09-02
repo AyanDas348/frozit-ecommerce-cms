@@ -134,6 +134,7 @@ export const CollectionArchive: React.FC<Props> = props => {
           id: item.item_id,
           meta: {
             description: item.description || '',
+            ingredients: item?.cf_ingredients ?? '',
             image: {
               alt: item.image_name || '',
               caption: null,

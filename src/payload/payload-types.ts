@@ -165,6 +165,7 @@ export interface Page {
     title?: string | null;
     description?: string | null;
     image?: string | Media | null;
+    ingredients?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -404,6 +405,7 @@ export interface Product {
     title?: string | null;
     description?: string | null;
     image?: string | Media | null;
+    ingredients?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -573,6 +575,7 @@ interface RazorpayOptions {
   name: string;
   description: string;
   order_id: string;
+  ingredients?: string | null;
   handler: (response: any) => void;
   prefill?: {
     name: string;

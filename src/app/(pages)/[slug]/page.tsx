@@ -23,7 +23,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
   const [selectedCategory, setSelectedCategory] = useState('')
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const fetchCategories = async () => {
         try {
           const request = await fetch(
@@ -144,6 +144,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
           title: item.name,
           meta: {
             description: '',
+            ingredients: '',
             image: {
               alt: item.image_name,
               caption: null,
