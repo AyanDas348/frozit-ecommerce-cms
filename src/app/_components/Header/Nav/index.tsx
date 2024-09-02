@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronDown, ChevronRight, ChevronUp, Search, UserCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -31,50 +31,32 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen)
+    setIsShopDropdownOpen(false)
   }
 
   const shopDropdown = () => {
     setIsShopDropdownOpen(!isShopDropdownOpen)
+    setIsDropdownOpen(false)
   }
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false)
-      }
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsDropdownOpen(false)
     }
+    if (shopRef.current && !shopRef.current.contains(event.target as Node)) {
+      setIsShopDropdownOpen(false)
+    }
+    if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+      setIsSearchResultOpen(false)
+    }
+  }, [])
 
+  useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [dropdownRef])
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (shopRef.current && !shopRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [shopRef])
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
-        setIsSearchResultOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [dropdownRef])
+  }, [handleClickOutside])
 
   useEffect(() => {
     const searchItem = async () => {
@@ -101,7 +83,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
   }, [pathname])
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const fetchCategories = async () => {
         try {
           const request = await fetch(
@@ -136,13 +118,11 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
         />
         {isSearchResultOpen && (
           <ul className={classes.accountLinks}>
-            {searchResults.map(item => {
-              return (
-                <li key={item.item_id} className={classes.accountLinkItem}>
-                  <Link href={`/products/${item.item_id}`}>{item.name}</Link>
-                </li>
-              )
-            })}
+            {searchResults.map(item => (
+              <li key={item.item_id} className={classes.accountLinkItem}>
+                <Link href={`/products/${item.item_id}`}>{item.name}</Link>
+              </li>
+            ))}
           </ul>
         )}
       </div>
@@ -159,14 +139,12 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
         )}
         {isShopDropdownOpen && (
           <ul className={classes.accountLinks}>
-            {categories?.map(item => {
-              return (
-                <li className={classes.accountLinkItem}>
-                  <Link href={`/products?category_id=${item.id}`}>{item.title}</Link>
-                  <ChevronRight />
-                </li>
-              )
-            })}
+            {categories?.map(item => (
+              <li className={classes.accountLinkItem} key={item.id}>
+                <Link href={`/products?category_id=${item.id}`}>{item.title}</Link>
+                <ChevronRight />
+              </li>
+            ))}
           </ul>
         )}
       </div>
@@ -199,12 +177,10 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
               <Link href={'/cart'}>Cart</Link>
               <ChevronRight />
             </li>
-            <Link href={'/wishlist'}>
-              <li className={classes.accountLinkItem}>
-                Wishlist
-                <ChevronRight />
-              </li>
-            </Link>
+            <li className={classes.accountLinkItem}>
+              <Link href={'/wishlist'}>Wishlist</Link>
+              <ChevronRight />
+            </li>
             <li
               className={classes.accountLinkItem}
               onClick={() => {

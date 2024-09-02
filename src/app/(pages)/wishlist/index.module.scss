@@ -1,12 +1,12 @@
 @import '../../_css/common';
 
 .cart {
-  margin: 60px 0;
+  margin: 60px 100px;
 }
 
 .cartWrapper {
   display: grid;
-  grid-template-columns: 65% 1fr;
+  grid-template-columns: 100% 1fr;
   gap: 60px;
 
   @include large-break {

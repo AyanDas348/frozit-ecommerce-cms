@@ -17,7 +17,7 @@ export type CartItems =
   | null;
 
 export type WishlistItems = | {
-  product?: (string | null) | Product;
+  product?: string;
   id?: string | null;
   imageUrl?: string | '';
   price: number | 0;

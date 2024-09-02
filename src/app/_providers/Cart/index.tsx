@@ -25,10 +25,11 @@ export type CartContext = {
     formatted: string
     raw: number
   }
-  isInWishlist: () => Promise<any>
+  // isInWishlist: () => Promise<any>
   hasInitializedCart: boolean
   setHasInitializedCart: (item: boolean) => void
   wishlist: User['wishlist']
+  setWishlistItems: (items: WishlistItem[]) => void
 }
 
 interface CartResponse {
@@ -66,24 +67,38 @@ export const CartProvider = props => {
   const hasInitialized = useRef(false)
   const [hasInitializedCart, setHasInitializedCart] = useState(true)
 
-  const getWishlist = async () => {
-    const token = await firebaseUser.getIdToken()
-    const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-wishlist`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    const response = await req.json()
-    return response.data.data
+  const setWishlistItems = (items: WishlistItem[]) => {
+    setWishlist(items)
   }
 
-  const isInWishlist = async () => {
-    if (!firebaseUser) return []
-    const wishListBackend = await getWishlist()
-    setWishlist(wishListBackend)
-    return wishListBackend
-  }
+  useEffect(() => {
+    const getWishlist = async () => {
+      const token = await firebaseUser.getIdToken()
+      const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/get-wishlist`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const response = await req.json()
+      return response.data.data
+    }
+    const isInWishlist = async () => {
+      if (!firebaseUser) return []
+      const wishListBackend = await getWishlist()
+      console.log(wishListBackend)
+      setWishlist(
+        wishListBackend.map(item => ({
+          id: item.itemId,
+          product: item.itemName,
+          imageUrl: item.imageUrl,
+          price: item.price,
+        })),
+      )
+      return wishListBackend
+    }
+    isInWishlist()
+  }, [firebaseUser])
 
   const addItemToCart = useCallback(incomingItem => {
     dispatchCart({ type: 'ADD_ITEM', payload: incomingItem })
@@ -394,7 +409,8 @@ export const CartProvider = props => {
         hasInitializedCart,
         setHasInitializedCart,
         wishlist,
-        isInWishlist,
+        // isInWishlist,
+        setWishlistItems,
       }}
     >
       {children}

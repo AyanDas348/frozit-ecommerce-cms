@@ -16,26 +16,40 @@ import classes from './index.module.scss'
 export default function Wishlist() {
   const { user, firebaseUser } = useAuth()
 
-  const { cart, cartIsEmpty, addItemToCart, cartTotal, hasInitializedCart, isInWishlist } =
-    useCart()
-  const [wishlist, setWishlist] = useState([])
+  const { wishlist, setWishlistItems } = useCart()
+  const [currentWishlist, setWishlist] = useState(wishlist || [])
+
+  const removeFromWishlist = async id => {
+    const token = await firebaseUser.getIdToken()
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/cart/remove-wishlist?item_id=${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    const response = await req.json()
+    const items = response.map(item => ({
+      id: item.itemId,
+      product: item.itemName,
+      imageUrl: item.imageUrl,
+      price: item.price,
+    }))
+    setWishlistItems(items)
+    setWishlist(items)
+  }
 
   useEffect(() => {
-    const getWishlist = async () => {
-      const req = await isInWishlist()
-      console.log(req)
-      setWishlist(req)
-    }
-    getWishlist()
-  }, [firebaseUser])
-
-  console.log(wishlist)
+    setWishlist(wishlist || [])
+  }, [wishlist])
 
   return (
     <Fragment>
       <br />
       <Fragment>
-        {cartIsEmpty ? (
+        {wishlist.length === 0 ? (
           <div className={classes.empty}>
             Your wishlist is empty.
             <Fragment>
@@ -67,12 +81,12 @@ export default function Wishlist() {
                 </div>
                 {/* CART ITEM LIST */}
                 <ul className={classes.itemsList}>
-                  {wishlist?.map((item, index) => {
+                  {currentWishlist?.map((item, index) => {
                     return (
-                      <li className={classes.item} key={item.itemId}>
-                        <Link href={`/products/${item.itemId}`} className={classes.mediaWrapper}>
+                      <li className={classes.item} key={item.id}>
+                        <Link href={`/products/${item.id}`} className={classes.mediaWrapper}>
                           <Image
-                            alt={item.itemName}
+                            alt={item.product}
                             src={item.imageUrl}
                             width={400}
                             height={400}
@@ -81,13 +95,17 @@ export default function Wishlist() {
                         </Link>
                         <div className={classes.itemDetails}>
                           <div className={classes.titleWrapper}>
-                            <h6>{item.itemName}</h6>
+                            <h6>{item.product}</h6>
                             {/* <Price product={product} button={false} /> */}
                           </div>
                         </div>
                         <div className={classes.subtotalWrapper}>
                           {/* Total : <Price product={product} quantity={quantity} button={false} amount={price} /> */}
-                          Remove From Wishlist
+                          <Button
+                            label="Remove From Wishlist"
+                            onClick={() => removeFromWishlist(item.id)}
+                            appearance="primary"
+                          ></Button>
                         </div>
                       </li>
                     )

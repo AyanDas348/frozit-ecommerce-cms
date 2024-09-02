@@ -52,7 +52,8 @@ export const Card: React.FC<{
     isProductInCart,
     hasInitializedCart,
     setHasInitializedCart,
-    isInWishlist,
+    wishlist,
+    setWishlistItems,
   } = useCart()
   const [isInCart, setIsInCart] = useState<boolean>()
 
@@ -60,13 +61,12 @@ export const Card: React.FC<{
     setIsInCart(isProductInCart(doc))
 
     const checkWishlist = async () => {
-      const wishlist = await isInWishlist()
-      const index = wishlist.findIndex(item => item.itemId === slug)
+      const index = wishlist.findIndex(item => item.id === slug)
       setIsProductInWishlist(index !== -1)
     }
 
     checkWishlist()
-  }, [isProductInCart, cart, doc, slug, firebaseUser])
+  }, [isProductInCart, cart, doc, slug, firebaseUser, wishlist])
 
   const handleAddToCartClick = event => {
     event.stopPropagation()
@@ -111,8 +111,16 @@ export const Card: React.FC<{
         },
       },
     )
-    const wishlist = await isInWishlist()
-    const index = wishlist.findIndex(item => item.itemId === slug)
+    const response = await req.json()
+    setWishlistItems(
+      response.map(item => ({
+        id: item.itemId,
+        product: item.itemName,
+        imageUrl: item.imageUrl,
+        price: item.price,
+      })),
+    )
+    const index = wishlist.findIndex(item => item.id === slug)
     setIsProductInWishlist(index !== -1)
   }
 

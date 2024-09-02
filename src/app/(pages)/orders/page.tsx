@@ -93,6 +93,8 @@ export default function Orders() {
                                 src={item.imageUrl}
                                 alt={item.itemName || 'Product image'}
                                 className={classes.itemImage}
+                                width={100}
+                                height={100}
                               />
                             )}
                             <span className={classes.itemName}>
