@@ -25,7 +25,8 @@ export default async function ProductFunc({ params: { slug } }) {
     _status: 'published',
     title: json?.data?.data?.name,
     updatedAt: Date.now().toString(),
-    priceJSON: json.data.data.rate,
+    priceJSON: json.data.data.online_discount ? (json.data.data.rate - (json.data.data.rate * (json.data.data.cf_online_discount / 100))) : json.data.data.rate,
+    originalPriceJSON: json.data.data.rate,
     stock: json.data.data.stock_on_hand,
     meta: {
       description: json.data.data.description,
@@ -58,7 +59,8 @@ export default async function ProductFunc({ params: { slug } }) {
       _status: 'published',
       title: json.data.data.name,
       updatedAt: Date.now().toString(),
-      priceJSON: json.data.data.rate,
+      priceJSON: json.data.data.online_discount ? (json.data.data.rate - (json.data.data.rate * (json.data.data.cf_online_discount / 100))) : json.data.data.rate,
+      originalPriceJSON: json.data.data.rate,
       stock: json.data.data.stock_on_hand,
       meta: {
         description: json.data.data.description,

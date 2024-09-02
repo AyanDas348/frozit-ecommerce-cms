@@ -23,7 +23,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
   const [selectedCategory, setSelectedCategory] = useState('')
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const fetchCategories = async () => {
         try {
           const request = await fetch(
@@ -156,7 +156,9 @@ export default function NewPage({ params: { slug = 'home' } }) {
             },
             title: 'item details',
           },
-          priceJSON: item.rate,
+          originalPriceJSON: item.rate,
+          priceJSON: item.online_discount ? (item.rate - (item.rate * (item.cf_online_discount / 100))) : item.rate,
+          discount: item.online_discount ? true : false,
           slug: item.item_id,
           stock: item.actual_available_stock,
         }

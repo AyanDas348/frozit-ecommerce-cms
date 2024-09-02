@@ -241,6 +241,7 @@ export const CheckoutPage = () => {
                       metaImage={metaImage}
                       qty={quantity}
                       price={product.priceJSON}
+                      originalPrice={product.originalPriceJSON}
                       isCheckout={true}
                     />
                   )
