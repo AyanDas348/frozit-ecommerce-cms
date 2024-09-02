@@ -20,14 +20,21 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const shopRef = useRef<HTMLDivElement>(null)
   const searchBarRef = useRef<HTMLDivElement>(null)
   const [isSearchResultOpen, setIsSearchResultOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [searchResults, setSearchResults] = useState([])
+  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false)
   const pathname = usePathname()
+  const [categories, setCategories] = useState([])
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen)
+  }
+
+  const shopDropdown = () => {
+    setIsShopDropdownOpen(!isShopDropdownOpen)
   }
 
   useEffect(() => {
@@ -42,6 +49,19 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [dropdownRef])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (shopRef.current && !shopRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [shopRef])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,6 +100,29 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
     setSearchResults([])
   }, [pathname])
 
+  useEffect(() => {
+    ; (async () => {
+      const fetchCategories = async () => {
+        try {
+          const request = await fetch(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/category`,
+          )
+          const response = await request.json()
+          if (response.success) {
+            const data = response.data.data.map(category => ({
+              id: category.category_id,
+              title: category.category_name,
+            }))
+            setCategories(data)
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+      fetchCategories()
+    })()
+  }, [])
+
   return (
     <nav className={[classes.nav].filter(Boolean).join(' ')}>
       <div className={classes.searchBar} ref={searchBarRef}>
@@ -103,9 +146,30 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
           </ul>
         )}
       </div>
-      <Link href={'/products'} style={{ color: 'white', cursor: 'pointer' }}>
+      <div className={classes.shopSection} ref={shopRef}>
         Shop
-      </Link>
+        {isShopDropdownOpen ? (
+          <ChevronUp
+            style={{ color: 'white', cursor: 'pointer' }}
+            onClick={shopDropdown}
+            className={classes.arrow}
+          />
+        ) : (
+          <ChevronDown style={{ color: 'white', cursor: 'pointer' }} onClick={shopDropdown} />
+        )}
+        {isShopDropdownOpen && (
+          <ul className={classes.accountLinks}>
+            {categories?.map(item => {
+              return (
+                <li className={classes.accountLinkItem}>
+                  <Link href={`/products?category_id=${item.id}`}>{item.title}</Link>
+                  <ChevronRight />
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </div>
       <CartLink />
       <div className={classes.userSection} ref={dropdownRef}>
         <UserCircle2

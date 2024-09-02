@@ -118,13 +118,23 @@ export const Card: React.FC<{
 
   return (
     <div className={classes.card}>
-      {/* <div className={classes.wishList}>
+      <div className={classes.wishList}>
         <Heart
           className={classes.heart}
-          onClick={() => handleAddToWishlist(slug)}
+          onClick={event => {
+            event.stopPropagation()
+            if (isProductInWishlist) {
+              removeFromWishlist(slug.toString())
+            } else {
+              handleAddToWishlist(slug.toString())
+            }
+          }}
           fill={isProductInWishlist ? 'red' : 'white'}
+          style={{
+            color: isProductInWishlist ? 'red' : 'black',
+          }}
         />
-      </div> */}
+      </div>
       <div className={classes.mediaWrapper} onClick={() => router.push(`${href}`)}>
         {!metaImage && <div className={classes.placeholder}>No image</div>}
         {metaImage && typeof metaImage !== 'string' && (
@@ -161,7 +171,7 @@ export const Card: React.FC<{
           </span>{' '}
           {isInCart ? 'Added to Cart' : 'Add to cart'}
         </button>
-        <button
+        {/* <button
           className={classes.addToWishlistButton}
           type="button"
           onClick={() => {
@@ -176,7 +186,7 @@ export const Card: React.FC<{
             <Heart width={30} height={30} />
           </span>{' '}
           {isProductInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
-        </button>
+        </button> */}
       </div>
     </div>
   )

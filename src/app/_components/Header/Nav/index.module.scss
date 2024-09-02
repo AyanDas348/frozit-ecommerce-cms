@@ -40,11 +40,13 @@
   color: black;
 }
 
+.shopSection,
 .userSection {
   position: relative;
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  color: white;
 }
 
 .accountLinks {
@@ -76,6 +78,7 @@
   cursor: pointer;
   transition: background-color 0.2s;
   align-items: center;
+  color: black;
 
   &:hover {
     background-color: #f0f0f0;

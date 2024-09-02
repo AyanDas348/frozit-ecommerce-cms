@@ -1,14 +1,15 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { Product } from '../../../payload/payload-types'
+import { useAuth } from '../../_providers/Auth'
 import { useCart } from '../../_providers/Cart'
 import { Button, Props } from '../Button'
 
 import classes from './index.module.scss'
-import { useAuth } from '../../_providers/Auth'
 
 export const AddToCartButton: React.FC<{
   product: Product
@@ -46,7 +47,7 @@ export const AddToCartButton: React.FC<{
     }
   }, [isProductInCart, product, cart])
 
-    useEffect(() => {
+  useEffect(() => {
     setIsInCart(isProductInCart(product))
   }, [isProductInCart, product, cart])
 
@@ -81,28 +82,58 @@ export const AddToCartButton: React.FC<{
     }
   }
 
+  const enterQty = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedQty = Number(e.target.value)
+
+    setQuantity(updatedQty)
+    addItemToCart({ product, quantity: Number(updatedQty), price: product.priceJSON })
+  }
+
   return (
     <div className={className}>
       {isInCart ? (
         <div className={classes.quantityControls}>
-          <Button
-            label="-"
-            onClick={() => cartItemId && updateCart(cartItemId, -1)} // Reduce quantity by 1
-            disabled={quantity <= 0} // Disable button if quantity is 1
-            className={classes.quantityButton} // Apply button styles
-          />
-          <span className={classes.quantityCounter}>{quantity}</span> {/* Apply counter styles */}
-          <Button
-            label="+"
-            onClick={() => cartItemId && updateCart(cartItemId, 1)} // Increase quantity by 1
-            className={classes.quantityButton} // Apply button styles
-          />
+          <div className={classes.fields}>
+            <div
+              onClick={() => cartItemId && updateCart(cartItemId, -1)} // Reduce quantity by 1
+              className={classes.quantityButton} // Apply button styles
+            >
+              <Image
+                src="/assets/icons/minus.svg"
+                alt="minus"
+                width={24}
+                height={24}
+                className={classes.qtnBt}
+              />
+            </div>
+            <input
+              className={classes.quantityInput}
+              type="text"
+              value={quantity}
+              onChange={enterQty}
+            />
+            <div
+              onClick={() => cartItemId && updateCart(cartItemId, 1)} // Increase quantity by 1
+              className={classes.quantityButton} // Apply button styles
+            >
+              <Image
+                src="/assets/icons/plus.svg"
+                alt="plus"
+                width={24}
+                height={24}
+                className={classes.qtnBt}
+              />
+            </div>
+          </div>
+
           <Button
             href="/cart"
             el="link"
             label="✓ View in cart"
             appearance={appearance}
-            className={[classes.viewInCartButton, appearance === 'default' && classes.green].join(' ')}
+            className={[classes.viewInCartButton, appearance === 'default' && classes.green].join(
+              ' ',
+            )}
           />
         </div>
       ) : (
@@ -110,28 +141,24 @@ export const AddToCartButton: React.FC<{
           type="button"
           label="Add to cart"
           appearance={appearance}
-          className={[
-            className,
-            classes.addToCartButton,
-            !hasInitializedCart && classes.hidden,
-          ]
+          className={[className, classes.addToCartButton, !hasInitializedCart && classes.hidden]
             .filter(Boolean)
             .join(' ')}
           onClick={
-        !isInCart
-          ? () => {
-              addItemToCart({
-                product,
-                quantity,
-                imageUrl:  typeof product.meta.image !== 'string' ? product.meta.image.url : '',
-                price: product.priceJSON,
-                id: product.id,
-              })
+            !isInCart
+              ? () => {
+                  addItemToCart({
+                    product,
+                    quantity,
+                    imageUrl: typeof product.meta.image !== 'string' ? product.meta.image.url : '',
+                    price: product.priceJSON,
+                    id: product.id,
+                  })
 
-              // router.push('/cart')
-            }
-          : undefined
-      }
+                  // router.push('/cart')
+                }
+              : undefined
+          }
         />
       )}
     </div>

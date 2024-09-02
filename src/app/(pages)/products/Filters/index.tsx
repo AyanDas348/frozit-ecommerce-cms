@@ -1,6 +1,7 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 import { Category } from '../../../../payload/payload-types'
 import { Checkbox } from '../../../_components/Checkbox'
@@ -12,6 +13,16 @@ import classes from './index.module.scss'
 
 const Filters = ({ categories }: { categories: Category[] }) => {
   const { categoryFilters, sort, setCategoryFilters, setSort } = useFilter()
+
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const setCategory = () => {
+      const categoryIdFromQuery = searchParams.get('category_id')
+      setCategoryFilters([categoryIdFromQuery])
+    }
+    setCategory()
+  }, [searchParams])
 
   const handleCategories = (categoryId: string) => {
     if (categoryFilters.includes(categoryId)) {

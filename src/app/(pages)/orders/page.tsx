@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { ChevronRight, UserCircle2 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -88,13 +89,15 @@ export default function Orders() {
                         return (
                           <li key={item.itemId} className={classes.starContainer}>
                             {item.imageUrl && (
-                              <img
+                              <Image
                                 src={item.imageUrl}
                                 alt={item.itemName || 'Product image'}
                                 className={classes.itemImage}
                               />
                             )}
-                            <span className={classes.itemName}>{item.itemName || ''} {`(${item.quantity})`}</span>
+                            <span className={classes.itemName}>
+                              {item.itemName || ''} {`(${item.quantity})`}
+                            </span>
                             <div className={classes.ratingContainer}>
                               <RatingStars
                                 rating={item.rating}
@@ -118,17 +121,19 @@ export default function Orders() {
                       </p>
                     </div>
                   </div>
-                  {order.shipRocketAwb && (order.status.toLowerCase() !== 'delivered' && order.status.toLowerCase() !== 'cancelled') && (
-                    <Button appearance="primary" href={`/orders/${order.shipRocketAwb}`}>
-                      Track Order
-                    </Button>
-                  )}
+                  {order.shipRocketAwb &&
+                    order.status.toLowerCase() !== 'delivered' &&
+                    order.status.toLowerCase() !== 'cancelled' && (
+                      <Button appearance="primary" href={`/orders/${order.shipRocketAwb}`}>
+                        Track Order
+                      </Button>
+                    )}
                   <p
                     style={{
                       textTransform: 'uppercase', // Block letters (uppercase)
                       color: order.status.toLowerCase() === 'cancelled' ? 'red' : 'green', // Red for cancelled, green for others,
-                      marginRight: "15%",
-                      fontWeight: 'bold'
+                      marginRight: '15%',
+                      fontWeight: 'bold',
                     }}
                   >
                     Status:{order.status}
@@ -144,9 +149,6 @@ export default function Orders() {
     </div>
   )
 }
-
-
-
 
 // export const metadata: Metadata = {
 //   title: 'Orders',

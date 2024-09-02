@@ -21,7 +21,9 @@
 /* index.module.scss */
 .quantityControls {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+  row-gap: 20px;
 }
 
 .quantityButton {
@@ -37,4 +39,17 @@
   font-size: 16px;
   padding: 4px 8px;
   border-radius: 4px;
+}
+
+.quantityInput {
+  background-color: transparent;
+  color: #000;
+  border: none;
+  text-align: center;
+  width: 50px;
+}
+
+.fields {
+  display: flex;
+  width: fit-content;
 }

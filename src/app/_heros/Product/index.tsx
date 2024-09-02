@@ -149,23 +149,22 @@ export const ProductHero: React.FC<{
           </div> */}
 
           <Price product={product} button={'addToCart'} />
-
-          <div className={classes.description}>
-            {/* <h6>Description</h6> */}
-            <p>{description}</p>
-          </div>
-          <div className={classes.addToCart}>
-            <AddToCartButton product={product} className={classes.addToCartButton} />
-            <button className={classes.shareButton} onClick={() => handleShare()}>
-              <FaShareAlt />
-            </button>
-          </div>
           <div className={classes.rating}>
             <RatingStars
               rating={product.rating ? 4 : product.rating}
               disabled={true}
               itemId={product.id}
             />
+            <button className={classes.shareButton} onClick={() => handleShare()}>
+              <FaShareAlt />
+            </button>
+          </div>
+          <div className={classes.description}>
+            {/* <h6>Description</h6> */}
+            <p>{description}</p>
+          </div>
+          <div className={classes.addToCart}>
+            <AddToCartButton product={product} className={classes.addToCartButton} />
           </div>
         </div>
       </Gutter>

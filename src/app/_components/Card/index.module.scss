@@ -28,6 +28,7 @@
   overflow: hidden;
   height: 200px;
   width: 100%;
+  z-index: 1;
 }
 
 .image {
@@ -174,6 +175,7 @@
   right: 5%;
   top: 5%;
   position: absolute;
+  z-index: 100;
 }
 
 .heart {
