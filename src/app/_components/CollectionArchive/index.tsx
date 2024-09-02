@@ -146,7 +146,9 @@ export const CollectionArchive: React.FC<Props> = props => {
             },
             title: 'item details',
           },
-          priceJSON: item.online_discount ? (item.rate - (item.rate * (item.cf_online_discount / 100))) : item.rate,
+          priceJSON: item.online_discount
+            ? item.rate - item.rate * ((item.cf_online_discount || 0) / 100)
+            : item.rate,
           originalPriceJSON: item.rate,
           slug: item.item_id,
           title: item.item_name || '',
