@@ -20,7 +20,12 @@ import classes from './index.module.scss'
 export const ProductHero: React.FC<{
   product: Product
 }> = ({ product }) => {
-  const { title, categories, meta: { image: metaImage, description } = {}, stock } = product
+  const {
+    title,
+    categories,
+    meta: { image: metaImage, description, ingredients } = {},
+    stock,
+  } = product
   const outOfStock = stock <= 0
 
   const [relatedProducts, setRelatedProducts] = useState([])
@@ -43,6 +48,7 @@ export const ProductHero: React.FC<{
           id: item.item_id,
           meta: {
             description: item.description || '',
+            ingredients: item.cf_ingredients || '', // Check if this field is populated
             image: {
               alt: item.image_name,
               caption: null,
@@ -50,7 +56,7 @@ export const ProductHero: React.FC<{
               height: 2865,
               width: 2200,
               mimeType: item.image_type,
-              url: onlineItems.find(i => i.id === item.item_id).meta.image.url
+              url: onlineItems.find(i => i.id === item.item_id)?.meta.image.url
                 ? onlineItems.find(i => i.id === item.item_id).meta.image.url
                 : item.imageUrl,
             },
@@ -163,9 +169,14 @@ export const ProductHero: React.FC<{
             </button>
           </div>
           <div className={classes.description}>
-            {/* <h6>Description</h6> */}
             <p>{description}</p>
           </div>
+          {ingredients && (
+            <div className={classes.ingredients}>
+              <h6>Ingredients</h6>
+              <p>{ingredients}</p>
+            </div>
+          )}
           <div className={classes.addToCart}>
             <AddToCartButton product={product} className={classes.addToCartButton} />
           </div>

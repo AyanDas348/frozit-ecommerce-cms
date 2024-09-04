@@ -33,6 +33,7 @@ export default async function ProductFunc({ params: { slug } }) {
     stock: json.data.data.stock_on_hand,
     meta: {
       description: json.data.data.description,
+      ingredients: json.data.data?.cf_ingredients??'',
       title: json.data.data.name,
       image: {
         alt: hardcodedItem.meta.image.alt,
@@ -70,6 +71,7 @@ export default async function ProductFunc({ params: { slug } }) {
       stock: json.data.data.stock_on_hand,
       meta: {
         description: json.data.data.description,
+        ingredients: json.data.data?.cf_ingredients??'',
         title: json.data.data.name,
         image: {
           alt: hardcodedItem.meta.image.alt,

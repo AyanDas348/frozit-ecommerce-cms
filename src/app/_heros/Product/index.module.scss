@@ -143,3 +143,19 @@
   translate: 0% -50%;
   cursor: pointer;
 }
+
+.ingredients {
+  margin-bottom: 30px;
+
+  h6 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--color-gray-700);
+  }
+}

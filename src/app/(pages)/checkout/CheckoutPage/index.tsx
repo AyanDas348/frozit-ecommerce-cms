@@ -134,7 +134,7 @@ export const CheckoutPage = () => {
         key: process.env.RAZORPAY_KEY_ID,
         amount: parseFloat(amount),
         currency: 'INR',
-        name: 'Buy Cart',
+        name: 'Frozit',
         description: 'description',
         order_id: orderId,
         handler: async function (response: any) {
