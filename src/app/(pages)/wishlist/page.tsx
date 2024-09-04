@@ -31,7 +31,7 @@ export default function Wishlist() {
       },
     )
     const response = await req.json()
-    const items = response.map(item => ({
+    const items = response.data.data.map(item => ({
       id: item.itemId,
       product: item.itemName,
       imageUrl: item.imageUrl,
