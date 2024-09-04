@@ -8,6 +8,7 @@ import { Card } from '../../_components/Card'
 import { Gutter } from '../../_components/Gutter'
 import { Hero } from '../../_components/Hero'
 import LoadingScreen from '../../_components/Loader'
+import Popup from '../../_components/popup'
 import { defaultCategories } from '../../constants'
 import { onlineItems } from '../../constants/items'
 
@@ -17,13 +18,12 @@ export const dynamic = 'force-dynamic'
 
 export default function NewPage({ params: { slug = 'home' } }) {
   const [loading, setLoading] = useState(true)
-  const [page, setPage] = useState<Page | null>(null)
   // const { hero, layout } = page
   const [categories, setCategories] = useState<Category[] | null>(defaultCategories)
   const [selectedCategory, setSelectedCategory] = useState('')
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const fetchCategories = async () => {
         try {
           const request = await fetch(
@@ -60,25 +60,6 @@ export default function NewPage({ params: { slug = 'home' } }) {
     return () => clearTimeout(timer)
   }, [])
 
-  let richText = [
-    {
-      children: [
-        {
-          text: 'Time Ki Bachat,',
-        },
-      ],
-      type: 'h2',
-    },
-    {
-      children: [
-        {
-          text: 'Eat Fresh Fatafat',
-        },
-      ],
-      type: 'h2',
-    },
-  ]
-
   const dektopBg = [
     '/assets/banners/1_1.jpg',
     '/assets/banners/1_3.jpg',
@@ -95,40 +76,6 @@ export default function NewPage({ params: { slug = 'home' } }) {
     '/assets/mobile-banner-images/4_2.jpg',
   ]
 
-  const premiumProductsNames = [
-    'chana sattu',
-    'chuda powder',
-    'daliya',
-    'rusk',
-    'olive',
-    'punjabi',
-    'idili',
-    'ragi',
-    'sagoo',
-    'sattu',
-    'muffin',
-    'custard',
-    'corn flour',
-    'soya roll',
-  ]
-
-  const beverages = ['COOKIES']
-
-  const onlineItemsId = onlineItems.map(item => item.id)
-
-  const premiumProductsList = onlineItems.filter(item =>
-    premiumProductsNames.some(name => item.title.toLowerCase().includes(name))) // eslint-disable-line
-
-  const cookiesList = onlineItems
-    .filter(item => item.title.toLowerCase().includes('cookies'))
-    .map(item => {
-      return {
-        ...item,
-        priceJSON: parseInt(item.priceJSON),
-        rating: 4,
-      }
-    })
-
   const [categorizedList, setCategorizedList] = useState<Product[]>()
 
   const handleCategoryChange = async (category: Category) => {
@@ -137,41 +84,50 @@ export default function NewPage({ params: { slug = 'home' } }) {
       `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${category.id}`,
     )
     const response = await request.json()
-    setCategorizedList(
-      response.data.data.items.map(item => {
-        return {
-          id: item.item_id,
-          title: item.name,
-          meta: {
-            description: '',
-            image: {
-              alt: item.image_name,
-              caption: null,
-              filename: item.image_name,
-              height: 2865,
-              width: 2200,
-              mimeType: item.image_type,
-              url: item.imageUrls[0],
-              urls: item.imageUrls,
-            },
-            title: 'item details',
+    const data = response.data.data.items.map(item => {
+      return {
+        id: item.item_id,
+        title: item.name,
+        meta: {
+          description: '',
+          image: {
+            alt: item.image_name,
+            caption: null,
+            filename: item.image_name,
+            height: 2865,
+            width: 2200,
+            mimeType: item.image_type,
+            url: item.imageUrls[0],
+            urls: item.imageUrls,
           },
-          originalPriceJSON: item.rate,
-          priceJSON: item.online_discount
-            ? item.rate - item.rate * ((item?.cf_online_discount || 0) / 100)
-            : item.rate,
-          discount: item.online_discount ? true : false,
-          slug: item.item_id,
-          stock: item.actual_available_stock,
-        }
-      }),
-    )
+          title: 'item details',
+        },
+        originalPriceJSON: item.rate,
+        priceJSON: item.online_discount
+          ? item.rate - item.rate * ((item?.cf_online_discount || 0) / 100)
+          : item.rate,
+        discount: item.online_discount ? true : false,
+        slug: item.item_id,
+        stock: item.actual_available_stock,
+        cf_online_discount: parseInt(item?.cf_online_discount || 0),
+      }
+    })
+    const discountItem = data.find(item => item.cf_online_discount !== 0)
+    setPopupItem(discountItem)
+    setCategorizedList(data)
+  }
+
+  const [popupItem, setPopupItem] = useState(null)
+
+  const closePopup = () => {
+    setPopupItem(null)
   }
 
   return (
     <React.Fragment>
       {slug === 'home' ? (
         <section className={classes.pageContent}>
+          <Popup item={popupItem} onClose={closePopup} />
           <div className={`${classes.loadingScreen} ${!loading ? classes.hide : ''}`}>
             <LoadingScreen />
           </div>

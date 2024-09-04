@@ -98,6 +98,14 @@ export const Card: React.FC<{
       },
     )
     const response = await req.json()
+    setWishlistItems(
+      response.data.data.map(item => ({
+        id: item.itemId,
+        product: item.itemName,
+        imageUrl: item.imageUrl,
+        price: item.price,
+      })),
+    )
   }
 
   const removeFromWishlist = async id => {
