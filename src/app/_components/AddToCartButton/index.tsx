@@ -52,34 +52,18 @@ export const AddToCartButton: React.FC<{
   }, [isProductInCart, product, cart])
 
   // Update cart method
-  const updateCart = async (cartItemId: string, change: number) => {
-    if (!firebaseUser) {
-      console.error('User is not authenticated')
-      return
-    }
+  const decrementQty = () => {
+    const updatedQty = quantity > 1 ? quantity - 1 : 1
 
-    try {
-      const newQuantity = quantity + change
-      if (newQuantity < 0) return // Prevent quantity from going below 0
+    setQuantity(updatedQty)
+    addItemToCart({ product, quantity: Number(updatedQty), price: product.priceJSON })
+  }
 
-      const token = await firebaseUser.getIdToken()
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cart/update-cart`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ item_id: cartItemId, quantity: change }),
-      })
+  const incrementQty = () => {
+    const updatedQty = quantity + 1
 
-      if (!response.ok) {
-        throw new Error('Failed to update cart')
-      }
-
-      setQuantity(newQuantity)
-    } catch (error) {
-      console.error('Error updating cart:', error)
-    }
+    setQuantity(updatedQty)
+    addItemToCart({ product, quantity: Number(updatedQty), price: product.priceJSON })
   }
 
   const enterQty = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +79,7 @@ export const AddToCartButton: React.FC<{
         <div className={classes.quantityControls}>
           <div className={classes.fields}>
             <div
-              onClick={() => cartItemId && updateCart(cartItemId, -1)} // Reduce quantity by 1
+              onClick={() => decrementQty()} // Reduce quantity by 1
               className={classes.quantityButton} // Apply button styles
             >
               <Image
@@ -113,7 +97,7 @@ export const AddToCartButton: React.FC<{
               onChange={enterQty}
             />
             <div
-              onClick={() => cartItemId && updateCart(cartItemId, 1)} // Increase quantity by 1
+              onClick={() => incrementQty()} // Increase quantity by 1
               className={classes.quantityButton} // Apply button styles
             >
               <Image

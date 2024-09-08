@@ -38,6 +38,7 @@ const CartItem: React.FC<CartItemProps> = ({
 }) => {
   const [quantity, setQuantity] = useState(qty)
   const { user } = useAuth()
+
   const decrementQty = () => {
     const updatedQty = quantity > 1 ? quantity - 1 : 1
 

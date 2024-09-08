@@ -139,24 +139,6 @@ export const ProductHero: React.FC<{
         <div className={classes.details}>
           <h3 className={classes.title}>{title}</h3>
 
-          {/* <div className={classes.categoryWrapper}>
-            <div className={classes.categories}>
-              {categories?.map((category, index) => {
-                const { title: categoryTitle } = category as Category
-
-                const titleToUse = categoryTitle || 'Generic'
-                const isLast = index === categories.length - 1
-
-                return (
-                  <p key={index} className={classes.category}>
-                    {titleToUse} {!isLast && <Fragment>, &nbsp;</Fragment>}
-                    <span className={classes.separator}>|</span>
-                  </p>
-                )
-              })}
-            </div>
-          </div> */}
-
           <Price product={product} button={'addToCart'} />
           <div className={classes.rating}>
             <RatingStars

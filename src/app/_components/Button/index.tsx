@@ -9,7 +9,7 @@ export type Props = {
   label?: string
   appearance?: 'default' | 'primary' | 'secondary' | 'none' | 'tertiary'
   el?: 'button' | 'link' | 'a'
-  onClick?: () => void
+  onClick?: (e?: any) => void
   href?: string
   newTab?: boolean
   className?: string
@@ -17,6 +17,7 @@ export type Props = {
   disabled?: boolean
   invert?: boolean
   children?: React.ReactNode
+  labelDesign?: string
 }
 
 export const Button: React.FC<Props> = ({
@@ -31,6 +32,7 @@ export const Button: React.FC<Props> = ({
   disabled,
   invert,
   children,
+  labelDesign,
 }) => {
   let el = elFromProps
 
@@ -47,7 +49,9 @@ export const Button: React.FC<Props> = ({
 
   const content = (
     <div className={classes.content}>
-      <span className={classes.label}>{label}</span>
+      <span className={classes.label} style={{ fontSize: `${labelDesign}` }}>
+        {label}
+      </span>
       {children}
     </div>
   )

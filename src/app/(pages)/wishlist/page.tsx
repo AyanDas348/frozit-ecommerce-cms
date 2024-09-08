@@ -16,7 +16,14 @@ import classes from './index.module.scss'
 export default function Wishlist() {
   const { user, firebaseUser } = useAuth()
 
-  const { wishlist, setWishlistItems } = useCart()
+  const {
+    wishlist,
+    setWishlistItems,
+    isProductInCart,
+    addItemToCart,
+    setHasInitializedCart,
+    hasInitializedCart,
+  } = useCart()
   const [currentWishlist, setWishlist] = useState(wishlist || [])
 
   const removeFromWishlist = async id => {
@@ -41,9 +48,27 @@ export default function Wishlist() {
     setWishlist(items)
   }
 
+  const [isInCart, setIsInCart] = useState<boolean>()
+
   useEffect(() => {
     setWishlist(wishlist || [])
   }, [wishlist])
+
+  // const handleAddToCart = (event, item) => {
+  //   event.stopPropagation()
+  //   if (!isProductInCart(item)) {
+  //     addItemToCart({
+  //       product: item,
+  //       quantity: 1,
+  //       // imageUrl: typeof metaImage !== 'string' ? metaImage.url : 'abcd',
+  //       // price: priceJSON,
+  //       // id: doc.id,
+  //     })
+  //     if (!hasInitializedCart) {
+  //       setHasInitializedCart(true)
+  //     }
+  //   }
+  // }
 
   return (
     <Fragment>
@@ -101,10 +126,19 @@ export default function Wishlist() {
                         </div>
                         <div className={classes.subtotalWrapper}>
                           {/* Total : <Price product={product} quantity={quantity} button={false} amount={price} /> */}
+                          {/* <Button
+                            label="Add to Cart"
+                            onClick={e => handleAddToCart(e, item.id)}
+                            appearance="primary"
+                            className={classes.buttonText}
+                            labelDesign={'11px'}
+                          ></Button> */}
                           <Button
                             label="Remove From Wishlist"
                             onClick={() => removeFromWishlist(item.id)}
-                            appearance="primary"
+                            appearance="secondary"
+                            className={classes.buttonText}
+                            labelDesign={'11px'}
                           ></Button>
                         </div>
                       </li>
