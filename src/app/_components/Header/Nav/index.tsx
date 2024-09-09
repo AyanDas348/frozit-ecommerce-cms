@@ -145,6 +145,10 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
                 <ChevronRight />
               </li>
             ))}
+            <li className={classes.accountLinkItem} key={'new-arrival'}>
+              <Link href={`/products?new_arrival=true`}>New Arrival</Link>
+              <ChevronRight />
+            </li>
           </ul>
         )}
       </div>

@@ -119,60 +119,144 @@ export const CollectionArchive: React.FC<Props> = props => {
         const categoryFilterPresent = categoryFilters.length > 0
         let response
         const categoryIdFromQuery = searchParams.get('category_id')
+        const newArrivalQuery = searchParams.get('new_arrival')
 
-        if (categoryIdFromQuery) {
+        if (categoryIdFromQuery && !newArrivalQuery) {
           const request = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${categoryIdFromQuery}&priceOrder=${sort}`,
           )
           response = await request.json()
+          const docs = response.data.data.items.map(item => ({
+            categories: item.category_id || '1697951000000336031',
+            id: item.item_id,
+            meta: {
+              description: item.description || '',
+              ingredients: item?.cf_ingredients ?? '',
+              image: {
+                alt: item.image_name || '',
+                caption: null,
+                filename: item.image_name || '',
+                height: 2865,
+                width: 2200,
+                mimeType: item.image_type || '',
+                urls: (item.imageUrls || []).length > 0 ? item.imageUrls : [],
+                url: item.imageUrls[0],
+              },
+              title: 'item details',
+            },
+            priceJSON: item.online_discount
+              ? item.rate - item.rate * ((item.cf_online_discount || 0) / 100)
+              : item.rate,
+            originalPriceJSON: item.rate,
+            slug: item.item_id,
+            title: item.item_name || '',
+            stock: item.actual_available_stock || 0,
+          }))
+
+          setNewResults(docs)
+
+          setResults({
+            docs,
+            page: page,
+            totalPages: response.data.data.totalPages || 1,
+            hasPrevPage: false,
+            hasNextPage:
+              response?.data?.data?.currentPage < response?.data?.data?.totalPages ? true : false,
+            prevPage: 1,
+            nextPage: 1,
+            totalDocs: response?.data?.data?.totalItems || response?.data?.data?.items.length,
+          })
+        } else if (newArrivalQuery === 'true') {
+          const request = await fetch(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/new-arrival`,
+          )
+          response = await request.json()
+          const docs = response.data.data.map(item => ({
+            categories: item.category_id || '1697951000000336031',
+            id: item.item_id,
+            meta: {
+              description: item.description || '',
+              ingredients: item?.cf_ingredients ?? '',
+              image: {
+                alt: item.image_name || '',
+                caption: null,
+                filename: item.image_name || '',
+                height: 2865,
+                width: 2200,
+                mimeType: item.image_type || '',
+                urls: (item.imageUrls || []).length > 0 ? item.imageUrls : [],
+                url: item.imageUrls[0],
+              },
+              title: 'item details',
+            },
+            priceJSON: item.online_discount
+              ? item.rate - item.rate * ((item.cf_online_discount || 0) / 100)
+              : item.rate,
+            originalPriceJSON: item.rate,
+            slug: item.item_id,
+            title: item.item_name || '',
+            stock: item.actual_available_stock || 0,
+          }))
+
+          setNewResults(docs)
+
+          setResults({
+            docs,
+            page: page,
+            totalPages: response.data.data.totalPages || 1,
+            hasPrevPage: false,
+            hasNextPage:
+              response?.data?.data?.currentPage < response?.data?.data?.totalPages ? true : false,
+            prevPage: 1,
+            nextPage: 1,
+            totalDocs: response?.data?.data?.totalItems || response?.data?.data?.length,
+          })
         } else {
           const req = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-all-items?page=${page}&priceOrder=${sort}`,
           )
           response = await req.json()
-        }
-        console.log(response)
-
-        const docs = response.data.data.items.map(item => ({
-          categories: item.category_id || '1697951000000336031',
-          id: item.item_id,
-          meta: {
-            description: item.description || '',
-            ingredients: item?.cf_ingredients ?? '',
-            image: {
-              alt: item.image_name || '',
-              caption: null,
-              filename: item.image_name || '',
-              height: 2865,
-              width: 2200,
-              mimeType: item.image_type || '',
-              urls: (item.imageUrls || []).length > 0 ? item.imageUrls : [],
-              url: item.imageUrls[0],
+          const docs = response.data.data.items.map(item => ({
+            categories: item.category_id || '1697951000000336031',
+            id: item.item_id,
+            meta: {
+              description: item.description || '',
+              ingredients: item?.cf_ingredients ?? '',
+              image: {
+                alt: item.image_name || '',
+                caption: null,
+                filename: item.image_name || '',
+                height: 2865,
+                width: 2200,
+                mimeType: item.image_type || '',
+                urls: (item.imageUrls || []).length > 0 ? item.imageUrls : [],
+                url: item.imageUrls[0],
+              },
+              title: 'item details',
             },
-            title: 'item details',
-          },
-          priceJSON: item.online_discount
-            ? item.rate - item.rate * ((item.cf_online_discount || 0) / 100)
-            : item.rate,
-          originalPriceJSON: item.rate,
-          slug: item.item_id,
-          title: item.item_name || '',
-          stock: item.actual_available_stock || 0,
-        }))
+            priceJSON: item.online_discount
+              ? item.rate - item.rate * ((item.cf_online_discount || 0) / 100)
+              : item.rate,
+            originalPriceJSON: item.rate,
+            slug: item.item_id,
+            title: item.item_name || '',
+            stock: item.actual_available_stock || 0,
+          }))
 
-        setNewResults(docs)
+          setNewResults(docs)
 
-        setResults({
-          docs,
-          page: page,
-          totalPages: response.data.data.totalPages || 1,
-          hasPrevPage: false,
-          hasNextPage:
-            response?.data?.data?.currentPage < response?.data?.data?.totalPages ? true : false,
-          prevPage: 1,
-          nextPage: 1,
-          totalDocs: response?.data?.data?.totalItems || response?.data?.data?.items.length,
-        })
+          setResults({
+            docs,
+            page: page,
+            totalPages: response.data.data.totalPages || 1,
+            hasPrevPage: false,
+            hasNextPage:
+              response?.data?.data?.currentPage < response?.data?.data?.totalPages ? true : false,
+            prevPage: 1,
+            nextPage: 1,
+            totalDocs: response?.data?.data?.totalItems || response?.data?.data?.items.length,
+          })
+        }
         // clearTimeout(timer)
         hasHydrated.current = true
       } catch (err) {
