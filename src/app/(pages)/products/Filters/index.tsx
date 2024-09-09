@@ -22,7 +22,7 @@ const Filters = ({ categories }: { categories: Category[] }) => {
       setCategoryFilters([categoryIdFromQuery])
     }
     setCategory()
-  }, [searchParams])
+  }, [searchParams, setCategoryFilters])
 
   const handleCategories = (categoryId: string) => {
     if (categoryFilters.includes(categoryId)) {

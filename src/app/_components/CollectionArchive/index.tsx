@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 import { Category, Product } from '../../../payload/payload-types'
 import type { ArchiveBlockProps } from '../../_blocks/ArchiveBlock/types'
@@ -105,6 +106,7 @@ export const CollectionArchive: React.FC<Props> = props => {
   }, [])
 
   const [newResult, setNewResults] = useState<Product[]>([])
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     // if (initialRender.current) {
@@ -116,10 +118,11 @@ export const CollectionArchive: React.FC<Props> = props => {
       try {
         const categoryFilterPresent = categoryFilters.length > 0
         let response
+        const categoryIdFromQuery = searchParams.get('category_id')
 
-        if (categoryFilterPresent) {
+        if (categoryIdFromQuery) {
           const request = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${categoryFilters[0]}&priceOrder=${sort}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${categoryIdFromQuery}&priceOrder=${sort}`,
           )
           response = await request.json()
         } else {
@@ -128,6 +131,7 @@ export const CollectionArchive: React.FC<Props> = props => {
           )
           response = await req.json()
         }
+        console.log(response)
 
         const docs = response.data.data.items.map(item => ({
           categories: item.category_id || '1697951000000336031',
@@ -178,7 +182,7 @@ export const CollectionArchive: React.FC<Props> = props => {
     }
 
     makeRequest()
-  }, [categoryFilters, page, sort])
+  }, [categoryFilters, page, searchParams, sort])
 
   const initialRender = useRef(true)
 
