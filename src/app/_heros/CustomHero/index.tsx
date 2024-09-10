@@ -10,7 +10,13 @@ import RichText from '../../_components/RichText'
 
 import classes from './index.module.scss'
 
-export const CustomHero: React.FC<Page['hero']> = ({ richText, media, links, bgImages }) => {
+export const CustomHero: React.FC<Page['hero']> = ({
+  richText,
+  media,
+  links,
+  bgImages,
+  bgIds = [],
+}) => {
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
@@ -40,7 +46,10 @@ export const CustomHero: React.FC<Page['hero']> = ({ richText, media, links, bgI
             {richText.length !== 0 && <RichText content={richText} />}
             <h2 className={classes.ctaText}>Explore all our products</h2>
             <div style={{ width: '50%', zIndex: '1' }}>
-              <Button appearance="primary" href="/products">
+              <Button
+                appearance="primary"
+                href={bgIds.length > 0 ? `/products/${bgIds[index]}` : `/products`}
+              >
                 Shop Now
                 <ArrowUpRight />
               </Button>

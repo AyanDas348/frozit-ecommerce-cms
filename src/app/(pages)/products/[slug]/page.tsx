@@ -65,7 +65,7 @@ export default async function ProductFunc({ params: { slug } }) {
       updatedAt: Date.now().toString(),
       priceJSON: json.data.data.online_discount
         ? json.data.data.rate -
-          json.data.data.rate * ((json.data.data.cf_online_discount || 0) / 100)
+          json.data.data.rate * ((json.data?.data?.cf_online_discount || 0) / 100)
         : json.data.data.rate,
       originalPriceJSON: json.data.data.rate,
       stock: json.data.data.stock_on_hand,

@@ -53,3 +53,7 @@
   display: flex;
   width: fit-content;
 }
+
+.disabled {
+  cursor: not-allowed !important;
+}

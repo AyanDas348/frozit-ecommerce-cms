@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 import { Category, Page, Product } from '../../../payload/payload-types'
 import { Button } from '../../_components/Button'
@@ -26,12 +27,25 @@ export default function NewPage({ params: { slug = 'home' } }) {
     ; (async () => {
       const fetchCategories = async () => {
         try {
-          const request = await fetch(
+          // Set loading to true before starting the fetch
+          setLoading(true)
+
+          // Fetch banner items
+          const bannerReq = await axios.get(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/banner-item`,
+          )
+          const images = bannerReq.data.data.data.map(item => item.bannerUrl)
+          const ids = bannerReq.data.data.data.map(item => item.itemID)
+          setBgImages(images)
+          setBgId(ids)
+
+          // Fetch categories
+          const categoryReq = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/category`,
           )
-          const response = await request.json()
-          if (response.success) {
-            const data = response.data.data.map(category => ({
+          const categoryRes = await categoryReq.json()
+          if (categoryRes.success) {
+            const data = categoryRes.data.data.map(category => ({
               id: category.category_id,
               title: category.category_name,
               media: null,
@@ -41,12 +55,17 @@ export default function NewPage({ params: { slug = 'home' } }) {
             setCategories(data)
             setSelectedCategory(data[0].title)
             await handleCategoryChange(data[0])
-            setLoading(false)
           }
+
+          // Set loading to false after both banner items and categories are fetched
+          setLoading(false)
         } catch (e) {
           console.log(e)
+          // In case of error, also set loading to false
+          setLoading(false)
         }
       }
+
       fetchCategories()
     })()
   }, [])
@@ -60,13 +79,8 @@ export default function NewPage({ params: { slug = 'home' } }) {
     return () => clearTimeout(timer)
   }, [])
 
-  const dektopBg = [
-    '/assets/banners/1_1.jpg',
-    '/assets/banners/1_3.jpg',
-    '/assets/banners/1.jpg',
-    '/assets/banners/3.jpg',
-    '/assets/banners/4.jpg',
-  ]
+  const [bgImages, setBgImages] = useState([])
+  const [bgId, setBgId] = useState([])
 
   const mobilebg = [
     '/assets/mobile-banner-images/1_2.jpg',
@@ -133,10 +147,24 @@ export default function NewPage({ params: { slug = 'home' } }) {
           </div>
           <div className={`${classes.content} ${loading ? classes.hide : ''}`}>
             <div className={classes.desktopBg}>
-              <Hero type="customHero" richText={[]} links={[]} media="" bgImages={dektopBg} />
+              <Hero
+                type="customHero"
+                richText={[]}
+                links={[]}
+                media=""
+                bgImages={bgImages}
+                bgIds={bgId}
+              />
             </div>
             <div className={classes.mobileBg}>
-              <Hero type="customHero" richText={[]} links={[]} media="" bgImages={mobilebg} />
+              <Hero
+                type="customHero"
+                richText={[]}
+                links={[]}
+                media=""
+                bgImages={mobilebg}
+                bgIds={[]}
+              />
             </div>
             <Gutter>
               <label className={classes.sectionHeading}>

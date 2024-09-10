@@ -181,7 +181,12 @@ export const Card: React.FC<{
             <RatingStars rating={doc?.rating || 4} itemId={doc.id} disabled={true} />
           </div>
         </div>
-        <button className={classes.addToCartButton} type="button" onClick={handleAddToCartClick}>
+        <button
+          className={classes.addToCartButton}
+          type="button"
+          onClick={handleAddToCartClick}
+          disabled={doc.stock <= 0}
+        >
           <span className={classes.cartIcon}>
             <Image alt="cart" src="/assets/icons/icons8-cart-64.png" width={30} height={10} />
           </span>{' '}

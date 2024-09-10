@@ -5,9 +5,11 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 100vw;
   padding-top: 100px;
   height: 100vh;
+  min-height: 100vh;
+  background-size: cover;
 
   @include small-break {
     margin: 0;
@@ -17,9 +19,9 @@
 
 .heroWrapper {
   background-color: var(--color-dark-50);
-  width: 100%;
+  width: 100vw;
   // max-width: 1560px;
-  max-height: 884px;
+  max-height: 100vh;
   display: flex;
   align-items: center;
   background-size: cover;

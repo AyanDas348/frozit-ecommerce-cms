@@ -73,6 +73,8 @@ export const AddToCartButton: React.FC<{
     addItemToCart({ product, quantity: Number(updatedQty), price: product.priceJSON })
   }
 
+  console.log(product.stock)
+
   return (
     <div className={className}>
       {isInCart ? (
@@ -123,9 +125,14 @@ export const AddToCartButton: React.FC<{
       ) : (
         <Button
           type="button"
-          label="Add to cart"
-          appearance={appearance}
-          className={[className, classes.addToCartButton, !hasInitializedCart && classes.hidden]
+          label={product.stock <= 0 ? 'Stock Unavailable' : 'Add to cart'}
+          disabled={product.stock <= 0}
+          appearance={product.stock <= 0 ? 'secondary' : appearance}
+          className={[
+            className,
+            classes.addToCartButton,
+            !hasInitializedCart && classes.hidden && classes.disabled,
+          ]
             .filter(Boolean)
             .join(' ')}
           onClick={
