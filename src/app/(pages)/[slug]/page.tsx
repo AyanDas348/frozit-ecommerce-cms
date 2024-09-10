@@ -162,8 +162,8 @@ export default function NewPage({ params: { slug = 'home' } }) {
                 richText={[]}
                 links={[]}
                 media=""
-                bgImages={mobilebg}
-                bgIds={[]}
+                bgImages={bgImages}
+                bgIds={bgId}
               />
             </div>
             <Gutter>
