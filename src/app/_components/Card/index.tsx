@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Fragment, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 import { Heart } from 'lucide-react'
 import Image from 'next/image'
@@ -70,6 +71,10 @@ export const Card: React.FC<{
 
   const handleAddToCartClick = event => {
     event.stopPropagation()
+    if (doc.stock <= 0) {
+      toast.error('Currently not available in stock', { position: 'top-center' })
+      return
+    }
     if (!isInCart) {
       addItemToCart({
         product: doc,
@@ -181,12 +186,7 @@ export const Card: React.FC<{
             <RatingStars rating={doc?.rating || 4} itemId={doc.id} disabled={true} />
           </div>
         </div>
-        <button
-          className={classes.addToCartButton}
-          type="button"
-          onClick={handleAddToCartClick}
-          disabled={doc.stock <= 0}
-        >
+        <button className={classes.addToCartButton} type="button" onClick={handleAddToCartClick}>
           <span className={classes.cartIcon}>
             <Image alt="cart" src="/assets/icons/icons8-cart-64.png" width={30} height={10} />
           </span>{' '}

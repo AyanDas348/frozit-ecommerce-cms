@@ -143,6 +143,7 @@ export const CartPage: React.FC<{
     if (matchedCoupon) {
       if (matchedCoupon.minimumPurchaseAmount > cartTotal.raw) {
         setCouponError('Minimum purchase amount not met')
+        setAppliedCoupon(matchedCoupon)
         return
       }
       let discountAmount = 0
@@ -196,7 +197,7 @@ export const CartPage: React.FC<{
         // Handle the successful coupon application
         if (data.success) {
           setCouponCode(code)
-          setDiscount(cartTotal.raw - data.data.data.discountedCartPrice)
+          setDiscount(cartTotal.raw - data?.data?.data?.discountedCartPrice || 0)
           setIsCouponApplied(true)
           setCouponError('')
         } else {
@@ -215,6 +216,18 @@ export const CartPage: React.FC<{
       setDiscount(0)
     }
   }
+
+  useEffect(() => {
+    const callCoupon = () => {
+      setCouponDescription('')
+      setDiscount(0)
+      setIsCouponApplied(false)
+      setAppliedCoupon(null)
+      setCouponCode('')
+      setCouponError('')
+    }
+    callCoupon()
+  }, [cartTotal.raw])
 
   const grandTotalAfterDiscount = cartTotal.raw - discount
 
@@ -414,6 +427,12 @@ export const CartPage: React.FC<{
                               {appliedCoupon?.minimumPurchaseAmount || 150}*
                             </p>
                           </div>
+                        )}
+                        {couponError && appliedCoupon && (
+                          <p className={classes.couponError}>
+                            Offer valid only on minimum purchase amount of ₹
+                            {appliedCoupon?.minimumPurchaseAmount || 150}
+                          </p>
                         )}
                       </div>
                     )}

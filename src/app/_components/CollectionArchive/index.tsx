@@ -106,6 +106,7 @@ export const CollectionArchive: React.FC<Props> = props => {
   }, [])
 
   const [newResult, setNewResults] = useState<Product[]>([])
+
   const searchParams = useSearchParams()
 
   useEffect(() => {
@@ -118,10 +119,12 @@ export const CollectionArchive: React.FC<Props> = props => {
       try {
         const categoryFilterPresent = categoryFilters.length > 0
         let response
-        const categoryIdFromQuery = searchParams.get('category_id')
         const newArrivalQuery = searchParams.get('new_arrival')
+        const categoryIdFromQuery = searchParams.get('category_id')
+        console.log(categoryIdFromQuery, categoryFilters)
 
         if (categoryIdFromQuery && !newArrivalQuery) {
+          console.log('i ran')
           const request = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/itemsInventory/get-categories?category_id=${categoryIdFromQuery}&priceOrder=${sort}`,
           )
