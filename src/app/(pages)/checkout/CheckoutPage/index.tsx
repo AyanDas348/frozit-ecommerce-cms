@@ -49,6 +49,7 @@ export const CheckoutPage = () => {
 
   const [selectedAddressIndex, setSelectedAddressIndex] = useState<number | null>(-1)
   const addressId = useSearchParams().get('addressId')
+  const grandTotal = useSearchParams().get('grandTotal')
 
   useEffect(() => {
     if (user !== null && cartIsEmpty) {
@@ -262,7 +263,7 @@ export const CheckoutPage = () => {
 
             <div className={classes.row}>
               <p className={classes.cartTotal}>Grand Total</p>
-              <p className={classes.cartTotal}>{cartTotal.formatted}</p>
+              <p className={classes.cartTotal}>₹{grandTotal}</p>
             </div>
 
             <div className={classes.checkoutButtonWrapper}>

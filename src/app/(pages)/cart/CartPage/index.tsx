@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Page, Settings, User } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
 import { HR } from '../../../_components/HR'
+import { Input } from '../../../_components/Input'
 import { LoadingShimmer } from '../../../_components/LoadingShimmer'
 import { Media } from '../../../_components/Media'
 import PhoneLoginModal from '../../../_components/PhoneLoginModal'
@@ -36,10 +37,12 @@ interface Coupon {
   code: string
   discountType: string
   discountValue: number
-  minimumAmount: number
-  maximumAmount: number
+  minimumPurchaseAmount: number
+  maxDiscountAmount: number
   expiryDate: string
   isActive: boolean
+  status: string
+  description: string
 }
 
 export const CartPage: React.FC<{
@@ -63,7 +66,8 @@ export const CartPage: React.FC<{
   const [couponError, setCouponError] = useState('')
   const [coupons, setCoupons] = useState<Coupon[]>([])
   const [showCoupons, setShowCoupons] = useState(true)
-
+  const [couponDescription, setCouponDescription] = useState('')
+  const [appliedCoupon, setAppliedCoupon] = useState<Coupon>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -89,37 +93,39 @@ export const CartPage: React.FC<{
 
   useEffect(() => {
     const fetchCoupons = async () => {
-      if (!firebaseUser) return;  // If no firebaseUser, don't fetch
+      if (!firebaseUser) return // If no firebaseUser, don't fetch
 
       try {
-        const token = await firebaseUser.getIdToken();
+        const token = await firebaseUser.getIdToken()
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/get-coupon`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        })
         if (!response.ok) {
-          throw new Error('Failed to fetch coupons');
+          throw new Error('Failed to fetch coupons')
         }
-        const data = await response.json();
+        const data = await response.json()
         if (data.data.data && Array.isArray(data.data.data)) {
-          setCoupons(data.data.data);
+          setCoupons(data.data.data)
         } else {
-          console.error('Unexpected coupon data format:', data);
+          console.error('Unexpected coupon data format:', data)
         }
       } catch (error) {
-        console.error('Error fetching coupons:', error);
+        console.error('Error fetching coupons:', error)
       }
-    };
+    }
 
-    fetchCoupons(); // Call the function
-  }, [firebaseUser]); // Add `firebaseUser` as a dependency
+    fetchCoupons() // Call the function
+  }, [firebaseUser]) // Add `firebaseUser` as a dependency
 
   const handleCheckoutClick = () => {
     if (!user) {
       setIsPhoneLoginModalOpen(true)
     } else {
-      router.push(`/checkout?addressId=${selectedAddressIndex}`)
+      router.push(
+        `/checkout?addressId=${selectedAddressIndex}&grandTotal=${grandTotalAfterDiscount}`,
+      )
     }
   }
 
@@ -129,25 +135,28 @@ export const CartPage: React.FC<{
       return
     }
 
-    const matchedCoupon = coupons.find(coupon =>
-      coupon.code.toUpperCase() === couponCode.toUpperCase() && coupon.isActive
+    const matchedCoupon = coupons.find(
+      coupon =>
+        coupon.code.toUpperCase() === couponCode.toUpperCase() && coupon.status === 'active',
     )
 
     if (matchedCoupon) {
+      if (matchedCoupon.minimumPurchaseAmount > cartTotal.raw) {
+        setCouponError('Minimum purchase amount not met')
+        return
+      }
       let discountAmount = 0
       if (matchedCoupon.discountType === 'percentage') {
-        discountAmount = cartTotal.raw * (matchedCoupon.discountValue / 100)
+        discountAmount = cartTotal.raw * (matchedCoupon.discountPercentage / 100)
       } else if (matchedCoupon.discountType === 'fixed') {
         discountAmount = matchedCoupon.discountValue
       }
 
       // Apply minimum and maximum amount constraints
-      discountAmount = Math.max(discountAmount, matchedCoupon.minimumAmount)
-      discountAmount = Math.min(discountAmount, matchedCoupon.maximumAmount)
-
-      setDiscount(discountAmount)
-      setIsCouponApplied(true)
-      setCouponError('')
+      discountAmount = Math.max(discountAmount, matchedCoupon.maxDiscountAmount)
+      handleCouponClick(couponCode.toUpperCase())
+      setAppliedCoupon(matchedCoupon)
+      setCouponDescription(matchedCoupon.description)
     } else {
       setCouponError('Invalid or inactive coupon code')
       setDiscount(0)
@@ -162,48 +171,50 @@ export const CartPage: React.FC<{
     setCouponError('')
   }
 
- const handleCouponClick = async (code: string) => {
-  if (!firebaseUser) return;  // Ensure user is authenticated
+  const handleCouponClick = async (code: string) => {
+    if (!firebaseUser) return // Ensure user is authenticated
 
-  try {
-    // Get the Firebase auth token
-    const token = await firebaseUser.getIdToken();
+    try {
+      // Get the Firebase auth token
+      const token = await firebaseUser.getIdToken()
 
-    // Make the API call to apply the coupon
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/apply-coupon?code=${code}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
+      // Make the API call to apply the coupon
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/order/apply-coupon?code=${code}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
 
-    // Check if the response is successful
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data.data.data.discountedCartPrice)
-      // Handle the successful coupon application
-      if (data.success) {
-        setCouponCode(code);
-        setDiscount(cartTotal.raw - data.data.data.discountedCartPrice)
-        setIsCouponApplied(true);
-        setCouponError('');
+      // Check if the response is successful
+      if (response.ok) {
+        const data = await response.json()
+        // Handle the successful coupon application
+        if (data.success) {
+          setCouponCode(code)
+          setDiscount(cartTotal.raw - data.data.data.discountedCartPrice)
+          setIsCouponApplied(true)
+          setCouponError('')
+        } else {
+          // If there was an issue with applying the coupon
+          setCouponError(data.message || 'Failed to apply coupon')
+          setIsCouponApplied(false)
+          setDiscount(0)
+        }
       } else {
-        // If there was an issue with applying the coupon
-        setCouponError(data.message || 'Failed to apply coupon');
-        setIsCouponApplied(false);
-        setDiscount(0);
+        throw new Error('Failed to apply coupon')
       }
-    } else {
-      throw new Error('Failed to apply coupon');
+    } catch (error) {
+      console.error('Error applying coupon:', error)
+      setCouponError('Error applying coupon. Please try again.')
+      setIsCouponApplied(false)
+      setDiscount(0)
     }
-  } catch (error) {
-    console.error('Error applying coupon:', error);
-    setCouponError('Error applying coupon. Please try again.');
-    setIsCouponApplied(false);
-    setDiscount(0);
   }
-};
 
   const grandTotalAfterDiscount = cartTotal.raw - discount
 
@@ -360,9 +371,9 @@ export const CartPage: React.FC<{
                   <div className={classes.couponSection}>
                     {showCoupons && (
                       <div className={classes.couponsList}>
-                        <h4>Available Coupons</h4>
-                        <ul>
-                          {coupons.map((coupon) => (
+                        <h4>Apply Coupons</h4>
+                        {/* <ul>
+                          {coupons.map(coupon => (
                             <li key={coupon.id} className={classes.couponItem}>
                               <span className={classes.couponCode}>{coupon.code}</span>
                               <span className={classes.couponDiscount}>
@@ -377,7 +388,33 @@ export const CartPage: React.FC<{
                               />
                             </li>
                           ))}
-                        </ul>
+                        </ul> */}
+                        <div className={classes.couponSection}>
+                          <input
+                            name="coupon"
+                            value={couponCode}
+                            onChange={e => setCouponCode(e.target.value)}
+                            className={classes.couponCode}
+                          />
+                          <Button
+                            appearance="secondary"
+                            onClick={() => handleApplyCoupon()}
+                            label="Apply"
+                            type="button"
+                          />
+                        </div>
+                        {couponDescription && (
+                          <div className={classes.couponDescription}>
+                            <p className={classes.couponMainText}>
+                              {couponDescription} upto a maximum of ₹
+                              {appliedCoupon.maxDiscountAmount}
+                            </p>
+                            <p className={classes.couponSubText}>
+                              *Offer valid only on minimum purchase amount of ₹
+                              {appliedCoupon?.minimumPurchaseAmount || 150}*
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -405,7 +442,11 @@ export const CartPage: React.FC<{
                       <Button
                         className={classes.checkoutButton}
                         onClick={handleCheckoutClick}
-                        href={user ? `/checkout?addressId=${selectedAddressIndex}` : null}
+                        href={
+                          user
+                            ? `/checkout?addressId=${selectedAddressIndex}&grandTotal=${grandTotalAfterDiscount}`
+                            : null
+                        }
                         label={user ? 'Proceed to Checkout' : 'Login to checkout'}
                       />
                     )}
@@ -414,7 +455,11 @@ export const CartPage: React.FC<{
                       <Button
                         className={classes.checkoutButton}
                         onClick={handleCheckoutClick}
-                        href={user ? `/checkout?addressId=${selectedAddressIndex}` : null}
+                        href={
+                          user
+                            ? `/checkout?addressId=${selectedAddressIndex}&grandTotal=${grandTotalAfterDiscount}`
+                            : null
+                        }
                         label={user ? 'Proceed to Checkout' : 'Login to checkout'}
                       />
                     )}
