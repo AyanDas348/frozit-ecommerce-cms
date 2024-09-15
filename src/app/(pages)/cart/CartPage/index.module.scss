@@ -185,3 +185,55 @@
 .empty {
   padding-top: 60px;
 }
+
+.couponsList {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fafafa;
+  h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  .couponItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: box-shadow 0.3s ease;
+    &:hover {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  }
+  .couponCode {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+  }
+  .couponDiscount {
+    font-size: 14px;
+    color: #888;
+  }
+  .applyCouponButton {
+    background-color: #0070f3;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    &:hover {
+      background-color: #005bb5;
+    }
+  }
+}
