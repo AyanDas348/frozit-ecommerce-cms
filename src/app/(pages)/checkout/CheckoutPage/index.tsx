@@ -20,6 +20,7 @@ import RazorpayPanel from '../RazorpayPanel'
 import 'react-toastify/dist/ReactToastify.css'
 
 import classes from './index.module.scss'
+
 interface OrderIntent {
   addressId: number
   cartId?: string
@@ -90,7 +91,6 @@ export const CheckoutPage = () => {
     script.src = 'https://checkout.razorpay.com/v1/checkout.js'
     script.async = true
     script.onload = () => {
-      // Razorpay script loaded
       console.log('Razorpay loaded')
     }
     document.body.appendChild(script)
@@ -145,32 +145,48 @@ export const CheckoutPage = () => {
             razorpay_signature: response.razorpay_signature,
           }
 
-          const checkPaymentStatus = async () => {
-            const token = await firebaseUser.getIdToken()
-            const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/check-status`, {
-              method: 'POST',
-              body: JSON.stringify(data),
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-              },
-            })
-            const res = await result.json()
-
-            if (res.success) {
-              // clearInterval(intervalId)
-              toast.success(res.message, { position: 'top-center' })
-              router.push('/orders')
-            } else {
-              console.log('Payment not confirmed yet:', res.message)
-              toast.error(res.message, { position: 'top-center' })
+          const checkPaymentStatus = async (retryCount = 0) => {
+            if (retryCount >= 20) { // Limit to 20 attempts (about 2 minutes if each call takes ~6 seconds)
+              toast.error('Payment confirmation timed out. Please check your order status.', { position: 'top-center' })
               router.push('/cart')
+              return
+            }
+
+            try {
+              const token = await firebaseUser.getIdToken()
+              const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/check-status`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              const res = await result.json()
+
+              if (res.success) {
+                toast.success(res.message, { position: 'top-center' })
+                router.push('/orders')
+              } else {
+                console.log('Payment not confirmed yet:', res.message)
+                // Wait for 6 seconds before making the next call
+                setTimeout(() => checkPaymentStatus(retryCount + 1), 6000)
+              }
+            } catch (error) {
+              console.error('Error checking payment status:', error)
+              // If there's an error, wait 6 seconds and try again
+              setTimeout(() => checkPaymentStatus(retryCount + 1), 6000)
             }
           }
-          if (data.razorpay_signature) {
+
+            if (response.razorpay_signature) {
+            // If signature is present, start checking payment status immediately
             checkPaymentStatus()
+          } else {
+            // If signature is not present, wait for 10 seconds before starting the check
+            console.log('Razorpay signature not found. Waiting 10 seconds before checking payment status...')
+            setTimeout(() => checkPaymentStatus(), 10000)
           }
-          // const intervalId = setInterval(checkPaymentStatus, 1000)
         },
         prefill: {
           name: user.name,
