@@ -131,6 +131,7 @@ export const CheckoutPage = () => {
   const processPayment = async () => {
     try {
       const { orderId, amount } = await createOrderId()
+
       const options = {
         key: process.env.RAZORPAY_KEY_ID,
         amount: parseFloat(amount),
@@ -138,55 +139,9 @@ export const CheckoutPage = () => {
         name: 'Frozit',
         description: 'description',
         order_id: orderId,
-        handler: async function (response: any) {
-          const data = {
-            order_id: orderId,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          }
-
-          const checkPaymentStatus = async (retryCount = 0) => {
-            if (retryCount >= 20) { // Limit to 20 attempts (about 2 minutes if each call takes ~6 seconds)
-              toast.error('Payment confirmation timed out. Please check your order status.', { position: 'top-center' })
-              router.push('/cart')
-              return
-            }
-
-            try {
-              const token = await firebaseUser.getIdToken()
-              const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/check-status`, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-                },
-              })
-              const res = await result.json()
-
-              if (res.success) {
-                toast.success(res.message, { position: 'top-center' })
-                router.push('/orders')
-              } else {
-                console.log('Payment not confirmed yet:', res.message)
-                // Wait for 6 seconds before making the next call
-                setTimeout(() => checkPaymentStatus(retryCount + 1), 6000)
-              }
-            } catch (error) {
-              console.error('Error checking payment status:', error)
-              // If there's an error, wait 6 seconds and try again
-              setTimeout(() => checkPaymentStatus(retryCount + 1), 6000)
-            }
-          }
-
-            if (response.razorpay_signature) {
-            // If signature is present, start checking payment status immediately
-            checkPaymentStatus()
-          } else {
-            // If signature is not present, wait for 10 seconds before starting the check
-            console.log('Razorpay signature not found. Waiting 10 seconds before checking payment status...')
-            setTimeout(() => checkPaymentStatus(), 10000)
-          }
+        handler: function (response: any) {
+          // Pass the Razorpay response to be handled outside
+          handlePaymentResponse(response, orderId)
         },
         prefill: {
           name: user.name,
@@ -196,6 +151,14 @@ export const CheckoutPage = () => {
           color: '#3399cc',
         },
       }
+
+      if (orderId) {
+        let data = { order_id: orderId }
+        setTimeout(() => checkPaymentStatus(data), 10000)
+      }
+
+
+
       if (typeof window !== 'undefined' && window.Razorpay) {
         const paymentObject = new window.Razorpay(options)
         paymentObject.on('payment.failed', function (response: any) {
@@ -207,6 +170,56 @@ export const CheckoutPage = () => {
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  // Function to handle Razorpay response and call checkPaymentStatus outside
+  const handlePaymentResponse = (response: any, orderId: string) => {
+    const data = {
+      order_id: orderId,
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_signature: response.razorpay_signature,
+    }
+
+    // Check if the signature is present, start payment status checking accordingly
+    if (response.razorpay_signature) {
+      checkPaymentStatus(data)
+    }
+  }
+
+  // Function to check payment status
+  const checkPaymentStatus = async (data: any, retryCount = 0) => {
+    if (retryCount >= 20) { // Limit retries to 20
+      toast.error('Payment confirmation timed out. Please check your order status.', { position: 'top-center' })
+      router.push('/cart')
+      return
+    }
+
+    try {
+      const token = await firebaseUser.getIdToken()
+      const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/order/check-status`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const res = await result.json()
+
+      if (res.success) {
+        toast.success(res.message, { position: 'top-center' })
+        router.push('/orders')
+      } else {
+        console.log('Payment not confirmed yet:', res.message)
+        // Retry after 6 seconds if not confirmed
+        setTimeout(() => checkPaymentStatus(data, retryCount + 1), 6000)
+      }
+    } catch (error) {
+      console.error('Error checking payment status:', error)
+      // Retry after 6 seconds on error
+      setTimeout(() => checkPaymentStatus(data, retryCount + 1), 6000)
     }
   }
 
