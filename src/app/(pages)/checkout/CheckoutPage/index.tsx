@@ -150,6 +150,14 @@ export const CheckoutPage = () => {
         theme: {
           color: '#3399cc',
         },
+         method: {
+        netbanking: true,
+        card: true,
+        wallet: true,
+        upi: true, // Optional if you want to include UPI
+        // Disable QR by omitting or setting this to false
+        qr: false,
+      }
       }
 
       if (orderId) {
