@@ -24,7 +24,7 @@ export default function NewPage({ params: { slug = 'home' } }) {
   const [selectedCategory, setSelectedCategory] = useState('')
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const fetchCategories = async () => {
         try {
           // Set loading to true before starting the fetch

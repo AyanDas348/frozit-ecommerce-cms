@@ -150,22 +150,20 @@ export const CheckoutPage = () => {
         theme: {
           color: '#3399cc',
         },
-         method: {
-        netbanking: true,
-        card: true,
-        wallet: true,
-        upi: true, // Optional if you want to include UPI
-        // Disable QR by omitting or setting this to false
-        qr: false,
-      }
+        method: {
+          netbanking: true,
+          card: true,
+          wallet: true,
+          upi: true, // Optional if you want to include UPI
+          // Disable QR by omitting or setting this to false
+          qr: false,
+        },
       }
 
       if (orderId) {
         let data = { order_id: orderId }
         setTimeout(() => checkPaymentStatus(data), 10000)
       }
-
-
 
       if (typeof window !== 'undefined' && window.Razorpay) {
         const paymentObject = new window.Razorpay(options)
@@ -197,8 +195,11 @@ export const CheckoutPage = () => {
 
   // Function to check payment status
   const checkPaymentStatus = async (data: any, retryCount = 0) => {
-    if (retryCount >= 20) { // Limit retries to 20
-      toast.error('Payment confirmation timed out. Please check your order status.', { position: 'top-center' })
+    if (retryCount >= 20) {
+      // Limit retries to 20
+      toast.error('Payment confirmation timed out. Please check your order status.', {
+        position: 'top-center',
+      })
       router.push('/cart')
       return
     }
